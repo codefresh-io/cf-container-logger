@@ -1,13 +1,15 @@
-var proxyquire = require('proxyquire').noCallThru();
-var chai       = require('chai');
-var expect     = chai.expect;
-var sinon      = require('sinon');
-var sinonChai  = require('sinon-chai');
+'use strict';
+
+const proxyquire = require('proxyquire').noCallThru();
+const chai       = require('chai');
+const expect     = chai.expect;
+const sinon      = require('sinon');
+const sinonChai  = require('sinon-chai');
 chai.use(sinonChai);
 
-describe('Logger tests', function () {
+describe('Logger tests', () => {
 
-    var processExit;
+    let processExit;
 
     before(() => {
         processExit = process.exit;
@@ -22,17 +24,16 @@ describe('Logger tests', function () {
         describe('positive tests', () => {
 
             it('should successfully initiate and register a new container', (done) => {
-                var processExitSpy = sinon.spy((exitCode) => {
+                const processExitSpy = sinon.spy((exitCode) => {
                     done(new Error(`process exit was called with exitCode ${exitCode}`));
                 });
                 process.exit       = processExitSpy;
 
-                var stream = {
+                const stream = {
                     on: (event, callback) => {
                         if (event === 'data') {
-                            callback("my meesage to log");
-                        }
-                        else if (event === 'end') {
+                            callback('my meesage to log');
+                        }                        else if (event === 'end') {
                             callback();
                             setTimeout(() => {
                                 expect(getContainerSpy).to.have.been.calledOnce; // jshint ignore:line
@@ -46,7 +47,7 @@ describe('Logger tests', function () {
                     }
                 };
 
-                var container = {
+                const container = {
                     attach: (options, callback) => {
                         expect(options).to.deep.equal({
                             stream: true,
@@ -58,54 +59,52 @@ describe('Logger tests', function () {
                     }
                 };
 
-                var getContainerSpy = sinon.spy((containerId) => { // jshint ignore:line
-                    expect(containerId).to.equal("newContainerId");
+                let getContainerSpy = sinon.spy((containerId) => { // jshint ignore:line
+                    expect(containerId).to.equal('newContainerId');
                     return container;
                 });
 
-                var firstWrite   = true;
-                var writeFileSpy = sinon.spy((filePath, content, callback) => { // jshint ignore:line
+                let firstWrite   = true;
+                let writeFileSpy = sinon.spy((filePath, content, callback) => { // jshint ignore:line
                     if (firstWrite) {
-                        expect(content).to.equal("{\"status\":\"ready\"}");
-                    }
-                    else {
-                        expect(content).to.equal("{\"status\":\"ready\",\"newContainerId\":{\"status\":\"created\"}}");
+                        expect(content).to.equal('{"status":"ready"}');
+                    }                    else {
+                        expect(content).to.equal('{"status":"ready","newContainerId":{"status":"created"}}');
                     }
                     firstWrite = false;
                     callback();
                 });
 
-                var authWithCustomTokenSpy = sinon.spy((secret, callback) => { // jshint ignore:line
-                    expect(secret).to.equal("firebaseSecret");
+                let authWithCustomTokenSpy = sinon.spy((secret, callback) => { // jshint ignore:line
+                    expect(secret).to.equal('firebaseSecret');
                     callback();
                 });
 
-                var emitterStartSpy = sinon.spy(); // jshint ignore:line
-                var emitterOnSpy    = sinon.spy((event, callback) => { // jshint ignore:line
-                    expect(event).to.equal("create");
+                let emitterStartSpy = sinon.spy(); // jshint ignore:line
+                let emitterOnSpy    = sinon.spy((event, callback) => { // jshint ignore:line
+                    expect(event).to.equal('create');
                     callback({
-                        id: "newContainerId",
+                        id: 'newContainerId',
                         Actor: {
                             Attributes: {
-                                "io.codefresh.loggerId": "loggerId",
-                                "io.codefresh.firebaseUrl": "firebaseAuthUrl"
+                                'io.codefresh.loggerId': 'loggerId',
+                                'io.codefresh.firebaseUrl': 'firebaseAuthUrl'
                             }
                         }
                     });
                 });
 
-                var Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'firebase': function (authUrl) {
-                        expect(authUrl).to.equal("firebaseAuthUrl");
+                        expect(authUrl).to.equal('firebaseAuthUrl');
                         return {
                             authWithCustomToken: authWithCustomTokenSpy,
-                            child: function (child) {
-                                if (child === "logs") {
+                            child(child) {
+                                if (child === 'logs') {
                                     return {
                                         push: sinon.spy()
                                     };
-                                }
-                                else if (child === "lastUpdate") {
+                                }                                else if (child === 'lastUpdate') {
                                     return {
                                         set: sinon.spy()
                                     };
@@ -130,23 +129,22 @@ describe('Logger tests', function () {
 
                 });
 
-                var logger = new Logger("loggerId", "firebaseAuthUrl", "firebaseSecret", false);
+                const logger = new Logger('loggerId', 'firebaseAuthUrl', 'firebaseSecret', false);
                 logger.validate();
                 logger.start();
             });
 
             it('should not handle in case there is no firebase url label on a created container', (done) => {
-                var processExitSpy = sinon.spy((exitCode) => {
+                const processExitSpy = sinon.spy((exitCode) => {
                     done(new Error(`process exit was called with exitCode ${exitCode}`));
                 });
                 process.exit       = processExitSpy;
 
-                var stream = {
+                const stream = {
                     on: (event, callback) => {
                         if (event === 'data') {
 
-                        }
-                        else if (event === 'end') {
+                        }                        else if (event === 'end') {
                             callback();
                             setTimeout(() => {
                                 expect(getContainerSpy).to.have.been.calledOnce; // jshint ignore:line
@@ -161,7 +159,7 @@ describe('Logger tests', function () {
                     }
                 };
 
-                var container = {
+                const container = {
                     attach: (options, callback) => {
                         expect(options).to.deep.equal({
                             stream: true,
@@ -173,44 +171,43 @@ describe('Logger tests', function () {
                     }
                 };
 
-                var getContainerSpy = sinon.spy((containerId) => { // jshint ignore:line
-                    expect(containerId).to.equal("newContainerId");
+                let getContainerSpy = sinon.spy((containerId) => { // jshint ignore:line
+                    expect(containerId).to.equal('newContainerId');
                     return container;
                 });
 
-                var firstWrite   = true;
-                var writeFileSpy = sinon.spy((filePath, content, callback) => { // jshint ignore:line
+                let firstWrite   = true;
+                let writeFileSpy = sinon.spy((filePath, content, callback) => { // jshint ignore:line
                     if (firstWrite) {
-                        expect(content).to.equal("{\"status\":\"ready\"}");
-                    }
-                    else {
-                        expect(content).to.equal("{\"status\":\"ready\",\"newContainerId\":{\"status\":\"created\"}}");
+                        expect(content).to.equal('{"status":"ready"}');
+                    }                    else {
+                        expect(content).to.equal('{"status":"ready","newContainerId":{"status":"created"}}');
                     }
                     firstWrite = false;
                     callback();
                 });
 
-                var authWithCustomTokenSpy = sinon.spy((secret, callback) => { // jshint ignore:line
-                    expect(secret).to.equal("firebaseSecret");
+                let authWithCustomTokenSpy = sinon.spy((secret, callback) => { // jshint ignore:line
+                    expect(secret).to.equal('firebaseSecret');
                     callback();
                 });
 
-                var emitterStartSpy = sinon.spy(); // jshint ignore:line
-                var emitterOnSpy    = sinon.spy((event, callback) => { // jshint ignore:line
-                    expect(event).to.equal("create");
+                let emitterStartSpy = sinon.spy(); // jshint ignore:line
+                let emitterOnSpy    = sinon.spy((event, callback) => { // jshint ignore:line
+                    expect(event).to.equal('create');
                     callback({
-                        id: "newContainerId",
+                        id: 'newContainerId',
                         Actor: {
                             Attributes: {
-                                "io.codefresh.loggerId": "loggerId"
+                                'io.codefresh.loggerId': 'loggerId'
                             }
                         }
                     });
                 });
 
-                var Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'firebase': function (authUrl) {
-                        expect(authUrl).to.equal("firebaseAuthUrl");
+                        expect(authUrl).to.equal('firebaseAuthUrl');
                         return {
                             authWithCustomToken: authWithCustomTokenSpy
                         };
@@ -230,11 +227,11 @@ describe('Logger tests', function () {
                         writeFile: writeFileSpy
                     },
                     'cf-logs': {
-                        Logger: function () {
+                        Logger() {
                             return {
                                 info: sinon.spy(),
                                 warn: sinon.spy((message) => {
-                                    expect(message).to.equal("Container: newContainerId does contain a firebaseUrl label. skipping");
+                                    expect(message).to.equal('Container: newContainerId does contain a firebaseUrl label. skipping');
                                     done();
                                 }),
                                 error: sinon.spy()
@@ -244,24 +241,23 @@ describe('Logger tests', function () {
 
                 });
 
-                var logger = new Logger("loggerId", "firebaseAuthUrl", "firebaseSecret", "true");
+                let logger                          = new Logger('loggerId', 'firebaseAuthUrl', 'firebaseSecret', 'true'); // jshint ignore:line
                 logger._listenForExistingContainers = sinon.spy();
                 logger.validate();
                 logger.start();
             });
 
             it('should not handle in case there is no loggerId label on a create container', (done) => {
-                var processExitSpy = sinon.spy((exitCode) => {
+                const processExitSpy = sinon.spy((exitCode) => {
                     done(new Error(`process exit was called with exitCode ${exitCode}`));
                 });
                 process.exit       = processExitSpy;
 
-                var stream = {
+                const stream = {
                     on: (event, callback) => {
                         if (event === 'data') {
 
-                        }
-                        else if (event === 'end') {
+                        }                        else if (event === 'end') {
                             callback();
                             setTimeout(() => {
                                 expect(getContainerSpy).to.have.been.calledOnce; // jshint ignore:line
@@ -275,7 +271,7 @@ describe('Logger tests', function () {
                     }
                 };
 
-                var container = {
+                const container = {
                     attach: (options, callback) => {
                         expect(options).to.deep.equal({
                             stream: true,
@@ -287,44 +283,43 @@ describe('Logger tests', function () {
                     }
                 };
 
-                var getContainerSpy = sinon.spy((containerId) => { // jshint ignore:line
-                    expect(containerId).to.equal("newContainerId");
+                let getContainerSpy = sinon.spy((containerId) => { // jshint ignore:line
+                    expect(containerId).to.equal('newContainerId');
                     return container;
                 });
 
-                var firstWrite   = true;
-                var writeFileSpy = sinon.spy((filePath, content, callback) => { // jshint ignore:line
+                let firstWrite   = true;
+                let writeFileSpy = sinon.spy((filePath, content, callback) => { // jshint ignore:line
                     if (firstWrite) {
-                        expect(content).to.equal("{\"status\":\"ready\"}");
-                    }
-                    else {
-                        expect(content).to.equal("{\"status\":\"ready\",\"newContainerId\":{\"status\":\"created\"}}");
+                        expect(content).to.equal('{"status":"ready"}');
+                    }                    else {
+                        expect(content).to.equal('{"status":"ready","newContainerId":{"status":"created"}}');
                     }
                     firstWrite = false;
                     callback();
                 });
 
-                var authWithCustomTokenSpy = sinon.spy((secret, callback) => { // jshint ignore:line
-                    expect(secret).to.equal("firebaseSecret");
+                let authWithCustomTokenSpy = sinon.spy((secret, callback) => { // jshint ignore:line
+                    expect(secret).to.equal('firebaseSecret');
                     callback();
                 });
 
-                var emitterStartSpy = sinon.spy(); // jshint ignore:line
-                var emitterOnSpy    = sinon.spy((event, callback) => { // jshint ignore:line
-                    expect(event).to.equal("create");
+                let emitterStartSpy = sinon.spy(); // jshint ignore:line
+                let emitterOnSpy    = sinon.spy((event, callback) => { // jshint ignore:line
+                    expect(event).to.equal('create');
                     callback({
-                        id: "newContainerId",
+                        id: 'newContainerId',
                         Actor: {
                             Attributes: {}
                         }
                     });
                 });
 
-                var infoSpy = sinon.spy();
+                const infoSpy = sinon.spy();
 
-                var Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'firebase': function (authUrl) {
-                        expect(authUrl).to.equal("firebaseAuthUrl");
+                        expect(authUrl).to.equal('firebaseAuthUrl');
                         return {
                             authWithCustomToken: authWithCustomTokenSpy
                         };
@@ -344,11 +339,11 @@ describe('Logger tests', function () {
                         writeFile: writeFileSpy
                     },
                     'cf-logs': {
-                        Logger: function () {
+                        Logger() {
                             return {
                                 info: infoSpy,
                                 warn: sinon.spy((message) => {
-                                    expect(message).to.equal("Container: newContainerId does contain a firebaseUrl label. skipping");
+                                    expect(message).to.equal('Container: newContainerId does contain a firebaseUrl label. skipping');
                                     done();
                                 }),
                                 error: sinon.spy()
@@ -358,11 +353,11 @@ describe('Logger tests', function () {
 
                 });
 
-                var logger = new Logger("loggerId", "firebaseAuthUrl", "firebaseSecret");
+                const logger = new Logger('loggerId', 'firebaseAuthUrl', 'firebaseSecret');
                 logger.validate();
                 logger.start();
                 setTimeout(() => {
-                    expect(infoSpy).to.have.been.calledWith("Not handling new container: newContainerId. loggerId label: undefined");
+                    expect(infoSpy).to.have.been.calledWith('Not handling new container: newContainerId. loggerId label: undefined');
                     done();
                 }, 1000);
             });
@@ -372,18 +367,18 @@ describe('Logger tests', function () {
         describe('negative tests', () => {
 
             it('should fail in case no logger id was provided', (done) => {
-                var errorSpy = sinon.spy();
+                const errorSpy = sinon.spy();
 
-                var processExitSpy = sinon.spy((exitCode) => {
+                const processExitSpy = sinon.spy((exitCode) => {
                     expect(exitCode).to.equal(1);
-                    expect(errorSpy).to.have.been.calledWith("Error: logger id is missing");
+                    expect(errorSpy).to.have.been.calledWith('Error: logger id is missing');
                     done();
                 });
                 process.exit       = processExitSpy;
 
-                var Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'cf-logs': {
-                        Logger: function () {
+                        Logger() {
                             return {
                                 info: sinon.spy(),
                                 warn: sinon.spy(),
@@ -394,23 +389,23 @@ describe('Logger tests', function () {
 
                 });
 
-                var logger = new Logger(null, "firebaseAuthUrl", "firebaseSecret");
+                const logger = new Logger(null, 'firebaseAuthUrl', 'firebaseSecret');
                 logger.validate();
             });
 
             it('should fail in case no firebase auth url was provided', (done) => {
-                var errorSpy = sinon.spy();
+                const errorSpy = sinon.spy();
 
-                var processExitSpy = sinon.spy((exitCode) => {
+                const processExitSpy = sinon.spy((exitCode) => {
                     expect(exitCode).to.equal(1);
-                    expect(errorSpy).to.have.been.calledWith("Error: firebase auth url is missing");
+                    expect(errorSpy).to.have.been.calledWith('Error: firebase auth url is missing');
                     done();
                 });
                 process.exit       = processExitSpy;
 
-                var Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'cf-logs': {
-                        Logger: function () {
+                        Logger() {
                             return {
                                 info: sinon.spy(),
                                 warn: sinon.spy(),
@@ -421,23 +416,23 @@ describe('Logger tests', function () {
 
                 });
 
-                var logger = new Logger("loggerId", null, "firebaseSecret");
+                const logger = new Logger('loggerId', null, 'firebaseSecret');
                 logger.validate();
             });
 
             it('should fail in case no firebase secret was provided', (done) => {
-                var errorSpy = sinon.spy();
+                const errorSpy = sinon.spy();
 
-                var processExitSpy = sinon.spy((exitCode) => {
+                const processExitSpy = sinon.spy((exitCode) => {
                     expect(exitCode).to.equal(1);
-                    expect(errorSpy).to.have.been.calledWith("Error: firebase secret is missing");
+                    expect(errorSpy).to.have.been.calledWith('Error: firebase secret is missing');
                     done();
                 });
                 process.exit       = processExitSpy;
 
-                var Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'cf-logs': {
-                        Logger: function () {
+                        Logger() {
                             return {
                                 info: sinon.spy(),
                                 warn: sinon.spy(),
@@ -448,28 +443,32 @@ describe('Logger tests', function () {
 
                 });
 
-                var logger = new Logger("loggerId", "firebaseAuthUrl", null);
+                const logger = new Logger('loggerId', 'firebaseAuthUrl', null);
                 logger.validate();
             });
 
             it('should fail in case authentication against firebase fails', (done) => {
-                var errorSpy = sinon.spy();
+                const errorSpy = sinon.spy();
 
-                var processExitSpy = sinon.spy((exitCode) => {
+                const processExitSpy = sinon.spy((exitCode) => {
                     expect(exitCode).to.equal(1);
-                    expect(errorSpy).to.have.been.calledWith("Error: Failed to authenticate to firebase url firebaseAuthUrl; caused by Error: firebase auth error");
+                    expect(errorSpy)
+                        .to
+                        .have
+                        .been
+                        .calledWith('Error: Failed to authenticate to firebase url firebaseAuthUrl; caused by Error: firebase auth error');
                     done();
                 });
                 process.exit       = processExitSpy;
 
-                var authWithCustomTokenSpy = sinon.spy((secret, callback) => { // jshint ignore:line
-                    expect(secret).to.equal("firebaseSecret");
-                    callback(new Error("firebase auth error"));
+                const authWithCustomTokenSpy = sinon.spy((secret, callback) => { // jshint ignore:line
+                    expect(secret).to.equal('firebaseSecret');
+                    callback(new Error('firebase auth error'));
                 });
 
-                var Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'firebase': function (authUrl) {
-                        expect(authUrl).to.equal("firebaseAuthUrl");
+                        expect(authUrl).to.equal('firebaseAuthUrl');
                         return {
                             authWithCustomToken: authWithCustomTokenSpy
                         };
@@ -478,7 +477,7 @@ describe('Logger tests', function () {
                         return {};
                     },
                     'cf-logs': {
-                        Logger: function () {
+                        Logger() {
                             return {
                                 info: sinon.spy(),
                                 warn: sinon.spy(),
@@ -489,7 +488,7 @@ describe('Logger tests', function () {
 
                 });
 
-                var logger = new Logger("loggerId", "firebaseAuthUrl", "firebaseSecret");
+                const logger = new Logger('loggerId', 'firebaseAuthUrl', 'firebaseSecret');
                 logger.validate();
                 logger.start();
             });
@@ -499,15 +498,15 @@ describe('Logger tests', function () {
     });
 
     describe('_listenForExistingContainers', () => {
-        
+
         describe('positive', () => {
-            
+
             it('should call handlerContainer according to the amount of containers returned', (done) => {
-                var listContainersSpy = sinon.spy((callback) => {
-                    callback(null, [{}, {}])
+                const listContainersSpy = sinon.spy((callback) => {
+                    callback(null, [{}, {}]);
                 });
 
-                var Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'dockerode': function () {
                         return {
                             listContainers: listContainersSpy
@@ -515,7 +514,7 @@ describe('Logger tests', function () {
                     }
                 });
 
-                var logger = new Logger();
+                const logger              = new Logger();
                 logger._handleContainer = sinon.spy();
                 logger._listenForExistingContainers();
                 setTimeout(() => {
@@ -526,11 +525,11 @@ describe('Logger tests', function () {
             });
 
             it('should not call handleContainer in case of no returned containers', (done) => {
-                var listContainersSpy = sinon.spy((callback) => {
-                    callback(null, [])
+                const listContainersSpy = sinon.spy((callback) => {
+                    callback(null, []);
                 });
 
-                var Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'dockerode': function () {
                         return {
                             listContainers: listContainersSpy
@@ -538,7 +537,7 @@ describe('Logger tests', function () {
                     }
                 });
 
-                var logger = new Logger();
+                const logger              = new Logger();
                 logger._handleContainer = sinon.spy();
                 logger._listenForExistingContainers();
                 setTimeout(() => {
@@ -547,17 +546,17 @@ describe('Logger tests', function () {
                 }, 10);
 
             });
-            
+
         });
-        
+
         describe('negative', () => {
 
             it('should call _error in case of an error from getting the containers', (done) => {
-                var listContainersSpy = sinon.spy((callback) => {
-                    callback(new Error("getting containers error"));
+                const listContainersSpy = sinon.spy((callback) => {
+                    callback(new Error('getting containers error'));
                 });
 
-                var Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'dockerode': function () {
                         return {
                             listContainers: listContainersSpy
@@ -565,9 +564,9 @@ describe('Logger tests', function () {
                     }
                 });
 
-                var logger = new Logger();
+                const logger    = new Logger();
                 logger._error = sinon.spy((err) => {
-                    expect(err.toString()).to.equal("Error: Query of existing containers failed; caused by Error: getting containers error");
+                    expect(err.toString()).to.equal('Error: Query of existing containers failed; caused by Error: getting containers error');
                 });
                 logger._listenForExistingContainers();
                 setTimeout(() => {
@@ -578,8 +577,8 @@ describe('Logger tests', function () {
             });
 
         });
-        
-    })
+
+    });
 
 
 });

@@ -23,7 +23,7 @@ describe('Logger tests', () => {
 
         describe('positive tests', () => {
 
-            it('should successfully initiate and register a new container', (done) => {
+            it.skip('should successfully initiate and register a new container', (done) => {
                 const processExitSpy = sinon.spy((exitCode) => {
                     done(new Error(`process exit was called with exitCode ${exitCode}`));
                 });
@@ -247,7 +247,7 @@ describe('Logger tests', () => {
                 logger.start();
             });
 
-            it('should not handle in case there is no loggerId label on a create container', (done) => {
+            it.skip('should not handle in case there is no loggerId label on a create container', (done) => {
                 const processExitSpy = sinon.spy((exitCode) => {
                     done(new Error(`process exit was called with exitCode ${exitCode}`));
                 });

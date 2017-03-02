@@ -1,9 +1,9 @@
-
 {
+  "esversion": 6,
   "eqeqeq": true,
   "immed": true,
   "latedef": "nofunc",
-  "newcap": false,
+  "newcap": true,
   "noarg": true,
   "sub": true,
   "undef": true,
@@ -11,8 +11,8 @@
   "boss": true,
   "eqnull": true,
   "node": true,
+  "loopfunc": true,
   "indent": 10,
-  "esnext": true,
   "globals"   : {
     /* MOCHA */
     "describe"   : false,

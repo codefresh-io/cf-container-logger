@@ -11,9 +11,7 @@
     "dockerode": "^2.3.0",
     "firebase": "^2.4.1",
     "lodash": "^4.15.0",
-    "node-gyp": "^3.5.0",
     "q": "^1.4.1",
-    "segfault-handler": "^1.0.0",
     "wtfnode": "^0.4.0"
   },
   "devDependencies": {

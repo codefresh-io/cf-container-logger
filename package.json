@@ -12,6 +12,7 @@
     "firebase": "^2.4.1",
     "lodash": "^4.15.0",
     "q": "^1.4.1",
+    "segfault": "^0.3.0",
     "wtfnode": "^0.4.0"
   },
   "devDependencies": {

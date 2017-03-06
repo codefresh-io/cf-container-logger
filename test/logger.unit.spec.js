@@ -397,7 +397,10 @@ describe('Logger tests', () => {
                                 Logger: () => {
                                     return {
                                         info: infoSpy,
-                                        error: errorSpy
+                                        error: errorSpy,
+                                        warn: function (message) {
+                                            console.log(`warn: ${message}`);
+                                        }
                                     };
 
                                 }
@@ -452,7 +455,10 @@ describe('Logger tests', () => {
                                 Logger: () => {
                                     return {
                                         info: infoSpy,
-                                        error: errorSpy
+                                        error: errorSpy,
+                                        warn: function (message) {
+                                            console.log(`warn: ${message}`);
+                                        }
                                     };
 
                                 }
@@ -504,7 +510,10 @@ describe('Logger tests', () => {
                                 Logger: () => {
                                     return {
                                         info: infoSpy,
-                                        error: errorSpy
+                                        error: errorSpy,
+                                        warn: function (message) {
+                                            console.log(`warn: ${message}`);
+                                        }
                                     };
 
                                 }
@@ -561,7 +570,10 @@ describe('Logger tests', () => {
                                 Logger: () => {
                                     return {
                                         info: infoSpy,
-                                        error: errorSpy
+                                        error: errorSpy,
+                                        warn: function (message) {
+                                            console.log(`warn: ${message}`);
+                                        }
                                     };
 
                                 }
@@ -622,7 +634,10 @@ describe('Logger tests', () => {
                         Logger: () => {
                             return {
                                 info: infoSpy,
-                                error: errorSpy
+                                error: errorSpy,
+                                warn: function (message) {
+                                    console.log(`warn: ${message}`);
+                                }
                             };
 
                         }
@@ -664,7 +679,10 @@ describe('Logger tests', () => {
                         Logger: () => {
                             return {
                                 info: infoSpy,
-                                error: errorSpy
+                                error: errorSpy,
+                                warn: function (message) {
+                                    console.log(`warn: ${message}`);
+                                }
                             };
 
                         }
@@ -701,7 +719,10 @@ describe('Logger tests', () => {
                         Logger: () => {
                             return {
                                 info: infoSpy,
-                                error: errorSpy
+                                error: errorSpy,
+                                warn: function (message) {
+                                    console.log(`warn: ${message}`);
+                                }
                             };
 
                         }
@@ -735,7 +756,10 @@ describe('Logger tests', () => {
                         Logger: () => {
                             return {
                                 info: infoSpy,
-                                error: errorSpy
+                                error: errorSpy,
+                                warn: function (message) {
+                                    console.log(`warn: ${message}`);
+                                }
                             };
 
                         }
@@ -769,7 +793,10 @@ describe('Logger tests', () => {
                         Logger: () => {
                             return {
                                 info: infoSpy,
-                                error: errorSpy
+                                error: errorSpy,
+                                warn: function (message) {
+                                    console.log(`warn: ${message}`);
+                                }
                             };
 
                         }
@@ -803,7 +830,10 @@ describe('Logger tests', () => {
                         Logger: () => {
                             return {
                                 info: infoSpy,
-                                error: errorSpy
+                                error: errorSpy,
+                                warn: function (message) {
+                                    console.log(`warn: ${message}`);
+                                }
                             };
 
                         }
@@ -838,7 +868,10 @@ describe('Logger tests', () => {
                         Logger: () => {
                             return {
                                 info: infoSpy,
-                                error: errorSpy
+                                error: errorSpy,
+                                warn: function (message) {
+                                    console.log(`warn: ${message}`);
+                                }
                             };
 
                         }
@@ -873,7 +906,10 @@ describe('Logger tests', () => {
                         Logger: () => {
                             return {
                                 info: infoSpy,
-                                error: errorSpy
+                                error: errorSpy,
+                                warn: function (message) {
+                                    console.log(`warn: ${message}`);
+                                }
                             };
 
                         }
@@ -909,7 +945,10 @@ describe('Logger tests', () => {
                         Logger: () => {
                             return {
                                 info: infoSpy,
-                                error: errorSpy
+                                error: errorSpy,
+                                warn: function (message) {
+                                    console.log(`warn: ${message}`);
+                                }
                             };
 
                         }

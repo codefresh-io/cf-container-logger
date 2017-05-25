@@ -1,0 +1,32 @@
+FROM ubuntu:16.10
+
+# install node
+RUN apt-get -y update && \
+    apt-get -y install git curl && \
+    curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh && \
+    chmod +x nodesource_setup.sh && \
+    ./nodesource_setup.sh && \
+    apt-get -y install nodejs
+
+# set working directory
+WORKDIR /app
+
+# copy project file
+COPY package.json .
+
+# Build time argument to set NODE_ENV ('production'' by default)
+ARG NODE_ENV
+ENV NODE_ENV ${NODE_ENV:-production}
+
+# install node packages
+RUN npm set progress=false && \
+    npm config set depth 0 && \
+    npm install && \
+    npm cache clean && \
+    rm -rf /tmp/*
+
+# Set tini as entrypoint
+COPY . .
+
+CMD ["nodejs",  "node_modules/.bin/forever", "--minUptime",  "1", "--spinSleepTime", "1000", "-c", "nodejs", "lib/index.js"]
+

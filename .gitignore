@@ -8,3 +8,5 @@ coverage
 state.json
 *.log
 .idea
+bin/run-dev
+

@@ -1,0 +1,34 @@
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: cf-container-logger
+spec:
+  template:
+    metadata:
+      labels:
+        app: cf-logger
+    spec:
+      containers:
+      - name: cf-logger
+        image: codefresh/cf-container-logger:test
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: LOGGER_ID
+            value: testcluster1
+          - name: LISTEN_ON_EXISTING
+            value: "true"
+          - name: LOG_TO_CONSOLE
+            value: "true"
+          - name: STREAMER_HOST
+            value: "192.168.1.86"
+          - name: STREAMER_PORT
+            value: "8081"
+        volumeMounts:
+          - name: docker-sock
+            mountPath: /var/run/docker.sock
+      volumes:
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock
+

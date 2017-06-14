@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: cf-logger
-        image: codefresh/cf-container-logger:test
+        image: codefresh/cf-container-logger-onprem
         imagePullPolicy: IfNotPresent
         env:
           - name: LOGGER_ID
@@ -21,7 +21,7 @@ spec:
           - name: LOG_TO_CONSOLE
             value: "true"
           - name: STREAMER_HOST
-            value: "192.168.1.86"
+            value: "192.168.1.94"
           - name: STREAMER_PORT
             value: "8081"
         volumeMounts:

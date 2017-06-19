@@ -20,10 +20,10 @@ spec:
             value: "true"
           - name: LOG_TO_CONSOLE
             value: "true"
-          - name: STREAMER_HOST
-            value: "192.168.1.94"
-          - name: STREAMER_PORT
-            value: "8081"
+#          - name: STREAMER_HOST
+#            value: "192.168.1.94"
+#          - name: STREAMER_PORT
+#            value: "8081"
         volumeMounts:
           - name: docker-sock
             mountPath: /var/run/docker.sock

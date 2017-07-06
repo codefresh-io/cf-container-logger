@@ -6,8 +6,8 @@ const expect    = chai.expect;
 const sinon     = require('sinon');
 const sinonChai = require('sinon-chai');
 chai.use(sinonChai);
-const ContainerLogger = require('../lib/ContainerLogger');
-const LoggerStrategy  = require('../lib/enums').LoggerStrategy;
+const ContainerLogger = require('../lib/logger/ContainerLogger');
+const LoggerStrategy  = require('../lib/logger/enums').LoggerStrategy;
 
 describe('Container Logger tests', () => {
 

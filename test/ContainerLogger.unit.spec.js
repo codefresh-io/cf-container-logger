@@ -45,7 +45,7 @@ describe('Container Logger tests', () => {
                 const loggerStrategy     = LoggerStrategy.LOGS;
 
                 const containerLogger                 = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, loggerStrategy);
-                containerLogger._logMessageToFirebase = sinon.spy();
+                containerLogger._logMessageToLogger = sinon.spy();
                 return containerLogger.start();
             });
             
@@ -92,11 +92,11 @@ describe('Container Logger tests', () => {
                 const loggerStrategy     = LoggerStrategy.LOGS;
 
                 const containerLogger                 = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, loggerStrategy);
-                containerLogger._logMessageToFirebase = sinon.spy();
+                containerLogger._logMessageToLogger = sinon.spy();
                 return containerLogger.start()
                     .then(() => {
-                        expect(containerLogger._logMessageToFirebase).to.have.been.calledWith('message', false); // jshint ignore:line
-                        expect(containerLogger._logMessageToFirebase).to.have.been.calledWith('error', true); // jshint ignore:line
+                        expect(containerLogger._logMessageToLogger).to.have.been.calledWith('message', false); // jshint ignore:line
+                        expect(containerLogger._logMessageToLogger).to.have.been.calledWith('error', true); // jshint ignore:line
                     });
             });
 
@@ -143,12 +143,12 @@ describe('Container Logger tests', () => {
                 const loggerStrategy     = LoggerStrategy.LOGS;
 
                 const containerLogger                 = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, loggerStrategy);
-                containerLogger._logMessageToFirebase = sinon.spy();
+                containerLogger._logMessageToLogger = sinon.spy();
                 return containerLogger.start()
                     .then(() => {
                         expect(receivedStdoutEvent).to.equal('data');
                         expect(receivedStderrEvent).to.equal('data');
-                        expect(containerLogger._logMessageToFirebase).to.have.been.calledTwice; // jshint ignore:line
+                        expect(containerLogger._logMessageToLogger).to.have.been.calledTwice; // jshint ignore:line
                     });
             });
 
@@ -181,7 +181,7 @@ describe('Container Logger tests', () => {
                     const loggerStrategy     = LoggerStrategy.LOGS;
 
                     const containerLogger                 = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, loggerStrategy);
-                    containerLogger._logMessageToFirebase = sinon.spy();
+                    containerLogger._logMessageToLogger = sinon.spy();
                     return containerLogger.start();
                 });
 
@@ -309,7 +309,7 @@ describe('Container Logger tests', () => {
 
     });
 
-    describe('_logMessageToFirebase', () => {
+    describe('_logMessageToLogger', () => {
 
         it('should log message to firebase', () => {
 
@@ -327,7 +327,7 @@ describe('Container Logger tests', () => {
             const loggerStrategy     = LoggerStrategy.LOGS;
 
             const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, loggerStrategy);
-            containerLogger._logMessageToFirebase('message');
+            containerLogger._logMessageToLogger('message');
             expect(pushSpy).to.have.been.calledOnce; // jshint ignore:line
             expect(pushSpy).to.have.been.calledWith('message'); // jshint ignore:line
             expect(setSpy).to.have.been.calledOnce; // jshint ignore:line
@@ -349,7 +349,7 @@ describe('Container Logger tests', () => {
             const loggerStrategy     = LoggerStrategy.LOGS;
 
             const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, loggerStrategy);
-            containerLogger._logMessageToFirebase('message', true);
+            containerLogger._logMessageToLogger('message', true);
             expect(pushSpy).to.have.been.calledOnce; // jshint ignore:line
             expect(pushSpy).to.have.been.calledWith('\x1B[31mmessage\x1B[0m'); // jshint ignore:line
             expect(setSpy).to.have.been.calledOnce; // jshint ignore:line

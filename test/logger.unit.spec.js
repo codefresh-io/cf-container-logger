@@ -24,7 +24,6 @@ describe('Logger tests', () => {
     });
 
     describe('start', () => {
-
         describe('positive', () => {
 
             it('should start and not listen for existing container in case findExistingContainers param is false', () => {
@@ -34,7 +33,7 @@ describe('Logger tests', () => {
                     callback();
                 });
 
-                const Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger/logger', {
                     'firebase': function (authUrl) {
                         expect(authUrl).to.equal('firebaseAuthUrl');
                         return {
@@ -77,7 +76,7 @@ describe('Logger tests', () => {
                     callback();
                 });
 
-                const Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger/logger', {
                     'firebase': function (authUrl) {
                         expect(authUrl).to.equal('firebaseAuthUrl');
                         return {
@@ -129,7 +128,7 @@ describe('Logger tests', () => {
                     callback(new Error('firebase failure'));
                 });
 
-                const Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger/logger', {
                     'firebase': function (authUrl) {
                         expect(authUrl).to.equal('firebaseAuthUrl');
                         return {
@@ -172,7 +171,7 @@ describe('Logger tests', () => {
                     callback(null, [{}, {}]);
                 });
 
-                const Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger/logger', {
                     'dockerode': function () {
                         return {
                             listContainers: listContainersSpy
@@ -195,7 +194,7 @@ describe('Logger tests', () => {
                     callback(null, []);
                 });
 
-                const Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger/logger', {
                     'dockerode': function () {
                         return {
                             listContainers: listContainersSpy
@@ -222,7 +221,7 @@ describe('Logger tests', () => {
                     callback(new Error('getting containers error'));
                 });
 
-                const Logger = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger/logger', {
                     'dockerode': function () {
                         return {
                             listContainers: listContainersSpy
@@ -251,7 +250,7 @@ describe('Logger tests', () => {
         it('should call handleContainer in case of an create event', () => {
             const startSpy = sinon.spy();
             const onSpy    = sinon.spy();
-            const Logger   = proxyquire('../lib/logger', {
+            const Logger   = proxyquire('../lib/logger/logger', {
                 'docker-events': function () {
                     return {
                         start: startSpy,
@@ -278,7 +277,7 @@ describe('Logger tests', () => {
                 callback();
             });
 
-            const Logger = proxyquire('../lib/logger', {
+            const Logger = proxyquire('../lib/logger/logger', {
                 'fs': {
                     writeFile: writeFileSpy,
                     existsSync: () => { return true; }
@@ -295,7 +294,7 @@ describe('Logger tests', () => {
                 callback(new Error('write error'));
             });
 
-            const Logger = proxyquire('../lib/logger', {
+            const Logger = proxyquire('../lib/logger/logger', {
                 'fs': {
                     writeFile: writeFileSpy,
                     existsSync: () => { return true; },
@@ -312,7 +311,7 @@ describe('Logger tests', () => {
     describe('validate', () => {
 
         it('should call process exit in case firebase authentication url was not provided', () => {
-            const Logger = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger/logger', {});
 
             const loggerId               = 'loggerId';
             const firebaseAuthUrl        = 'firebaseAuthUrl';
@@ -330,7 +329,7 @@ describe('Logger tests', () => {
             });
             process.exit         = processExitSpy;
 
-            const Logger = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger/logger', {});
 
             const loggerId               = 'loggerId';
             const firebaseAuthUrl        = '';
@@ -348,7 +347,7 @@ describe('Logger tests', () => {
             });
             process.exit         = processExitSpy;
 
-            const Logger = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger/logger', {});
 
             const loggerId               = 'loggerId';
             const firebaseAuthUrl        = 'firebaseAuthUrl';
@@ -366,7 +365,7 @@ describe('Logger tests', () => {
             });
             process.exit         = processExitSpy;
 
-            const Logger = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger/logger', {});
 
             const loggerId               = '';
             const firebaseAuthUrl        = 'firebaseAuthUrl';
@@ -394,7 +393,7 @@ describe('Logger tests', () => {
                         });
                         const infoSpy  = sinon.spy();
                         const errorSpy = sinon.spy();
-                        const Logger   = proxyquire('../lib/logger', {
+                        const Logger   = proxyquire('../lib/logger/logger', {
                             'cf-logs': {
                                 Logger: () => {
                                     return {
@@ -449,7 +448,7 @@ describe('Logger tests', () => {
                         });
                         const infoSpy  = sinon.spy();
                         const errorSpy = sinon.spy();
-                        const Logger   = proxyquire('../lib/logger', {
+                        const Logger   = proxyquire('../lib/logger/logger', {
                             'cf-logs': {
                                 Logger: () => {
                                     return {
@@ -501,7 +500,7 @@ describe('Logger tests', () => {
                         });
                         const infoSpy  = sinon.spy();
                         const errorSpy = sinon.spy();
-                        const Logger   = proxyquire('../lib/logger', {
+                        const Logger   = proxyquire('../lib/logger/logger', {
                             'cf-logs': {
                                 Logger: () => {
                                     return {
@@ -558,7 +557,7 @@ describe('Logger tests', () => {
                         });
                         const infoSpy  = sinon.spy();
                         const errorSpy = sinon.spy();
-                        const Logger   = proxyquire('../lib/logger', {
+                        const Logger   = proxyquire('../lib/logger/logger', {
                             'cf-logs': {
                                 Logger: () => {
                                     return {
@@ -619,7 +618,7 @@ describe('Logger tests', () => {
             it('was previously handled', () => {
                 const infoSpy  = sinon.spy();
                 const errorSpy = sinon.spy();
-                const Logger   = proxyquire('../lib/logger', {
+                const Logger   = proxyquire('../lib/logger/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -661,7 +660,7 @@ describe('Logger tests', () => {
             it('no loggerId', () => {
                 const infoSpy  = sinon.spy();
                 const errorSpy = sinon.spy();
-                const Logger   = proxyquire('../lib/logger', {
+                const Logger   = proxyquire('../lib/logger/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -698,7 +697,7 @@ describe('Logger tests', () => {
             it('no containerId', () => {
                 const infoSpy  = sinon.spy();
                 const errorSpy = sinon.spy();
-                const Logger   = proxyquire('../lib/logger', {
+                const Logger   = proxyquire('../lib/logger/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -732,7 +731,7 @@ describe('Logger tests', () => {
             it('no container status', () => {
                 const infoSpy  = sinon.spy();
                 const errorSpy = sinon.spy();
-                const Logger   = proxyquire('../lib/logger', {
+                const Logger   = proxyquire('../lib/logger/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -766,7 +765,7 @@ describe('Logger tests', () => {
             it('logger id provided but no firebase url', () => {
                 const infoSpy  = sinon.spy();
                 const errorSpy = sinon.spy();
-                const Logger   = proxyquire('../lib/logger', {
+                const Logger   = proxyquire('../lib/logger/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -800,7 +799,7 @@ describe('Logger tests', () => {
             it('logger id provided but no firebase lastUpdate url', () => {
                 const infoSpy  = sinon.spy();
                 const errorSpy = sinon.spy();
-                const Logger   = proxyquire('../lib/logger', {
+                const Logger   = proxyquire('../lib/logger/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -835,7 +834,7 @@ describe('Logger tests', () => {
             it('no strategy provided', () => {
                 const infoSpy  = sinon.spy();
                 const errorSpy = sinon.spy();
-                const Logger   = proxyquire('../lib/logger', {
+                const Logger   = proxyquire('../lib/logger/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -870,7 +869,7 @@ describe('Logger tests', () => {
             it('provided strategy does not exist', () => {
                 const infoSpy  = sinon.spy();
                 const errorSpy = sinon.spy();
-                const Logger   = proxyquire('../lib/logger', {
+                const Logger   = proxyquire('../lib/logger/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -906,7 +905,7 @@ describe('Logger tests', () => {
             it('container status is create and strategy is logs', () => {
                 const infoSpy  = sinon.spy();
                 const errorSpy = sinon.spy();
-                const Logger   = proxyquire('../lib/logger', {
+                const Logger   = proxyquire('../lib/logger/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {

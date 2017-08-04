@@ -1,7 +1,7 @@
-FROM alpine:3.5
+FROM alpine:3.6
 
 # install node
-RUN apk add --no-cache nodejs=6.9.2-r1 tini
+RUN apk add --no-cache nodejs nodejs-npm tini
 
 # set working directory
 WORKDIR /app

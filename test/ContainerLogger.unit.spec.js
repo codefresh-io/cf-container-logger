@@ -42,13 +42,14 @@ describe('Container Logger tests', () => {
                 };
                 const firebaseLogger     = {};
                 const firebaseLastUpdate = {};
+                const firebaseMetricsLogSize = {};
                 const loggerStrategy     = LoggerStrategy.LOGS;
 
-                const containerLogger                 = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, loggerStrategy);
+                const containerLogger                 = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
                 containerLogger._logMessageToFirebase = sinon.spy();
                 return containerLogger.start();
             });
-            
+
             it('should handle a send message from stderr as error', () => {
                 const containerInspect = {
                     Config: {
@@ -140,9 +141,10 @@ describe('Container Logger tests', () => {
                 };
                 const firebaseLogger     = {};
                 const firebaseLastUpdate = {};
+                const firebaseMetricsLogSize = {};
                 const loggerStrategy     = LoggerStrategy.LOGS;
 
-                const containerLogger                 = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, loggerStrategy);
+                const containerLogger                 = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
                 containerLogger._logMessageToFirebase = sinon.spy();
                 return containerLogger.start()
                     .then(() => {
@@ -178,9 +180,10 @@ describe('Container Logger tests', () => {
                     };
                     const firebaseLogger     = {};
                     const firebaseLastUpdate = {};
+                    const firebaseMetricsLogSize = {};
                     const loggerStrategy     = LoggerStrategy.LOGS;
 
-                    const containerLogger                 = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, loggerStrategy);
+                    const containerLogger                 = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
                     containerLogger._logMessageToFirebase = sinon.spy();
                     return containerLogger.start();
                 });
@@ -203,9 +206,10 @@ describe('Container Logger tests', () => {
                 };
                 const firebaseLogger     = {};
                 const firebaseLastUpdate = {};
+                const firebaseMetricsLogSize = {};
                 const loggerStrategy     = 'non-existing-strategy';
 
-                const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, loggerStrategy);
+                const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
                 return containerLogger.start()
                     .then(() => {
                         return Q.reject(new Error('should have failed'));
@@ -255,9 +259,10 @@ describe('Container Logger tests', () => {
                 };
                 const firebaseLogger     = {};
                 const firebaseLastUpdate = {};
+                const firebaseMetricsLogSize = {};
                 const loggerStrategy     = LoggerStrategy.ATTACH;
 
-                const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, loggerStrategy);
+                const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
                 return containerLogger.start()
                     .then(() => {
                         return Q.reject(new Error('should have failed'));
@@ -290,9 +295,10 @@ describe('Container Logger tests', () => {
                 };
                 const firebaseLogger     = {};
                 const firebaseLastUpdate = {};
+                const firebaseMetricsLogSize = {};
                 const loggerStrategy     = LoggerStrategy.LOGS;
 
-                const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, loggerStrategy);
+                const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
                 return containerLogger.start()
                     .then(() => {
                         return Q.reject(new Error('should have failed'));
@@ -324,15 +330,18 @@ describe('Container Logger tests', () => {
             const firebaseLastUpdate = {
                 set: setSpy
             };
+            const firebaseMetricsLogSize = {
+                set: sinon.spy()
+            };
             const loggerStrategy     = LoggerStrategy.LOGS;
 
-            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, loggerStrategy);
+            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
             containerLogger._logMessageToFirebase('message');
             expect(pushSpy).to.have.been.calledOnce; // jshint ignore:line
             expect(pushSpy).to.have.been.calledWith('message'); // jshint ignore:line
             expect(setSpy).to.have.been.calledOnce; // jshint ignore:line
         });
-        
+
         it('should log error to firebase with red decoration', () => {
 
             const containerId        = 'containerId';
@@ -346,15 +355,91 @@ describe('Container Logger tests', () => {
             const firebaseLastUpdate = {
                 set: setSpy
             };
+            const firebaseMetricsLogSize = {
+                set: sinon.spy()
+            };
             const loggerStrategy     = LoggerStrategy.LOGS;
 
-            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, loggerStrategy);
+            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
             containerLogger._logMessageToFirebase('message', true);
             expect(pushSpy).to.have.been.calledOnce; // jshint ignore:line
             expect(pushSpy).to.have.been.calledWith('\x1B[31mmessage\x1B[0m'); // jshint ignore:line
             expect(setSpy).to.have.been.calledOnce; // jshint ignore:line
         });
 
+    });
+
+    describe('log size', () => {
+        it('log size should be 0 before any messages', () => {
+
+            const containerId        = 'containerId';
+            const containerInterface = {};
+
+            const pushSpy            = sinon.spy();
+            const setSpy             = sinon.spy();
+            const setLogsSizeSpy     = sinon.spy();
+            const firebaseLogger     = {
+                push: pushSpy
+            };
+            const firebaseLastUpdate = {
+                set: setSpy
+            };
+            const firebaseMetricsLogSize = {
+                set: setLogsSizeSpy
+            };
+            const loggerStrategy     = LoggerStrategy.LOGS;
+
+            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
+            expect(containerLogger.logSize).to.equal(0);
+        });
+
+        it('log size should increase after adding a message', () => {
+
+            const containerId        = 'containerId';
+            const containerInterface = {};
+
+            const pushSpy            = sinon.spy();
+            const setSpy             = sinon.spy();
+            const setLogsSizeSpy     = sinon.spy();
+            const firebaseLogger     = {
+                push: pushSpy
+            };
+            const firebaseLastUpdate = {
+                set: setSpy
+            };
+            const firebaseMetricsLogSize = {
+                set: setLogsSizeSpy
+            };
+            const loggerStrategy     = LoggerStrategy.LOGS;
+
+            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
+            containerLogger._logMessageToFirebase('message');
+            expect(containerLogger.logSize).to.equal(7);
+        });
+
+        it('total log size should be updated in firebase', () => {
+
+            const containerId        = 'containerId';
+            const containerInterface = {};
+
+            const pushSpy            = sinon.spy();
+            const setSpy             = sinon.spy();
+            const setLogsSizeSpy     = sinon.spy();
+            const firebaseLogger     = {
+                push: pushSpy
+            };
+            const firebaseLastUpdate = {
+                set: setSpy
+            };
+            const firebaseMetricsLogSize = {
+                set: setLogsSizeSpy
+            };
+            const loggerStrategy     = LoggerStrategy.LOGS;
+
+            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
+            containerLogger._logMessageToFirebase('message');
+            expect(setLogsSizeSpy).to.have.been.calledWith(7);
+        });
     });
 
 

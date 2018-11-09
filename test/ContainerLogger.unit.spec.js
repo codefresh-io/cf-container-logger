@@ -330,12 +330,16 @@ describe('Container Logger tests', () => {
             const firebaseLastUpdate = {
                 set: setSpy
             };
-            const firebaseMetricsLogSize = {
-                set: sinon.spy()
+            const firebaseMetricsLogs = {
+                child: sinon.spy(() => {
+                    return {
+                        set: sinon.spy()
+                    };
+                })
             };
             const loggerStrategy     = LoggerStrategy.LOGS;
 
-            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
+            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogs, loggerStrategy);
             containerLogger._logMessageToFirebase('message');
             expect(pushSpy).to.have.been.calledOnce; // jshint ignore:line
             expect(pushSpy).to.have.been.calledWith('message'); // jshint ignore:line
@@ -355,12 +359,16 @@ describe('Container Logger tests', () => {
             const firebaseLastUpdate = {
                 set: setSpy
             };
-            const firebaseMetricsLogSize = {
-                set: sinon.spy()
+            const firebaseMetricsLogs = {
+                child: sinon.spy(() => {
+                    return {
+                        set: sinon.spy()
+                    };
+                })
             };
             const loggerStrategy     = LoggerStrategy.LOGS;
 
-            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
+            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogs, loggerStrategy);
             containerLogger._logMessageToFirebase('message', true);
             expect(pushSpy).to.have.been.calledOnce; // jshint ignore:line
             expect(pushSpy).to.have.been.calledWith('\x1B[31mmessage\x1B[0m'); // jshint ignore:line
@@ -377,19 +385,22 @@ describe('Container Logger tests', () => {
 
             const pushSpy            = sinon.spy();
             const setSpy             = sinon.spy();
-            const setLogsSizeSpy     = sinon.spy();
             const firebaseLogger     = {
                 push: pushSpy
             };
             const firebaseLastUpdate = {
                 set: setSpy
             };
-            const firebaseMetricsLogSize = {
-                set: setLogsSizeSpy
+            const firebaseMetricsLogs = {
+                child: sinon.spy(() => {
+                    return {
+                        set: sinon.spy()
+                    };
+                })
             };
             const loggerStrategy     = LoggerStrategy.LOGS;
 
-            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
+            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogs, loggerStrategy);
             expect(containerLogger.logSize).to.equal(0);
         });
 
@@ -400,19 +411,22 @@ describe('Container Logger tests', () => {
 
             const pushSpy            = sinon.spy();
             const setSpy             = sinon.spy();
-            const setLogsSizeSpy     = sinon.spy();
             const firebaseLogger     = {
                 push: pushSpy
             };
             const firebaseLastUpdate = {
                 set: setSpy
             };
-            const firebaseMetricsLogSize = {
-                set: setLogsSizeSpy
+            const firebaseMetricsLogs = {
+                child: sinon.spy(() => {
+                    return {
+                        set: sinon.spy()
+                    };
+                })
             };
             const loggerStrategy     = LoggerStrategy.LOGS;
 
-            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
+            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogs, loggerStrategy);
             containerLogger._logMessageToFirebase('message');
             expect(containerLogger.logSize).to.equal(7);
         });
@@ -431,12 +445,16 @@ describe('Container Logger tests', () => {
             const firebaseLastUpdate = {
                 set: setSpy
             };
-            const firebaseMetricsLogSize = {
-                set: setLogsSizeSpy
+            const firebaseMetricsLogs = {
+                child: sinon.spy(() => {
+                    return {
+                        set: setLogsSizeSpy
+                    };
+                })
             };
             const loggerStrategy     = LoggerStrategy.LOGS;
 
-            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy);
+            const containerLogger = new ContainerLogger(containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogs, loggerStrategy);
             containerLogger._logMessageToFirebase('message');
             expect(setLogsSizeSpy).to.have.been.calledWith(7);
         });

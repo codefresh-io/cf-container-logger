@@ -427,7 +427,8 @@ describe('Logger tests', () => {
                                 'io.codefresh.logger.id': 'loggerId',
                                 'io.codefresh.logger.firebase.logsUrl': 'firebaseUrl',
                                 'io.codefresh.logger.strategy': LoggerStrategy.ATTACH,
-                                'io.codefresh.logger.firebase.lastUpdateUrl': 'lastUpdateUrl'
+                                'io.codefresh.logger.firebase.lastUpdateUrl': 'lastUpdateUrl',
+                                'io.codefresh.logger.firebase.metricsLogs': 'metricsLogs',
                             }
                         };
                         logger._handleContainer(container);
@@ -482,7 +483,8 @@ describe('Logger tests', () => {
                                 'io.codefresh.logger.id': 'loggerId',
                                 'io.codefresh.logger.firebase.logsUrl': 'firebaseUrl',
                                 'io.codefresh.logger.strategy': LoggerStrategy.ATTACH,
-                                'io.codefresh.logger.firebase.lastUpdateUrl': 'lastUpdateUrl'
+                                'io.codefresh.logger.firebase.lastUpdateUrl': 'lastUpdateUrl',
+                                'io.codefresh.logger.firebase.metricsLogs': 'metricsLogs',
                             }
                         };
                         logger._handleContainer(container);
@@ -538,7 +540,8 @@ describe('Logger tests', () => {
                                 'io.codefresh.logger.id': 'loggerId',
                                 'io.codefresh.logger.firebase.logsUrl': 'firebaseUrl',
                                 'io.codefresh.logger.strategy': LoggerStrategy.ATTACH,
-                                'io.codefresh.logger.firebase.lastUpdateUrl': 'lastUpdateUrl'
+                                'io.codefresh.logger.firebase.lastUpdateUrl': 'lastUpdateUrl',
+                                'io.codefresh.logger.firebase.metricsLogs': 'metricsLogs',
                             }
                         };
                         logger._handleContainer(container);
@@ -591,7 +594,8 @@ describe('Logger tests', () => {
                                 'io.codefresh.logger.id': 'loggerId',
                                 'io.codefresh.logger.firebase.logsUrl': 'firebaseUrl',
                                 'io.codefresh.logger.strategy': LoggerStrategy.ATTACH,
-                                'io.codefresh.logger.firebase.lastUpdateUrl': 'lastUpdateUrl'
+                                'io.codefresh.logger.firebase.lastUpdateUrl': 'lastUpdateUrl',
+                                'io.codefresh.logger.firebase.metricsLogs': 'metricsLogs',
                             }
                         };
                         logger._handleContainer(container);
@@ -823,12 +827,49 @@ describe('Logger tests', () => {
                     Labels: {
                         'io.codefresh.logger.id': 'loggerId',
                         'io.codefresh.logger.firebase.logsUrl': 'logsUrl',
+                        'io.codefresh.logger.firebase.metricsLogs': 'metricsLogs',
                         'io.codefresh.logger.strategy': LoggerStrategy.LOGS
                     }
                 };
                 logger._handleContainer(container);
                 expect(errorSpy).to.have.been.calledOnce; // jshint ignore:line
                 expect(errorSpy).to.have.been.calledWith('Container: containerId does contain a loggerFirebaseLastUpdateUrl label');
+
+            });
+
+            it('logger id provided but no firebase metricsLogs url', () => {
+                const infoSpy  = sinon.spy();
+                const errorSpy = sinon.spy();
+                const Logger   = proxyquire('../lib/logger', {
+                    'cf-logs': {
+                        Logger: () => {
+                            return {
+                                info: infoSpy,
+                                error: errorSpy
+                            };
+
+                        }
+                    }
+                });
+
+                const loggerId               = 'loggerId';
+                const firebaseAuthUrl        = 'firebaseAuthUrl';
+                const firebaseSecret         = 'firebaseSecret';
+                const findExistingContainers = false;
+                const logger                 = new Logger(loggerId, firebaseAuthUrl, firebaseSecret, findExistingContainers);
+                const container              = {
+                    Id: 'containerId',
+                    Status: ContainerStatus.CREATE,
+                    Labels: {
+                        'io.codefresh.logger.id': 'loggerId',
+                        'io.codefresh.logger.firebase.logsUrl': 'logsUrl',
+                        'io.codefresh.logger.firebase.lastUpdateUrl': 'lastUpdateUrl',
+                        'io.codefresh.logger.strategy': LoggerStrategy.LOGS
+                    }
+                };
+                logger._handleContainer(container);
+                expect(errorSpy).to.have.been.calledOnce; // jshint ignore:line
+                expect(errorSpy).to.have.been.calledWith('Container: containerId does contain a loggerFirebaseMetricsLogsUrl label');
 
             });
 
@@ -858,7 +899,8 @@ describe('Logger tests', () => {
                     Labels: {
                         'io.codefresh.logger.id': 'loggerId',
                         'io.codefresh.logger.firebase.logsUrl': 'loggerFirebaseUrl',
-                        'io.codefresh.logger.firebase.lastUpdateUrl': 'lastUpdateUrl'
+                        'io.codefresh.logger.firebase.lastUpdateUrl': 'lastUpdateUrl',
+                        'io.codefresh.logger.firebase.metricsLogs': 'metricsLogs',
                     }
                 };
                 logger._handleContainer(container);
@@ -894,7 +936,8 @@ describe('Logger tests', () => {
                         'io.codefresh.logger.id': 'loggerId',
                         'io.codefresh.logger.firebase.logsUrl': 'loggerFirebaseUrl',
                         'io.codefresh.logger.strategy': 'non-existing-strategy',
-                        'io.codefresh.logger.firebase.lastUpdateUrl': 'lastUpdateUrl'
+                        'io.codefresh.logger.firebase.lastUpdateUrl': 'lastUpdateUrl',
+                        'io.codefresh.logger.firebase.metricsLogs': 'metricsLogs',
                     }
                 };
                 logger._handleContainer(container);
@@ -930,7 +973,8 @@ describe('Logger tests', () => {
                         'io.codefresh.logger.id': 'loggerId',
                         'io.codefresh.logger.firebase.logsUrl': 'loggerFirebaseUrl',
                         'io.codefresh.logger.strategy': LoggerStrategy.LOGS,
-                        'io.codefresh.logger.firebase.lastUpdateUrl': 'lastUpdateUrl'
+                        'io.codefresh.logger.firebase.lastUpdateUrl': 'lastUpdateUrl',
+                        'io.codefresh.logger.firebase.metricsLogs': 'metricsLogs',
                     }
                 };
                 logger._handleContainer(container);

@@ -528,7 +528,7 @@ describe('Container Logger tests', () => {
             });
             containerLogger.logSize = 10001;
             containerLogger._logMessageToFirebase('message');
-            expect(pushSpy).to.have.been.calledWith(`\x1B[01;93mLog size exceeded for this step. New logs will not be stored.\x1B[0m\r\n`); // jshint ignore:line
+            expect(pushSpy).to.have.been.calledWith(`\x1B[01;93mLog size exceeded for this step.\nThe step will continue to execute until it finished but new logs will not be stored.\x1B[0m\r\n`); // jshint ignore:line
         });
 
         it('should print warning message to user in case of reaching the limit of workflow', () => {
@@ -569,7 +569,7 @@ describe('Container Logger tests', () => {
             });
             containerLogger.logSize = 900;
             containerLogger._logMessageToFirebase('message');
-            expect(pushSpy).to.have.been.calledWith(`\x1B[01;93mLog size exceeded for the workflow. New logs will not be stored.\x1B[0m\r\n`); // jshint ignore:line
+            expect(pushSpy).to.have.been.calledWith(`\x1B[01;93mLog size exceeded for the workflow.\nThe step will continue to execute until it finished but new logs will not be stored.\x1B[0m\r\n`); // jshint ignore:line
         });
 
         it('should not print the warning message more than once', () => {

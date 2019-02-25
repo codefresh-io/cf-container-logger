@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@codefresh-io/cf-common@git+https://github.com/codefresh-io/cf-common.git#45f5c802a3288fdbb6f2e72e9a0f3a044ec7818f":
+"@codefresh-io/cf-common@git+https://github.com/codefresh-io/cf-common.git#9e18bbeb0e38c6b593b477551dcdcd42c930b15d":
   version "0.0.8"
-  resolved "git+https://github.com/codefresh-io/cf-common.git#45f5c802a3288fdbb6f2e72e9a0f3a044ec7818f"
+  resolved "git+https://github.com/codefresh-io/cf-common.git#9e18bbeb0e38c6b593b477551dcdcd42c930b15d"
   dependencies:
     cf-errors "git+https://github.com/codefresh-io/cf-errors.git#3ca76e5d303364021c453e3a95d3117874ef75b1"
     crypto "0.0.3"
@@ -13,7 +13,7 @@
     jsonwebtoken "^8.4.0"
     lodash "^3.10.1"
     q "^1.4.1"
-    request-promise "^4.2.1"
+    request-promise "^4.2.4"
 
 JSONStream@0.10.0:
   version "0.10.0"
@@ -3103,7 +3103,7 @@ request-promise-core@1.1.2:
   dependencies:
     lodash "^4.17.11"
 
-request-promise@^4.2.1:
+request-promise@^4.2.4:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/request-promise/-/request-promise-4.2.4.tgz#1c5ed0d71441e38ad58c7ce4ea4ea5b06d54b310"
   integrity sha512-8wgMrvE546PzbR5WbYxUQogUnUDfM0S7QIFZMID+J73vdFARkFy+HElj4T+MWYhpXwlLp0EQ8Zoj8xUA0he4Vg==

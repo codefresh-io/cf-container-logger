@@ -6,7 +6,7 @@
     "cf-container-logger"
   ],
   "dependencies": {
-    "@codefresh-io/cf-common": "git+https://github.com/codefresh-io/cf-common.git#48b710c06e31e75dffd3106a28a955fc9f8bd217",
+    "@codefresh-io/cf-common": "git+https://github.com/codefresh-io/cf-common.git#45f5c802a3288fdbb6f2e72e9a0f3a044ec7818f",
     "cf-errors": "^0.1.11",
     "cf-logs": "git+https://github.com/codefresh-io/cf-logs.git#ceba4f309e52a077747a0c6bf9c3ad02e762dc4b",
     "docker-events": "0.0.2",
@@ -33,7 +33,7 @@
     "sinon-chai": "^2.8.0"
   },
   "engines": {
-    "node": "8.1.4"
+    "node": ">8.8.0"
   },
   "scripts": {
     "lint": "gulp lint",

@@ -2,13 +2,13 @@
 # yarn lockfile v1
 
 
-"@codefresh-io/cf-common@^0.0.8":
+"@codefresh-io/cf-common@git+https://github.com/codefresh-io/cf-common.git#48b710c06e31e75dffd3106a28a955fc9f8bd217":
   version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@codefresh-io/cf-common/-/cf-common-0.0.8.tgz#2514ccbc0fc8468fb56ba76440a8614444a1c2c1"
-  integrity sha512-7p+qscQwGpPHtSXtGdDKX1/eQbCM50iMKmUUCdHz0d9g9yYWoOKLpGojT5hqgfT31uvz32SvOR73AAOjaDv1mg==
+  resolved "git+https://github.com/codefresh-io/cf-common.git#48b710c06e31e75dffd3106a28a955fc9f8bd217"
   dependencies:
     cf-errors "git+https://github.com/codefresh-io/cf-errors.git#3ca76e5d303364021c453e3a95d3117874ef75b1"
     crypto "0.0.3"
+    debug "^4.1.1"
     jsonwebtoken "^8.4.0"
     lodash "^3.10.1"
     q "^1.4.1"
@@ -708,6 +708,13 @@ debug@3.1.0:
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
   dependencies:
     ms "2.0.0"
+
+debug@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.1.1.tgz#3b72260255109c6b589cee050f1d516139664791"
+  integrity sha512-pYAIzeRo8J6KPEaJ0VWOh5Pzkbw/RetuzehGM7QRRX5he4fPHx2rdKMB256ehJCkX+XRQm16eZLqLNS8RSZXZw==
+  dependencies:
+    ms "^2.1.1"
 
 decamelize@^1.0.0, decamelize@^1.1.2:
   version "1.2.0"

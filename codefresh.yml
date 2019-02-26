@@ -21,7 +21,8 @@ steps:
     environment:
         - COVERALLS_TOKEN=${{COVERALLS_TOKEN}}
     commands:
-        - yarn test:ci
+        - yarn test
+        -
 
   build_step:
     title: "Building production image"

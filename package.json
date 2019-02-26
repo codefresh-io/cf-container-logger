@@ -16,7 +16,7 @@
     "q": "^1.4.1"
   },
   "devDependencies": {
-    "chai": "^3.0.0",
+    "chai": "^4.2.0",
     "gulp": "^3.9.1",
     "gulp-coveralls": "^0.1.4",
     "gulp-env": "^0.2.0",
@@ -29,8 +29,8 @@
     "proxyquire": "^1.7.4",
     "run-sequence": "^1.1.0",
     "shelljs": "^0.6.0",
-    "sinon": "^1.17.4",
-    "sinon-chai": "^2.8.0"
+    "sinon": "^7.2.4",
+    "sinon-chai": "^3.3.0"
   },
   "engines": {
     "node": ">8.8.0"
@@ -38,7 +38,7 @@
   "scripts": {
     "lint": "gulp lint",
     "no-onlys": "gulp no.onlys",
-    "test": "gulp unit_test",
+    "test": "mocha './{,!(node_modules)/**/}*.spec.js'",
     "test:integration": "gulp integ_test",
     "test:ci": "gulp unit_test && gulp coveralls && gulp clean",
     "coveralls": "gulp coveralls",

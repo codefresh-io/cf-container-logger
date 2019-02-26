@@ -22,7 +22,6 @@ steps:
         - COVERALLS_TOKEN=${{COVERALLS_TOKEN}}
     commands:
         - yarn test
-        -
 
   build_step:
     title: "Building production image"

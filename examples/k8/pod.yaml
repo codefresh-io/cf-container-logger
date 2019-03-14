@@ -6,7 +6,7 @@ metadata:
     io.codefresh.logger.id: "jobId-itai"
     io.codefresh.runCreationLogic: "true"
     app: myapp
-  name: example1
+  name: example2
   namespace: default
 spec:
   containers:
@@ -14,7 +14,10 @@ spec:
     - sh
     - -c
     - git clone https://githcdub.com/nodejs/node.git
-    image: alpine/git:latest
+    image: codefresh/cf-container-logger:support_k8
     imagePullPolicy: Always
+    env:
+    - name: SADASD
+      value: "my-value"
     name: step
     tty: true

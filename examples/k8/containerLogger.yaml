@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    workflow.id: "workflow-id"
+  name: cf-container-logger
+  namespace: default
+spec:
+  containers:
+  - image: codefresh/cf-container-logger:support_k8
+    imagePullPolicy: Always
+    env:
+    - name: RUNTIME_TYPE
+      value: "k8"
+    - name: LOGGER_ID
+      value: "job-id1"
+    - name: TASK_LOGGER_CONFIG
+      value: '{"task":{"accountId":"accountId","jobId":"jobId-itai"},"opts":{"type":"firebase","baseFirebaseUrl":"https://codefresh-dev.firebaseio.com/development-docker/build-logs","firebaseSecret":"rmxPCB0YOyRdA0ohVUlkbGaQsSmXlARBIXbfnXoM"}}'
+    - name: LOG_SIZE_LIMIT
+      value: "10"
+    - name: LOG_TO_CONSOLE
+      value: "true"
+    - name: DEBUG
+      value: "true"
+    name: cf-container-logger

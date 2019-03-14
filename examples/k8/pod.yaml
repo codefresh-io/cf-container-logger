@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    io.codefresh.stepName: "my-step"
+    io.codefresh.logger.id: "jobId-itai"
+    io.codefresh.runCreationLogic: "true"
+    app: myapp
+  name: example
+  namespace: default
+spec:
+  containers:
+  - command:
+    - sh
+    - -c
+    - git clone https://github.com/nodejs/node.git
+    image: alpine/git:latest
+    imagePullPolicy: Always
+    name: step
+    tty: true

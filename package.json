@@ -7,13 +7,15 @@
   ],
   "dependencies": {
     "@codefresh-io/task-logger": "^0.0.11",
+    "@kubernetes/client-node": "^0.8.1",
     "cf-errors": "^0.1.11",
     "cf-logs": "^1.1.0",
     "docker-events": "0.0.2",
     "dockerode": "^2.3.0",
     "forever": "^0.15.3",
     "lodash": "^4.15.0",
-    "q": "^1.4.1"
+    "q": "^1.4.1",
+    "stringstream": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",

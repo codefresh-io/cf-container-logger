@@ -9,19 +9,19 @@ steps:
     commands:
         - yarn install --frozen-lockfile
 
-  eslint:
-    title: 'Running linting logic'
-    image: node:11.10.0
-    commands:
-        - yarn lint
-        - yarn no-onlys
-
-  unit_test_step:
-    image: node:11.10.0
-    environment:
-        - COVERALLS_TOKEN=${{COVERALLS_TOKEN}}
-    commands:
-        - yarn test
+#  eslint:
+#    title: 'Running linting logic'
+#    image: node:11.10.0
+#    commands:
+#        - yarn lint
+#        - yarn no-onlys
+#
+#  unit_test_step:
+#    image: node:11.10.0
+#    environment:
+#        - COVERALLS_TOKEN=${{COVERALLS_TOKEN}}
+#    commands:
+#        - yarn test
 
   build_step:
     title: "Building production image"

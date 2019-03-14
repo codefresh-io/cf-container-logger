@@ -6,14 +6,14 @@ metadata:
     io.codefresh.logger.id: "jobId-itai"
     io.codefresh.runCreationLogic: "true"
     app: myapp
-  name: example
+  name: example1
   namespace: default
 spec:
   containers:
   - command:
     - sh
     - -c
-    - git clone https://github.com/nodejs/node.git
+    - git clone https://githcdub.com/nodejs/node.git
     image: alpine/git:latest
     imagePullPolicy: Always
     name: step

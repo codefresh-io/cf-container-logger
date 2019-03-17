@@ -15,11 +15,11 @@ spec:
     - name: LOGGER_ID
       value: "job-id1"
     - name: TASK_LOGGER_CONFIG
-      value: '{"task":{"accountId":"accountId","jobId":"jobId-itai"},"opts":{"type":"firebase","baseFirebaseUrl":"https://codefresh-dev.firebaseio.com/development-docker/build-logs","firebaseSecret":"rmxPCB0YOyRdA0ohVUlkbGaQsSmXlARBIXbfnXoM"}}'
+      value: '{"task":{"accountId":"accountId","jobId":"job-id1"},"opts":{"type":"firebase","baseFirebaseUrl":"https://codefresh-dev.firebaseio.com/development-docker/build-logs","firebaseSecret":""}}'
     - name: LOG_SIZE_LIMIT
       value: "10"
     - name: LOG_TO_CONSOLE
       value: "true"
     - name: DEBUG
-      value: "true"
+      value: "codefresh*"
     name: cf-container-logger

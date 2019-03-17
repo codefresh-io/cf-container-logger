@@ -6,7 +6,7 @@ metadata:
     io.codefresh.logger.id: "job-id1"
     io.codefresh.runCreationLogic: "true"
     app: myapp
-  name: example
+  name: example1
   namespace: default
 spec:
   containers:

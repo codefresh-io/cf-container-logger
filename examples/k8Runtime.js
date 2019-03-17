@@ -4,11 +4,11 @@ const main = async function () {
     try {
         const runtimeLogger = await RuntimeLogger({
             type: 'k8',
-            loggerId: 'jobId-itai',
+            loggerId: 'job-id1',
             taskLoggerConfig: {
                 task: {
                     accountId: 'accountId',
-                    jobId: 'jobId-itai'
+                    jobId: 'job-id1'
                 },
                 opts: {
                     type: 'firebase',

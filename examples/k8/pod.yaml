@@ -3,17 +3,17 @@ kind: Pod
 metadata:
   labels:
     io.codefresh.stepName: "my-step"
-    io.codefresh.logger.id: "jobId-itai"
+    io.codefresh.logger.id: "job-id1"
     io.codefresh.runCreationLogic: "true"
     app: myapp
-  name: example2
+  name: example
   namespace: default
 spec:
   containers:
   - command:
     - sh
     - -c
-    - git clone https://githcdub.com/nodejs/node.git
+    - git clone https://github.com/nodejs/node.git
     image: codefresh/cf-container-logger:support_k8
     imagePullPolicy: Always
     env:

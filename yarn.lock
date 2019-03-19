@@ -2,6 +2,7 @@
 # yarn lockfile v1
 
 
+
 "@codefresh-io/task-logger@^0.0.16":
   version "0.0.16"
   resolved "https://registry.yarnpkg.com/@codefresh-io/task-logger/-/task-logger-0.0.16.tgz#1d59bd195e0437141a9fd59a0a063d2c3cd07b0e"

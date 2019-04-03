@@ -77,4 +77,6 @@ RUN yarn install --frozen-lockfile --production
 
 COPY . ./
 
+LABEL owner="codefresh.io"
+
 CMD ["powershell",  "./lib/forever.ps1"]

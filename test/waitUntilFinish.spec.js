@@ -1,3 +1,5 @@
+/* jshint ignore:start */
+
 'use strict';
 
 const path = require('path');
@@ -17,7 +19,7 @@ sinon.spy(Waiter.prototype, '_checkTimeout');
 
 const statePath = path.resolve(os.tmpdir(), 'state.json');
 const writeDate = (date = Date.now()) => {
-    console.log(new Date(date))
+    console.log(new Date(date));
     fs.writeFileSync(statePath, JSON.stringify({ lastLogsDate: date }));
 };
 

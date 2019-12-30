@@ -11,7 +11,7 @@
     "cf-logs": "^1.1.22",
     "docker-events": "0.0.2",
     "dockerode": "^3.0.2",
-    "lodash": "^4.15.0",
+    "lodash": "^4.17.15",
     "q": "^1.4.1"
   },
   "devDependencies": {

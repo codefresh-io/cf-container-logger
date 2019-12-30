@@ -8,7 +8,7 @@
   "dependencies": {
     "@codefresh-io/task-logger": "^0.0.18",
     "cf-errors": "^0.1.12",
-    "cf-logs": "^1.1.0",
+    "cf-logs": "^1.1.22",
     "docker-events": "0.0.2",
     "dockerode": "^2.3.0",
     "lodash": "^4.15.0",

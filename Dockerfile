@@ -1,19 +1,21 @@
-FROM node:11.10.0-alpine
+FROM node:11.10.1-alpine as build
 
-WORKDIR /root/cf-runtime
-
-RUN apk add --no-cache bash git openssh-client tini
+WORKDIR /build
 
 COPY package.json ./
 
 COPY yarn.lock ./
 
-# install cf-runtime required binaries
-RUN apk add --no-cache --virtual deps python make g++ && \
-    yarn install --frozen-lockfile --production && \
-    yarn cache clean && \
-    apk del deps && \
-    rm -rf /tmp/*
+RUN apk add git && \
+    yarn install --frozen-lockfile --production
+
+FROM codefresh/node:11.10.1-alpine3.11
+
+WORKDIR /root/cf-runtime
+
+RUN apk add --no-cache tini
+
+COPY --from=build /build/node_modules node_modules
 
 # copy app files
 COPY . ./

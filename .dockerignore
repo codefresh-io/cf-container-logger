@@ -4,3 +4,5 @@ node_modules
 logs/*.log
 lib/state.json
 *.md
+./.*
+Dockerfile*

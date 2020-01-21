@@ -2,9 +2,10 @@
 # yarn lockfile v1
 
 
-"@codefresh-io/task-logger@git://github.com/codefresh-io/task-logger.git#SAAS-firebase-writable-stream":
-  version "1.4.0"
-  resolved "git://github.com/codefresh-io/task-logger.git#9286556e19ea87fe8e25ecaf1129b90583a2be2f"
+"@codefresh-io/task-logger@1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@codefresh-io/task-logger/-/task-logger-1.5.2.tgz#a334e7305977a6dda79e01141a060e2b84db77a8"
+  integrity sha512-lWJtT2Y8iwIckcvlaUC5K2fA+TJ6V6g02m3M/Qrc7R6ja2NJCBWaevmhGypKUHImE7/Fx0+NRzqBPC/+PO9VNg==
   dependencies:
     cf-errors "^0.1.11"
     crypto "0.0.3"

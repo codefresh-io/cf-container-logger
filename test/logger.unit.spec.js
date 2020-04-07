@@ -275,7 +275,7 @@ describe('Logger tests', () => {
 
         describe('positive', () => {
 
-            it('should call handlerContainer according to the amount of containers returned', (done) => {
+            it('should call handlerContainer according to the amount of containers returned', async (done) => {
                 const listContainersSpy = sinon.spy((callback) => {
                     callback(null, [{}, {}]);
                 });
@@ -289,6 +289,7 @@ describe('Logger tests', () => {
                 });
 
                 const logger            = new Logger({});
+                await logger.init();
                 logger._handleContainer = sinon.spy();
                 logger._listenForExistingContainers();
                 setTimeout(() => {
@@ -298,7 +299,7 @@ describe('Logger tests', () => {
 
             });
 
-            it('should not call handleContainer in case of no returned containers', (done) => {
+            it('should not call handleContainer in case of no returned containers', async (done) => {
                 const listContainersSpy = sinon.spy((callback) => {
                     callback(null, []);
                 });
@@ -312,6 +313,7 @@ describe('Logger tests', () => {
                 });
 
                 const logger            = new Logger({});
+                await logger.init();
                 logger._handleContainer = sinon.spy();
                 logger._listenForExistingContainers();
                 setTimeout(() => {
@@ -325,7 +327,7 @@ describe('Logger tests', () => {
 
         describe('negative', () => {
 
-            it('should call _error in case of an error from getting the containers', (done) => {
+            it('should call _error in case of an error from getting the containers', async (done) => {
                 const listContainersSpy = sinon.spy((callback) => {
                     callback(new Error('getting containers error'));
                 });
@@ -339,6 +341,7 @@ describe('Logger tests', () => {
                 });
 
                 const logger  = new Logger({});
+                await logger.init();
                 logger._error = sinon.spy((err) => {
                     expect(err.toString()).to.equal('Error: Query of existing containers failed; caused by Error: getting containers error');
                 });
@@ -513,7 +516,7 @@ describe('Logger tests', () => {
 
                 describe('positive', () => {
 
-                    it('valid process', (done) => {
+                    it('valid process', async (done) => {
                         const startSpy = sinon.spy(() => {
                             return Q.resolve();
                         });
@@ -542,6 +545,7 @@ describe('Logger tests', () => {
                         const logger                 = new Logger({
                             loggerId, findExistingContainers
                         });
+                        await logger.init();
                         logger._writeNewState        = sinon.spy();
                         logger.taskLogger = {
                             on: sinon.spy(),
@@ -715,7 +719,7 @@ describe('Logger tests', () => {
 
                 describe('should print an error in case firebase ref fails', () => {
 
-                    it('error while starting the container logger instance', (done) => {
+                    it('error while starting the container logger instance', async (done) => {
                         const startSpy = sinon.spy(() => {
                             return Q.reject(new Error('ContainerLogger error'));
                         });
@@ -746,6 +750,7 @@ describe('Logger tests', () => {
                         const logger                 = new Logger({
                             loggerId, findExistingContainers
                         });
+                        await logger.init();
                         logger._writeNewState        = sinon.spy();
                         logger.taskLogger = {
                             on: sinon.spy(),

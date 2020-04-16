@@ -6,7 +6,7 @@
     "cf-container-logger"
   ],
   "dependencies": {
-    "@codefresh-io/task-logger": "git+https://github.com/codefresh-io/task-logger.git#88b1e1e62b1f61cdf449365a25e318e235aeab76",
+    "@codefresh-io/task-logger": "git+https://github.com/codefresh-io/task-logger.git#7e6a7c9ea8ede853db99d3eee484ddd7a8e54d61",
     "cf-errors": "^0.1.11",
     "cf-logs": "^1.1.0",
     "docker-events": "0.0.2",

@@ -11,12 +11,24 @@
     "cf-logs": "^1.1.0",
     "docker-events": "0.0.2",
     "dockerode": "^2.3.0",
+
+    "express": "^4.17.1",
     "forever": "^0.15.3",
     "lodash": "^4.15.0",
     "q": "^1.4.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "eslint": "^6.0.1",
+    "eslint-config-airbnb": "^15.0.2",
+    "eslint-plugin-chai-friendly": "^0.3.6",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jest": "^22.7.1",
+    "eslint-plugin-jsx-a11y": "5.1.1",
+    "eslint-plugin-mocha": "^4.11.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-react": "^7.1.0",
     "gulp": "^3.9.1",
     "gulp-coveralls": "^0.1.4",
     "gulp-env": "^0.2.0",
@@ -36,7 +48,7 @@
     "node": ">8.8.0"
   },
   "scripts": {
-    "lint": "gulp lint",
+    "lint": "eslint . --ext .js",
     "no-onlys": "gulp no.onlys",
     "test": "mocha './{,!(node_modules)/**/}*.spec.js'",
     "test:integration": "gulp integ_test",

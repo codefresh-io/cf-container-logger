@@ -5,13 +5,30 @@
 {
 
   "extends": "airbnb",
+  "env": {
+    "node": true,
+    "mocha": true,
+    "es6": true
+  },
+
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 2017,
     "sourceType": "script",
     "ecmaFeatures": {
-      "jsx": true
+      "jsx": true,
+      "impliedStrict": true
     }
   },
+
+
+
+  "plugins": [
+    "chai-friendly",
+    "import",
+    "mocha",
+    "node",
+    "promise"
+  ],
 
   "rules": {
     "indent": [
@@ -33,7 +50,18 @@
         "allowTemplateLiterals": true
       }
     ],
+    "max-len": [
+      2,
+      {
+        "code": 180,
+        "tabWidth": 4,
+        "ignoreUrls": true
+      }
+    ],
+    "no-use-before-define": "off",
+    "class-methods-use-this": "off",
     "no-underscore-dangle": "off",
+    "no-multi-spaces": "off",
     "no-param-reassign": "off",
     "no-else-return": "off",
     "arrow-body-style": "off",
@@ -41,7 +69,6 @@
       "error",
       "global"
     ],
-    "no-multi-spaces": "off",
     "padded-blocks": "off",
     "import/no-extraneous-dependencies": [
       2,
@@ -52,6 +79,19 @@
     "guard-for-in": "error",
     "no-console": "off",
     "comma-dangle": ["error", "only-multiline"],
-    "quote-props": ["error", "consistent"]
+    "quote-props": ["error", "consistent"],
+
+    "promise/catch-or-return": ["error", { "allowThen": true }],
+    // "promise/no-native": "error",
+
+    "mocha/no-exclusive-tests": "warn",
+
+    "no-unused-expressions": "off",
+    "chai-friendly/no-unused-expressions": "off",
+
+    "node/no-unsupported-features": "error",
+    "node/process-exit-as-throw": "error",
+    "node/shebang": "warn",
+    "node/no-deprecated-api": "warn"
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable */
 var gulp        = require('gulp');
 var jshint      = require('gulp-jshint');
 var rimraf      = require('gulp-rimraf');

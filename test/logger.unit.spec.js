@@ -1,6 +1,5 @@
 'use strict';
 
-const EventEmitter = require('events');
 const Q          = require('q');
 const proxyquire = require('proxyquire').noCallThru();
 const chai       = require('chai');
@@ -10,7 +9,7 @@ const sinonChai  = require('sinon-chai');
 chai.use(sinonChai);
 const ContainerStatus = require('../lib/enums').ContainerStatus;
 const LoggerStrategy  = require('../lib/enums').LoggerStrategy;
-
+const { EventEmitter } = require('events');
 
 describe('Logger tests', () => {
 
@@ -1341,5 +1340,94 @@ describe('Logger tests', () => {
 
     });
 
+    describe('_handleContainerStreamEnd', () => {
+        it('should change status to done if build finished & all streams closed & all messages flushed', async () => {
+            const taskLogger = new EventEmitter();
+            taskLogger.restore = sinon.spy(() => Q.resolve());
+            taskLogger.startHealthCheck = sinon.spy();
+            taskLogger.onHealthCheckReported = sinon.spy();
+            taskLogger.create = sinon.spy();
+            taskLogger.getStatus = sinon.spy();
+            const awaitLogsFlushed = Q.defer();
+            taskLogger.awaitLogsFlushed = () => awaitLogsFlushed.promise;
 
+            const dockerEvents = new EventEmitter();
+            dockerEvents.start = () => {};
+
+            const containerLogger = new EventEmitter();
+            containerLogger.start = () => Q.resolve();
+
+            const Logger = proxyquire('../lib/logger', {
+                '@codefresh-io/task-logger': { TaskLogger: () => Q.resolve(taskLogger) },
+                'docker-events': function () { return dockerEvents; },
+                './ContainerLogger': function () { return containerLogger; },
+            });
+    
+            const loggerId = 'loggerId';
+            const taskLoggerConfig = {task: {}, opts: {}};
+            const findExistingContainers = false;
+            const buildFinishedPromise = Q.defer();
+
+            const logger = new Logger({
+                loggerId,
+                taskLoggerConfig,
+                findExistingContainers,
+                buildFinishedPromise: buildFinishedPromise.promise,
+            });
+            logger._writeState = () => {};
+            
+            const container = {
+                Id: 'containerId',
+                Status: 'running',
+                Labels: {
+                    'io.codefresh.logger.id': loggerId,
+                    'io.codefresh.runCreationLogic': true,
+                    'io.codefresh.logger.stepName': 's1',
+                    'io.codefresh.logger.strategy': 'attach',
+                }
+            }
+
+            
+            logger.start();
+            await Q.delay(10);
+            expect(logger.containerLoggers).to.have.lengthOf(0);
+            
+            // create 1st container
+            dockerEvents.emit('create', container);
+            await Q.delay(10);
+            expect(logger.containerLoggers).to.have.lengthOf(1);
+            let allStreamsClosed1 = false;
+            logger._awaitAllStreamsClosed().then(() => {
+                allStreamsClosed1 = true;
+            });
+            expect(allStreamsClosed1).to.be.false;
+
+            // end 1st container
+            containerLogger.emit('end');
+            await Q.delay(10);
+            expect(allStreamsClosed1).to.be.true;
+
+            // create a 2nd container
+            container.Id = 'containerId2';
+            dockerEvents.emit('create', container);
+            buildFinishedPromise.resolve(); // build is now finished
+            await Q.delay(10);
+            expect(logger.containerLoggers).to.have.lengthOf(2);
+            let allStreamsClosed2 = false;
+            logger._awaitAllStreamsClosed().then(() => {
+                allStreamsClosed2 = true;
+            });
+            expect(allStreamsClosed2).to.be.false;
+
+            // end 2nd container
+            containerLogger.emit('end');
+            await Q.delay(10);
+            expect(allStreamsClosed2).to.be.true;
+
+            // all logs flushed
+            awaitLogsFlushed.resolve();
+            await Q.delay(10);
+            expect(logger.state.status).to.be.equal('done');
+        });
+    });
 });

@@ -141,11 +141,8 @@ describe('Logger tests', () => {
                 logger._writeNewState               = sinon.spy();
                 logger._listenForExistingContainers = sinon.spy();
                 logger.start();
-                
-
                 await Q.delay(10);
                 onHealthCheckReportedCb({status: 'failed'});
-                
                 expect(taskLogger.startHealthCheck).to.be.calledOnce;
                 expect(logger.state.failedHealthChecks.length).to.be.equals(1);
 

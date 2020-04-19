@@ -51,19 +51,14 @@ describe('waitUntilFinish script test', function () {
         expect(process.kill).to.have.been.calledOnceWith(1111, 'SIGUSR2');
     });
 
-    it('should watch file and finish if status is set to done', async (done) => {
-        try {
-            writeDate(Date.now() - 2000, 'ready');
-            const waitPromise = Waiter.wait(statePath);
-            await Q.delay(300);
-            writeDate(Date.now(), 'ready');
-            await Q.delay(300);
-            writeDate(Date.now(), 'done');
-            await waitPromise;
-            expect(Waiter.prototype._checkFinished.getCalls()).to.have.lengthOf(3);
-            done();
-        } catch (err) {
-            done(err);
-        }
+    it('should watch file and finish if status is set to done', async () => {
+        writeDate(Date.now() - 2000, 'ready');
+        const waitPromise = Waiter.wait(statePath);
+        await Q.delay(300);
+        writeDate(Date.now(), 'ready');
+        await Q.delay(300);
+        writeDate(Date.now(), 'done');
+        await waitPromise;
+        expect(Waiter.prototype._checkFinished.getCalls()).to.have.lengthOf(3);        
     });
 });

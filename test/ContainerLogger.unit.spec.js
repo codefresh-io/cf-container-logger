@@ -659,5 +659,9 @@ describe('Container Logger tests', () => {
         });
     });
 
-
+    describe('end event', () => {
+        it('should emit "end" event ', () => {
+            
+        });
+    });
 });

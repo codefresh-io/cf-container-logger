@@ -8,6 +8,8 @@ const sinonChai = require('sinon-chai');
 chai.use(sinonChai);
 const ContainerLogger = require('../lib/ContainerLogger');
 const LoggerStrategy  = require('../lib/enums').LoggerStrategy;
+const { EventEmitter } = require('events');
+const { Writable, Readable, Transform } = require('stream');
 
 describe('Container Logger tests', () => {
 
@@ -660,8 +662,151 @@ describe('Container Logger tests', () => {
     });
 
     describe('end event', () => {
-        it('should emit "end" event ', () => {
+        it('should emit "end" event - tty', async () => {
+            const containerInspect = {
+                Config: {
+                    Tty: true
+                }
+            };
+
+            const stdoutStream = new EventEmitter();
+            const stderrStream = new EventEmitter();
+
+            const containerId = 'containerId';
+            const containerInterface = {
+                inspect: (callback) => {
+                    callback(null, containerInspect);
+                },
+                attach: (options, callback) => {
+                    if (options.stdout) {
+                        callback(null, stdoutStream);
+                    } else {
+                        callback(null, stderrStream);
+                    }
+                }
+            };
+            const stepLogger = {
+                write: sinon.spy()
+            };
+            const loggerStrategy = LoggerStrategy.ATTACH;
+
+            const containerLogger = new ContainerLogger({
+                containerId,
+                containerInterface,
+                stepLogger,
+                loggerStrategy
+            });
+            let endEventCalled = false;
+            containerLogger.once('end', () => { endEventCalled = true; });
+            containerLogger._logMessage = sinon.spy();
+            await containerLogger.start();
             
+            expect(containerLogger.handledStreams).to.be.equal(2);
+            expect(containerLogger.finishedStreams).to.be.equal(0);
+            expect(endEventCalled).to.be.false;
+            stdoutStream.emit('end');
+            expect(endEventCalled).to.be.false;
+            expect(containerLogger.finishedStreams).to.be.equal(1);
+            stderrStream.emit('end');
+            expect(endEventCalled).to.be.true;
+            expect(containerLogger.finishedStreams).to.be.equal(2);
+        });
+
+        it('should emit "end" event - non tty', async () => {
+            const containerInspect = {
+                Config: {
+                    Tty: false
+                }
+            };
+
+            const stdoutStream = new EventEmitter();
+
+            const containerId = 'containerId';
+            const containerInterface = {
+                inspect: (callback) => {
+                    callback(null, containerInspect);
+                },
+                attach: (opt, callback) => {
+                    callback(null, stdoutStream);
+                }
+            };
+            const stepLogger = {
+                write: sinon.spy()
+            };
+            const loggerStrategy = LoggerStrategy.ATTACH;
+
+            const containerLogger = new ContainerLogger({
+                containerId,
+                containerInterface,
+                stepLogger,
+                loggerStrategy
+            });
+            let endEventCalled = false;
+            containerLogger.once('end', () => { endEventCalled = true; });
+            containerLogger._logMessage = sinon.spy();
+            await containerLogger.start();
+            
+            expect(containerLogger.handledStreams).to.be.equal(1);
+            expect(containerLogger.finishedStreams).to.be.equal(0);
+            expect(endEventCalled).to.be.false;
+            stdoutStream.emit('end');
+            expect(endEventCalled).to.be.true;
+            expect(containerLogger.finishedStreams).to.be.equal(1);
+        });
+
+        it('should emit "end" event - writable stream', async () => {
+            const containerInspect = {
+                Config: {
+                    Tty: true
+                }
+            };
+
+            const stdoutStream = new Readable({ read() { } });
+            const stderrStream = new Readable({ read() { } });
+
+            const containerId = 'containerId';
+            const containerInterface = {
+                inspect: (callback) => {
+                    callback(null, containerInspect);
+                },
+                attach: (options, callback) => {
+                    if (options.stdout) {
+                        callback(null, stdoutStream);
+                    } else {
+                        callback(null, stderrStream);
+                    }
+                }
+            };
+            const stepLogger = {
+                writeStream: sinon.spy(() => new Writable()),
+                stepNameTransformStream: sinon.spy(() => new Transform({ read() { } })),
+                opts: {
+                    logsRateLimitConfig: {} // use stream
+                }
+            };
+            const loggerStrategy = LoggerStrategy.ATTACH;
+
+            const containerLogger = new ContainerLogger({
+                containerId,
+                containerInterface,
+                stepLogger,
+                loggerStrategy
+            });
+            let endEventCalled = false;
+            containerLogger.once('end', () => { endEventCalled = true; });
+            containerLogger._logMessage = sinon.spy();
+            await containerLogger.start();
+            
+            expect(stepLogger.writeStream).to.have.been.calledOnce;
+            expect(containerLogger.handledStreams).to.be.equal(2);
+            expect(containerLogger.finishedStreams).to.be.equal(0);
+            expect(endEventCalled).to.be.false;
+            stdoutStream.emit('end');
+            expect(endEventCalled).to.be.false;
+            expect(containerLogger.finishedStreams).to.be.equal(1);
+            stderrStream.emit('end');
+            expect(endEventCalled).to.be.true;
+            expect(containerLogger.finishedStreams).to.be.equal(2);
         });
     });
 });

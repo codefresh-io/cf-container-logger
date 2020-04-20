@@ -76,6 +76,7 @@ describe('Logger tests', () => {
                     restore: sinon.spy(() => Q.resolve()),
                     startHealthCheck: sinon.spy(),
                     onHealthCheckReported: sinon.spy(),
+                    getStatus: sinon.spy(),
                 };
                 const TaskLoggerFactory = sinon.spy(() => {
                     return Q.resolve(taskLogger);
@@ -118,6 +119,7 @@ describe('Logger tests', () => {
                     restore: sinon.spy(() => Q.resolve()),
                     startHealthCheck: sinon.spy(),
                     onHealthCheckReported: onHealthCheckReportedSpy,
+                    getStatus: sinon.spy(),
                 };
                 const TaskLoggerFactory = sinon.spy(() => {
                     return Q.resolve(taskLogger);
@@ -158,6 +160,7 @@ describe('Logger tests', () => {
                     restore: sinon.spy(() => Q.resolve()),
                     startHealthCheck: sinon.spy(),
                     onHealthCheckReported: onHealthCheckReportedSpy,
+                    getStatus: sinon.spy(),
                 };
                 const TaskLoggerFactory = sinon.spy(() => {
                     return Q.resolve(taskLogger);
@@ -197,6 +200,7 @@ describe('Logger tests', () => {
                     restore: sinon.spy(() => Q.resolve()),
                     startHealthCheck: sinon.spy(),
                     onHealthCheckReported: sinon.spy(),
+                    getStatus: sinon.spy(),
                 };
                 const TaskLoggerFactory = sinon.spy(() => {
                     return Q.resolve(taskLogger);

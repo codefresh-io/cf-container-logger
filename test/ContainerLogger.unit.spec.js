@@ -9,7 +9,7 @@ chai.use(sinonChai);
 const ContainerLogger = require('../lib/ContainerLogger');
 const LoggerStrategy  = require('../lib/enums').LoggerStrategy;
 const { EventEmitter } = require('events');
-const { Writable, Readable, Transform } = require('stream');
+const { Writable, Readable, PassThrough } = require('stream');
 
 describe('Container Logger tests', () => {
 
@@ -761,8 +761,24 @@ describe('Container Logger tests', () => {
                 }
             };
 
-            const stdoutStream = new Readable({ read() { } });
-            const stderrStream = new Readable({ read() { } });
+            class FakeReadableStream extends Readable {
+                constructor() {
+                    super();
+                    this.readCalled = false;
+                }
+
+                _read() {
+                    if (!this.readCalled) {
+                        this.readCalled = true;
+                        this.push('check');
+                    } else {
+                        return this.push(null); // end stream
+                    }
+                }
+            }
+
+            const stdoutStream = sinon.spy(new FakeReadableStream('stdout'));
+            const stderrStream = sinon.spy(new FakeReadableStream('stderr'));
 
             const containerId = 'containerId';
             const containerInterface = {
@@ -777,9 +793,27 @@ describe('Container Logger tests', () => {
                     }
                 }
             };
+
+            let finishedStreams = 0;
+            let writableSpy;
+            const transformSpies = [];
+
             const stepLogger = {
-                writeStream: sinon.spy(() => new Writable()),
-                stepNameTransformStream: sinon.spy(() => new Transform({ read() { } })),
+                writeStream: sinon.spy(() => {
+                    const writable = sinon.spy(new Writable({
+                        write(chunk, encoding, cb) {
+                            cb(null); // continue
+                        }
+                    }));
+                    writableSpy = writable;
+                    return writable;
+                }),
+                stepNameTransformStream: () => {
+                    const transform = sinon.spy(new PassThrough());
+                    transform.once('end', () => { finishedStreams += 1; });
+                    transformSpies.push(transform);
+                    return transform;
+                },
                 opts: {
                     logsRateLimitConfig: {} // use stream
                 }
@@ -792,21 +826,20 @@ describe('Container Logger tests', () => {
                 stepLogger,
                 loggerStrategy
             });
-            let endEventCalled = false;
-            containerLogger.once('end', () => { endEventCalled = true; });
+            let endCalled = false;
+            containerLogger.once('end', () => { endCalled = true; });
             containerLogger._logMessage = sinon.spy();
             await containerLogger.start();
+            await Q.delay(20); // incase the piping is not finished
             
             expect(stepLogger.writeStream).to.have.been.calledOnce;
             expect(containerLogger.handledStreams).to.be.equal(2);
-            expect(containerLogger.finishedStreams).to.be.equal(0);
-            expect(endEventCalled).to.be.false;
-            stdoutStream.emit('end');
-            expect(endEventCalled).to.be.false;
-            expect(containerLogger.finishedStreams).to.be.equal(1);
-            stderrStream.emit('end');
-            expect(endEventCalled).to.be.true;
-            expect(containerLogger.finishedStreams).to.be.equal(2);
+            expect(transformSpies[0].pipe).to.have.been.calledOnceWith(writableSpy, { end: false });
+            expect(transformSpies[1].pipe).to.have.been.calledOnceWith(writableSpy, { end: false });
+            expect(transformSpies[0].once).to.have.been.calledWith('end');
+            expect(transformSpies[1].once).to.have.been.calledWith('end');
+            expect(finishedStreams).to.be.equal(2);
+            expect(endCalled).to.be.true;
         });
     });
 });

@@ -1374,7 +1374,7 @@ describe('Logger tests', () => {
                 findExistingContainers,
                 buildFinishedPromise: buildFinishedPromise.promise,
             });
-            logger._writeState = () => {};
+            logger._writeNewState = () => {};
             
             const container = {
                 Id: 'containerId',
@@ -1428,6 +1428,47 @@ describe('Logger tests', () => {
             awaitLogsFlushed.resolve();
             await Q.delay(10);
             expect(logger.state.status).to.be.equal('done');
+        });
+    });
+
+    describe('_updateLastLoggingDate', () => {
+        it('should update last logging date when logs flush', async () => {
+            const taskLogger = new EventEmitter();
+            taskLogger.restore = sinon.spy(() => Q.resolve());
+            taskLogger.startHealthCheck = sinon.spy();
+            taskLogger.onHealthCheckReported = sinon.spy();
+            taskLogger.create = sinon.spy();
+            taskLogger.getStatus = sinon.spy();
+
+            const dockerEvents = new EventEmitter();
+            dockerEvents.start = () => {};
+
+            const containerLogger = new EventEmitter();
+            containerLogger.start = () => Q.resolve();
+
+            const Logger = proxyquire('../lib/logger', {
+                '@codefresh-io/task-logger': { TaskLogger: () => Q.resolve(taskLogger) },
+                'docker-events': function () { return dockerEvents; },
+                './ContainerLogger': function () { return containerLogger; },
+            });
+
+            const logger = new Logger({
+                loggerId: 'loggerId',
+                taskLoggerConfig: {task: {}, opts: {}},
+                findExistingContainers: false,
+                buildFinishedPromise: Q.defer().promise,
+            });
+            logger._writeNewState = () => {};
+            logger._updateLastLoggingDate = sinon.spy();
+            logger.start();
+            await Q.delay(10);
+
+            expect(logger._updateLastLoggingDate).to.not.have.been.called;
+
+            taskLogger.emit('flush');
+            await Q.delay(10);
+            
+            expect(logger._updateLastLoggingDate).to.have.been.calledOnce;
         });
     });
 });

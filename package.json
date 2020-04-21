@@ -38,7 +38,7 @@
   "scripts": {
     "lint": "gulp lint",
     "no-onlys": "gulp no.onlys",
-    "test": "node ./node_modules/mocha/bin/_mocha './{,!(node_modules)/**/}*.spec.js'",
+    "test": "node ./node_modules/mocha/bin/_mocha './{,!(node_modules)/**/}*.spec.js' --exit",
     "test:integration": "gulp integ_test",
     "test:ci": "yarn test",
     "coveralls": "gulp coveralls",

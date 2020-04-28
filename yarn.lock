@@ -2,10 +2,9 @@
 # yarn lockfile v1
 
 
-"@codefresh-io/task-logger@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@codefresh-io/task-logger/-/task-logger-1.6.0.tgz#74faa58181d71c3c6500b58e459314e7b06d446a"
-  integrity sha512-fN9WyVvq7nlxiQIM7xAYNfOw67sYkBI3CuQql92Y+AT0Uxo9Dhw8lAeRvyYER3z9EWhkH/X7d8FSuJ6YxMvm/g==
+"@codefresh-io/task-logger@git+https://github.com/codefresh-io/task-logger.git#aeaa4bef38d8faed4b6a6441e70cd0a1a73478a1":
+  version "1.7.0"
+  resolved "git+https://github.com/codefresh-io/task-logger.git#aeaa4bef38d8faed4b6a6441e70cd0a1a73478a1"
   dependencies:
     cf-errors "^0.1.11"
     crypto "0.0.3"
@@ -13,7 +12,7 @@
     firebase "git+https://github.com/codefresh-io/firebase.git#80b2ed883ff281cd67b53bd0f6a0bbd6f330fed5"
     firebase-token-generator "^2.0.0"
     jsonwebtoken "^8.4.0"
-    lodash "^3.10.1"
+    lodash "^4.0.0"
     mongodb "^3.1.13"
     node-redis-pubsub "^4.0.0"
     q "^1.4.1"
@@ -3367,7 +3366,7 @@ lodash@4.17.15, lodash@^4.0.0, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11,
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
-lodash@^3.0.1, lodash@^3.10.1:
+lodash@^3.0.1:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
   integrity sha1-W/Rejkm6QYnhfUgnid/RW9FAt7Y=

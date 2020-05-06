@@ -1,6 +1,5 @@
 'use strict';
 
-const EventEmitter = require('events');
 const Q          = require('q');
 const proxyquire = require('proxyquire').noCallThru();
 const chai       = require('chai');
@@ -10,7 +9,16 @@ const sinonChai  = require('sinon-chai');
 chai.use(sinonChai);
 const ContainerStatus = require('../lib/enums').ContainerStatus;
 const LoggerStrategy  = require('../lib/enums').LoggerStrategy;
+const { EventEmitter } = require('events');
 
+const expressMock = function() {
+    return {
+        use: sinon.spy(),
+        listen: sinon.spy(),
+        post: sinon.spy(),
+        get: sinon.spy(),
+    }
+}
 
 describe('Logger tests', () => {
 
@@ -74,14 +82,18 @@ describe('Logger tests', () => {
             it('should start and not listen for existing container in case findExistingContainers param is false', async () => { // jshint ignore:line
                 const taskLogger        = { // jshint ignore:line
                     on: sinon.spy(),
-                    restore: sinon.spy(() => Q.resolve())
+                    restore: sinon.spy(() => Q.resolve()),
+                    startHealthCheck: sinon.spy(),
+                    onHealthCheckReported: sinon.spy(),
+                    getStatus: sinon.spy(),
                 };
                 const TaskLoggerFactory = sinon.spy(() => {
                     return Q.resolve(taskLogger);
                 });
 
                 const Logger = proxyquire('../lib/logger', {
-                    '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory }
+                    '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
+                    'express': expressMock,
                 });
 
                 const loggerId               = 'loggerId';
@@ -106,18 +118,109 @@ describe('Logger tests', () => {
 
             });
 
-            it('should start and listen for existing container in case findExistingContainers param is "true"', async () => {
+            it('should report health check status if failed', async () => { // jshint ignore:line
+                let onHealthCheckReportedCb;
+                const onHealthCheckReportedSpy = sinon.spy((func) =>  {
+                    onHealthCheckReportedCb = func;
+                });
 
-                const taskLogger        = {
+                const taskLogger        = { // jshint ignore:line
                     on: sinon.spy(),
-                    restore: sinon.spy(() => Q.resolve())
+                    restore: sinon.spy(() => Q.resolve()),
+                    startHealthCheck: sinon.spy(),
+                    onHealthCheckReported: onHealthCheckReportedSpy,
+                    getStatus: sinon.spy(),
                 };
                 const TaskLoggerFactory = sinon.spy(() => {
                     return Q.resolve(taskLogger);
                 });
 
                 const Logger = proxyquire('../lib/logger', {
-                    '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory }
+                    '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
+                    'express': expressMock,
+                });
+
+                const loggerId               = 'loggerId';
+                const taskLoggerConfig = {task: {}, opts: {}};
+                const findExistingContainers = false;
+
+                const logger                        = new Logger({
+                    loggerId,
+                    taskLoggerConfig,
+                    findExistingContainers,
+                });
+                logger._listenForNewContainers      = sinon.spy();
+                logger._writeNewState               = sinon.spy();
+                logger._listenForExistingContainers = sinon.spy();
+                logger.start();
+                await Q.delay(10);
+                onHealthCheckReportedCb({status: 'failed'});
+                expect(taskLogger.startHealthCheck).to.be.calledOnce;
+                expect(logger.state.failedHealthChecks.length).to.be.equals(1);
+
+            });
+
+            it('should report health check status if succeed', async () => { // jshint ignore:line
+                let onHealthCheckReportedCb;
+                const onHealthCheckReportedSpy = sinon.spy((func) =>  {
+                    onHealthCheckReportedCb = func;
+                });
+
+                const taskLogger        = { // jshint ignore:line
+                    on: sinon.spy(),
+                    restore: sinon.spy(() => Q.resolve()),
+                    startHealthCheck: sinon.spy(),
+                    onHealthCheckReported: onHealthCheckReportedSpy,
+                    getStatus: sinon.spy(),
+                };
+                const TaskLoggerFactory = sinon.spy(() => {
+                    return Q.resolve(taskLogger);
+                });
+
+                const Logger = proxyquire('../lib/logger', {
+                    '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
+                    'express': expressMock,
+                });
+
+                const loggerId               = 'loggerId';
+                const taskLoggerConfig = {task: {}, opts: {}};
+                const findExistingContainers = false;
+
+                const logger                        = new Logger({
+                    loggerId,
+                    taskLoggerConfig,
+                    findExistingContainers,
+                });
+                logger._listenForNewContainers      = sinon.spy();
+                logger._writeNewState               = sinon.spy();
+                logger._listenForExistingContainers = sinon.spy();
+                logger.start();
+                
+
+                await Q.delay(10);
+                onHealthCheckReportedCb({status: 'succeed'});
+                
+                expect(taskLogger.startHealthCheck).to.be.calledOnce;
+                expect(logger.state.healthCheckStatus).to.deep.equal({status: 'succeed'});
+
+            });
+
+            it('should start and listen for existing container in case findExistingContainers param is "true"', async () => {
+
+                const taskLogger        = {
+                    on: sinon.spy(),
+                    restore: sinon.spy(() => Q.resolve()),
+                    startHealthCheck: sinon.spy(),
+                    onHealthCheckReported: sinon.spy(),
+                    getStatus: sinon.spy(),
+                };
+                const TaskLoggerFactory = sinon.spy(() => {
+                    return Q.resolve(taskLogger);
+                });
+
+                const Logger = proxyquire('../lib/logger', {
+                    '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
+                    'express': expressMock,
                 });
 
                 const loggerId               = 'loggerId';
@@ -162,7 +265,8 @@ describe('Logger tests', () => {
                 });
 
                 const Logger = proxyquire('../lib/logger', {
-                    '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory }
+                    '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
+                    'express': expressMock,
                 });
 
                 const loggerId               = 'loggerId';
@@ -299,6 +403,9 @@ describe('Logger tests', () => {
             const Logger = proxyquire('../lib/logger', {
                 'fs': {
                     writeFile: writeFileSpy,
+                    readFileSync: sinon.spy(() => {
+                        return '{}';
+                    }),
                     existsSync: () => { return true; }
                 }
             });
@@ -316,6 +423,9 @@ describe('Logger tests', () => {
             const Logger = proxyquire('../lib/logger', {
                 'fs': {
                     writeFile: writeFileSpy,
+                    readFileSync: sinon.spy(() => {
+                        return '{}';
+                    }),
                     existsSync: () => { return true; },
                 }
             });
@@ -1248,5 +1358,179 @@ describe('Logger tests', () => {
 
     });
 
+    describe('_handleContainerStreamEnd', () => {
+        it('should change status to done if build finished & all streams closed & all messages flushed', async () => {
+            const taskLogger = new EventEmitter();
+            taskLogger.restore = sinon.spy(() => Q.resolve());
+            taskLogger.startHealthCheck = sinon.spy();
+            taskLogger.onHealthCheckReported = sinon.spy();
+            taskLogger.create = sinon.spy();
+            taskLogger.getStatus = sinon.spy();
+            const awaitLogsFlushed = Q.defer();
+            taskLogger.awaitLogsFlushed = () => awaitLogsFlushed.promise;
 
+            const dockerEvents = new EventEmitter();
+            dockerEvents.start = () => {};
+
+            const containerLogger = new EventEmitter();
+            containerLogger.start = () => Q.resolve();
+
+            const Logger = proxyquire('../lib/logger', {
+                '@codefresh-io/task-logger': { TaskLogger: () => Q.resolve(taskLogger) },
+                'docker-events': function () { return dockerEvents; },
+                './ContainerLogger': function () { return containerLogger; },
+                'express': expressMock,
+            });
+    
+            const loggerId = 'loggerId';
+            const taskLoggerConfig = {task: {}, opts: {}};
+            const findExistingContainers = false;
+            const buildFinishedPromise = Q.defer();
+
+            const logger = new Logger({
+                loggerId,
+                taskLoggerConfig,
+                findExistingContainers,
+                buildFinishedPromise: buildFinishedPromise.promise,
+            });
+            logger._writeNewState = () => {};
+            
+            const container = {
+                Id: 'containerId',
+                Status: 'running',
+                Labels: {
+                    'io.codefresh.logger.id': loggerId,
+                    'io.codefresh.runCreationLogic': true,
+                    'io.codefresh.logger.stepName': 's1',
+                    'io.codefresh.logger.strategy': 'attach',
+                }
+            }
+
+            
+            logger.start();
+            await Q.delay(10);
+            expect(logger.containerLoggers).to.have.lengthOf(0);
+            
+            // create 1st container
+            dockerEvents.emit('create', container);
+            await Q.delay(10);
+            expect(logger.containerLoggers).to.have.lengthOf(1);
+            let allStreamsClosed1 = false;
+            logger._awaitAllStreamsClosed().then(() => {
+                allStreamsClosed1 = true;
+            });
+            expect(allStreamsClosed1).to.be.false;
+
+            // end 1st container
+            containerLogger.emit('end');
+            await Q.delay(10);
+            expect(allStreamsClosed1).to.be.true;
+
+            // create a 2nd container
+            container.Id = 'containerId2';
+            dockerEvents.emit('create', container);
+            buildFinishedPromise.resolve(); // build is now finished
+            await Q.delay(10);
+            expect(logger.containerLoggers).to.have.lengthOf(2);
+            let allStreamsClosed2 = false;
+            logger._awaitAllStreamsClosed().then(() => {
+                allStreamsClosed2 = true;
+            });
+            expect(allStreamsClosed2).to.be.false;
+
+            // end 2nd container
+            containerLogger.emit('end');
+            await Q.delay(10);
+            expect(allStreamsClosed2).to.be.true;
+
+            // all logs flushed
+            awaitLogsFlushed.resolve();
+            await Q.delay(10);
+            expect(logger.state.status).to.be.equal('done');
+        });
+    });
+
+    describe('_updateLastLoggingDate', () => {
+        it('should update last logging date when logs flush', async () => {
+            const taskLogger = new EventEmitter();
+            taskLogger.restore = sinon.spy(() => Q.resolve());
+            taskLogger.startHealthCheck = sinon.spy();
+            taskLogger.onHealthCheckReported = sinon.spy();
+            taskLogger.create = sinon.spy();
+            taskLogger.getStatus = sinon.spy();
+
+            const dockerEvents = new EventEmitter();
+            dockerEvents.start = () => {};
+
+            const containerLogger = new EventEmitter();
+            containerLogger.start = () => Q.resolve();
+
+            const Logger = proxyquire('../lib/logger', {
+                '@codefresh-io/task-logger': { TaskLogger: () => Q.resolve(taskLogger) },
+                'docker-events': function () { return dockerEvents; },
+                './ContainerLogger': function () { return containerLogger; },
+                'express': expressMock,
+            });
+
+            const logger = new Logger({
+                loggerId: 'loggerId',
+                taskLoggerConfig: {task: {}, opts: {}},
+                findExistingContainers: false,
+                buildFinishedPromise: Q.defer().promise,
+            });
+            logger._writeNewState = () => {};
+            logger._updateLastLoggingDate = sinon.spy();
+            logger.start();
+            await Q.delay(10);
+
+            expect(logger._updateLastLoggingDate).to.not.have.been.called;
+
+            taskLogger.emit('flush');
+            await Q.delay(10);
+            
+            expect(logger._updateLastLoggingDate).to.have.been.calledOnce;
+        });
+    });
+
+    describe('engine updates', () => {
+        it('should listen for engine updates', async () => {
+            const taskLogger = {
+                on: sinon.spy(),
+                restore: sinon.spy(() => Q.resolve()),
+                startHealthCheck: sinon.spy(),
+                onHealthCheckReported: sinon.spy(),
+                getStatus: sinon.spy(),
+            };
+            const TaskLoggerFactory = sinon.spy(() => {
+                return Q.resolve(taskLogger);
+            });
+
+            const Logger = proxyquire('../lib/logger', {
+                '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
+                'express': expressMock,
+            });
+
+            const loggerId               = 'loggerId';
+            const taskLoggerConfig = {task: {}, opts: {}};
+            const findExistingContainers = false;
+
+            const logger                        = new Logger({
+                loggerId,
+                taskLoggerConfig,
+                findExistingContainers,
+            });
+            logger._listenForNewContainers      = sinon.spy();
+            logger._writeNewState               = sinon.spy();
+            logger._listenForExistingContainers = sinon.spy();
+            process.env.PORT = 1337;
+            process.env.HOST = '127.0.0.1';
+            logger.start();
+            
+            await Q.delay(10);
+
+            expect(logger._app).to.not.be.undefined;
+            expect(logger._app.listen).to.have.been.calledOnce;
+            expect(logger._app.listen).to.have.been.calledWithMatch(1337, '127.0.0.1');
+        });
+    });
 });

@@ -1,19 +1,23 @@
 {
   "name": "cf-container-logger",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "codefresh container logger",
   "keywords": [
     "cf-container-logger"
   ],
   "dependencies": {
-    "@codefresh-io/task-logger": "^0.0.18",
+    "@codefresh-io/task-logger": "1.7.0",
+    "body-parser": "^1.19.0",
     "cf-errors": "^0.1.11",
     "cf-logs": "^1.1.0",
     "docker-events": "0.0.2",
     "dockerode": "^2.3.0",
+    "express": "^4.17.1",
     "forever": "^0.15.3",
     "lodash": "^4.15.0",
-    "q": "^1.4.1"
+    "q": "^1.4.1",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5"
   },
   "devDependencies": {
     "chai": "^4.2.0",
@@ -22,7 +26,7 @@
     "gulp-env": "^0.2.0",
     "gulp-istanbul": "^0.10.4",
     "gulp-jshint": "^1.11.0",
-    "gulp-mocha": "^6.0.0",
+    "gulp-mocha": "^7.0.0",
     "gulp-mocha-co": "^0.4.1-co.3",
     "gulp-rimraf": "^0.1.1",
     "isparta": "^4.0.0",
@@ -38,13 +42,14 @@
   "scripts": {
     "lint": "gulp lint",
     "no-onlys": "gulp no.onlys",
-    "test": "mocha './{,!(node_modules)/**/}*.spec.js'",
+    "test": "node ./node_modules/mocha/bin/_mocha './{,!(node_modules)/**/}*.spec.js' --exit",
     "test:integration": "gulp integ_test",
-    "test:ci": "gulp unit_test && gulp coveralls && gulp clean",
+    "test:ci": "yarn test",
     "coveralls": "gulp coveralls",
     "clean": "gulp clean",
     "start": "node server/index.js",
     "gulp": "gulp",
-    "eslint": "eslint"
+    "eslint": "eslint",
+    "version": "exit 0"
   }
 }

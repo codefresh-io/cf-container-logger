@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/windows/servercore:1809 as download
+FROM mcr.microsoft.com/windows/servercore:1909 as download
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 

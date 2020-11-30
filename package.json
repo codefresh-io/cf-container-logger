@@ -39,6 +39,9 @@
   "engines": {
     "node": ">8.8.0"
   },
+  "resolutions": {
+    "graceful-fs": "^4.2.4"
+  },
   "scripts": {
     "lint": "gulp lint",
     "no-onlys": "gulp no.onlys",

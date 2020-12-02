@@ -18,7 +18,4 @@ RUN apk add --no-cache --virtual deps python make g++ && \
 # copy app files
 COPY . ./
 
-# Set tini as entrypoint
-ENTRYPOINT ["/sbin/tini", "--"]
-
-CMD ["node",  "node_modules/.bin/forever", "--minUptime",  "1", "--spinSleepTime", "1000", "-c", "node", "lib/index.js"]
+CMD ["node", "/root/cf-runtime/lib/index.js"]

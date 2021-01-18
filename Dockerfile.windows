@@ -65,11 +65,17 @@ CMD [ "node.exe" ]
 
 FROM build
 
-WORKDIR C:/tmp
-
 RUN Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 RUN choco install git -y
-RUN choco install cygwin -y
+
+RUN $url = 'https://cygwin.com/setup-x86_64.exe'; \
+    Invoke-WebRequest -Uri $url -OutFile 'C:/setup-x86_64.exe'; \
+    New-Item -ItemType directory -Path 'C:/tmp'; \
+    Start-Process "C:/setup-x86_64.exe" -NoNewWindow -Wait -PassThru -ArgumentList @('-q','-v','-n','-B','-R','C:/cygwin64','-l','C:/tmp','-s','http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/circa/64bit/2019/03/06/161558','-X','-P', 'default'); \
+    Start-Process "C:/cygwin64/bin/cygcheck.exe" -NoNewWindow -Wait -PassThru -ArgumentList @('-c'); \
+    Remove-Item -Path 'C:/tmp' -Force -Recurse -ErrorAction Ignore;
+
+WORKDIR C:/cf-container-logger
 
 COPY package.json ./
 

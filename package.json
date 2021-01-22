@@ -9,7 +9,7 @@
     "@codefresh-io/task-logger": "^1.8.11",
     "body-parser": "^1.19.0",
     "cf-errors": "^0.1.11",
-    "cf-logs": "^1.1.0",
+    "cf-logs": "^1.1.23",
     "docker-events": "0.0.2",
     "dockerode": "^2.3.0",
     "express": "^4.17.1",

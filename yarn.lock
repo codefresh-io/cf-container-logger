@@ -2,24 +2,24 @@
 # yarn lockfile v1
 
 
-"@codefresh-io/task-logger@^1.8.11":
-  version "1.8.11"
-  resolved "https://registry.yarnpkg.com/@codefresh-io/task-logger/-/task-logger-1.8.11.tgz#ff2d25d37a51c126d531687d6b0f25f567ae9bc1"
-  integrity sha512-9XTOvSaYwu1RnByG2KmAVMjUrWq3J3dN5oVBzrtzWqGoja2w4QJSqsNspMyDvYqKIsAWrXdPNXvsyMPVne2iLg==
+"@codefresh-io/task-logger@^1.8.12":
+  version "1.8.12"
+  resolved "https://registry.yarnpkg.com/@codefresh-io/task-logger/-/task-logger-1.8.12.tgz#ec0c845bdd922839e010fc695f777f60fe533078"
+  integrity sha512-TZ9znB52BXkQxssNcQKATqAL3pb86IeypdNYJelulC/2ykW3GiiWkumkmN4lM5fCNvBxdNTZvSOp91KpMQk9ag==
   dependencies:
-    cf-errors "^0.1.11"
+    cf-errors "^0.1.15"
     crypto "0.0.3"
     debug "^4.1.1"
     firebase "git+https://github.com/codefresh-io/firebase.git#80b2ed883ff281cd67b53bd0f6a0bbd6f330fed5"
     firebase-token-generator "^2.0.0"
     jsonwebtoken "^8.4.0"
-    lodash "^4.0.0"
+    lodash "4.17.20"
     mongodb "^3.1.13"
     node-redis-pubsub "^4.0.0"
     q "^1.4.1"
     redis "^2.8.0"
-    request "^2.88.0"
-    requestretry "^4.0.2"
+    request "2.88.2"
+    requestretry "^4.1.2"
     retry "^0.12.0"
 
 "@sinonjs/commons@^1", "@sinonjs/commons@^1.3.0", "@sinonjs/commons@^1.4.0", "@sinonjs/commons@^1.7.0":
@@ -696,6 +696,13 @@ cf-errors@^0.1.11:
   integrity sha512-qk0rk3DV4yr62ntTZHQBEvh030Rs43IZckl9n8nLpMQTQ9TXqjO7v6P5pBoYULWw1Wp9SmXfvHkbGwmG+7fsfw==
   dependencies:
     lodash "4.17.15"
+
+cf-errors@^0.1.15:
+  version "0.1.15"
+  resolved "https://registry.yarnpkg.com/cf-errors/-/cf-errors-0.1.15.tgz#b55d03f1977e9677e3af7e7177ae0d901bafaf8a"
+  integrity sha512-gwhuKuBI7W/CuMpz+bxluWQRAuB3hvGbNcp46A/KcymgRnGKw2vLmIMHI2JaGpATMNdJh49ErocwVruM2UlJqw==
+  dependencies:
+    lodash "4.17.20"
 
 cf-logs@^1.1.0:
   version "1.1.22"
@@ -2381,7 +2388,7 @@ har-validator@~2.0.6:
     is-my-json-valid "^2.12.4"
     pinkie-promise "^2.0.0"
 
-har-validator@~5.1.0, har-validator@~5.1.3:
+har-validator@~5.1.3:
   version "5.1.3"
   resolved "https://registry.yarnpkg.com/har-validator/-/har-validator-5.1.3.tgz#1ef89ebd3e4996557675eed9893110dc350fa080"
   integrity sha512-sNvOCzEQNr/qrvJgc3UG/kD4QtlHycrzwS+6mfTrrSq97BvaYcPZZI1ZSqGSPR73Cxn4LKTD4PttRwfU7jWq5g==
@@ -3534,10 +3541,15 @@ lodash@3.6.*:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.6.0.tgz#5266a8f49dd989be4f9f681b6f2a0c55285d0d9a"
   integrity sha1-Umao9J3Zib5Pn2gbbyoMVShdDZo=
 
-lodash@4.17.15, lodash@^4.0.0, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.4, lodash@~4.17.11:
+lodash@4.17.15, lodash@^4.0.0, lodash@^4.15.0, lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.4, lodash@~4.17.11:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+
+lodash@4.17.20:
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
 lodash@^3.0.1:
   version "3.10.1"
@@ -4508,11 +4520,6 @@ ps-tree@0.0.x:
   dependencies:
     event-stream "~0.5"
 
-psl@^1.1.24:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/psl/-/psl-1.7.0.tgz#f1c4c47a8ef97167dea5d6bbf4816d736e884a3c"
-  integrity sha512-5NsSEDv8zY70ScRnOTn7bK7eanl2MvFrOrS/R6x+dBt5g1ghnj9Zv90kO8GwT8gxcu2ANyFprnFYB85IogIJOQ==
-
 psl@^1.1.28:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.8.0.tgz#9326f8bcfb013adcc005fdff056acce020e51c24"
@@ -4829,33 +4836,7 @@ request@2.79.0:
     tunnel-agent "~0.4.1"
     uuid "^3.0.0"
 
-request@^2.88.0:
-  version "2.88.0"
-  resolved "https://registry.yarnpkg.com/request/-/request-2.88.0.tgz#9c2fca4f7d35b592efe57c7f0a55e81052124fef"
-  integrity sha512-NAqBSrijGLZdM0WZNsInLJpkJokL72XYjUpnB0iwsRgxh7dB6COrHnTBNwN0E+lHDAJzu7kLAkDeY08z2/A0hg==
-  dependencies:
-    aws-sign2 "~0.7.0"
-    aws4 "^1.8.0"
-    caseless "~0.12.0"
-    combined-stream "~1.0.6"
-    extend "~3.0.2"
-    forever-agent "~0.6.1"
-    form-data "~2.3.2"
-    har-validator "~5.1.0"
-    http-signature "~1.2.0"
-    is-typedarray "~1.0.0"
-    isstream "~0.1.2"
-    json-stringify-safe "~5.0.1"
-    mime-types "~2.1.19"
-    oauth-sign "~0.9.0"
-    performance-now "^2.1.0"
-    qs "~6.5.2"
-    safe-buffer "^5.1.2"
-    tough-cookie "~2.4.3"
-    tunnel-agent "^0.6.0"
-    uuid "^3.3.2"
-
-request@^2.88.2:
+request@2.88.2, request@^2.88.2:
   version "2.88.2"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.2.tgz#d73c918731cb5a87da047e207234146f664d12b3"
   integrity sha512-MsvtOrfG9ZcrOwAW+Qi+F6HbD0CWXEh9ou77uOb7FM2WPhwT7smM833PzanhJLsgXjN89Ir6V2PczXNnMpwKhw==
@@ -4881,13 +4862,13 @@ request@^2.88.2:
     tunnel-agent "^0.6.0"
     uuid "^3.3.2"
 
-requestretry@^4.0.2:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/requestretry/-/requestretry-4.1.0.tgz#7e8a2247c7d58726d3efb5d25bb1915bca8f0be3"
-  integrity sha512-q3IT2vz5vkcMT6xgwB/BWzsmnu7N/27l9fW86U48gt9Mwrce5rSEyFvpAW7Il1/B78/NBUlYBvcCY1RzWUWy7w==
+requestretry@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/requestretry/-/requestretry-4.1.2.tgz#f5975c0c3be9e352e25038c9fed482d5cc51978e"
+  integrity sha512-N1WAp+8eOy8NfsVBChcSxNCKvPY1azOpliQ4Sby4WDe0HFEhdKywlNZeROMBQ+BI3Jpc0eNOT1KVFGREawtahA==
   dependencies:
     extend "^3.0.2"
-    lodash "^4.17.10"
+    lodash "^4.17.15"
     when "^3.7.7"
 
 require-directory@^2.1.1:
@@ -5653,14 +5634,6 @@ tough-cookie@~2.3.0:
   resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.3.4.tgz#ec60cee38ac675063ffc97a5c18970578ee83655"
   integrity sha512-TZ6TTfI5NtZnuyy/Kecv+CnoROnyXn2DN97LontgQpCwsX2XyLYCC0ENhYkehSOwAp8rTQKc/NUIF7BkQ5rKLA==
   dependencies:
-    punycode "^1.4.1"
-
-tough-cookie@~2.4.3:
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.4.3.tgz#53f36da3f47783b0925afa06ff9f3b165280f781"
-  integrity sha512-Q5srk/4vDM54WJsJio3XNn6K2sCG+CQ8G5Wz6bZhRZoAe/+TxjWB/GlFAnYEbkYVlON9FMk/fE3h2RLpPXo4lQ==
-  dependencies:
-    psl "^1.1.24"
     punycode "^1.4.1"
 
 trim-newlines@^1.0.0:

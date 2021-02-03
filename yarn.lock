@@ -697,6 +697,13 @@ cf-errors@^0.1.11:
   dependencies:
     lodash "4.17.15"
 
+cf-errors@^0.1.15:
+  version "0.1.15"
+  resolved "https://registry.yarnpkg.com/cf-errors/-/cf-errors-0.1.15.tgz#b55d03f1977e9677e3af7e7177ae0d901bafaf8a"
+  integrity sha512-gwhuKuBI7W/CuMpz+bxluWQRAuB3hvGbNcp46A/KcymgRnGKw2vLmIMHI2JaGpATMNdJh49ErocwVruM2UlJqw==
+  dependencies:
+    lodash "4.17.20"
+
 cf-logs@^1.1.0:
   version "1.1.22"
   resolved "https://registry.yarnpkg.com/cf-logs/-/cf-logs-1.1.22.tgz#cc7e6701cb15565cfc74130fe82e92464aa0cf1c"
@@ -3538,6 +3545,11 @@ lodash@4.17.15, lodash@^4.0.0, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11,
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+
+lodash@4.17.20:
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
 lodash@^3.0.1:
   version "3.10.1"

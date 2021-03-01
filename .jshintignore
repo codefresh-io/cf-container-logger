@@ -1,0 +1,4 @@
+**/node_modules/**
+coverage/**/*.js
+test/*.unit.spec.js
+**/server/migration/**

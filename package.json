@@ -28,6 +28,15 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "eslint": "^7.21.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-chai-friendly": "^0.6.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-mocha": "^8.0.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-react": "^7.22.0",
     "isparta": "^4.0.0",
     "proxyquire": "^1.7.4",
     "shelljs": "^0.6.0",
@@ -35,11 +44,11 @@
     "sinon-chai": "^3.3.0"
   },
   "engines": {
-    "node":  "10.24.0"
+    "node": "10.24.0"
   },
   "scripts": {
-    "lint": "yarn jshint",
-    "lint_node_12" : "yarn jshint && ./no-onlys.sh",
+    "lint": "eslint '*/**/*.js'",
+    "lint-fix": "eslint '*/**/*.js' --fix",
     "test": "node ./node_modules/mocha/bin/_mocha './{,!(node_modules)/**/}*.spec.js' --exit",
     "test:ci": "yarn test",
     "start": "node server/index.js",

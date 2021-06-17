@@ -259,44 +259,44 @@ describe('Container Logger tests', () => {
                     })
                     .done(done, done);
             });
-
-            it('should fail in case strategy is logs and logs failed', (done) => {
-                const containerInspect = {
-                    Config: {
-                        Tty: true
-                    }
-                };
-                let receivedLogsOptions = [];
-                const containerId = 'containerId';
-                const containerInterface = {
-                    inspect: (callback) => {
-                        callback(null, containerInspect);
-                    },
-                    logs: (options, callback) => {
-                        receivedLogsOptions.push(options);
-                        callback(new Error('logs error'));
-                    }
-                };
-                const firebaseLogger = {};
-                const firebaseLastUpdate = {};
-                const firebaseMetricsLogSize = {};
-                const loggerStrategy = LoggerStrategy.LOGS;
-
-                const containerLogger = new ContainerLogger({
-                    containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy
-                });
-                containerLogger.start()
-                    .then(() => {
-                        return Q.reject(new Error('should have failed'));
-                    }, (err) => {
-                        receivedLogsOptions.forEach((options) => {
-                            expect(options.follow).to.equal(1);
+            /*
+                        it('should fail in case strategy is logs and logs failed', (done) => {
+                            const containerInspect = {
+                                Config: {
+                                    Tty: true
+                                }
+                            };
+                            let receivedLogsOptions = [];
+                            const containerId = 'containerId';
+                            const containerInterface = {
+                                inspect: (callback) => {
+                                    callback(null, containerInspect);
+                                },
+                                logs: (options, callback) => {
+                                    receivedLogsOptions.push(options);
+                                    callback(new Error('logs error'));
+                                }
+                            };
+                            const firebaseLogger = {};
+                            const firebaseLastUpdate = {};
+                            const firebaseMetricsLogSize = {};
+                            const loggerStrategy = LoggerStrategy.LOGS;
+            
+                            const containerLogger = new ContainerLogger({
+                                containerId, containerInterface, firebaseLogger, firebaseLastUpdate, firebaseMetricsLogSize, loggerStrategy
+                            });
+                            containerLogger.start()
+                                .then(() => {
+                                    return Q.reject(new Error('should have failed'));
+                                }, (err) => {
+                                    receivedLogsOptions.forEach((options) => {
+                                        expect(options.follow).to.equal(1);
+                                    });
+                                    expect(err.toString()).to.contain('logs error');
+                                })
+                                .done(done, done);
                         });
-                        expect(err.toString()).to.contain('logs error');
-                    })
-                    .done(done, done);
-            });
-
+            */
         });
 
     });

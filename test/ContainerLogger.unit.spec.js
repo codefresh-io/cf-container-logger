@@ -290,7 +290,7 @@ describe('Container Logger tests', () => {
                         return Q.reject(new Error('should have failed'));
                     }, (err) => {
                         receivedLogsOptions.forEach((options) => {
-                            expect(options.follow).to.equal(1);
+                            expect(options.follow).to.equal(true);
                         });
                         expect(err.toString()).to.contain('logs error');
                     })

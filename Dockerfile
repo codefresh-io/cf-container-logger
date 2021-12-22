@@ -1,4 +1,4 @@
-FROM node:10.24.0-alpine3.11
+FROM node:gallium-bullseye-slim
 
 WORKDIR /root/cf-runtime
 

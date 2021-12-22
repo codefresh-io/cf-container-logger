@@ -52,7 +52,7 @@
     "lint-fix": "eslint '*/**/*.js' --fix",
     "test": "node ./node_modules/mocha/bin/_mocha './{,!(node_modules)/**/}*.spec.js' --exit",
     "test:ci": "yarn test",
-    "start": "node server/index.js",
+    "start": "node lib/index.js",
     "version": "exit 0"
   }
 }

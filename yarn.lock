@@ -750,13 +750,6 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-cf-errors@^0.1.15:
-  version "0.1.15"
-  resolved "https://registry.yarnpkg.com/cf-errors/-/cf-errors-0.1.15.tgz#b55d03f1977e9677e3af7e7177ae0d901bafaf8a"
-  integrity sha512-gwhuKuBI7W/CuMpz+bxluWQRAuB3hvGbNcp46A/KcymgRnGKw2vLmIMHI2JaGpATMNdJh49ErocwVruM2UlJqw==
-  dependencies:
-    lodash "4.17.20"
-
 cf-errors@^0.1.16:
   version "0.1.16"
   resolved "https://registry.yarnpkg.com/cf-errors/-/cf-errors-0.1.16.tgz#03d0b050ac94762552792907b08bd39d1a012116"

@@ -38,7 +38,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@codefresh-io/task-logger@^1.9.18":
+"@codefresh-io/task-logger@^1.9.22":
   version "1.9.22"
   resolved "https://registry.yarnpkg.com/@codefresh-io/task-logger/-/task-logger-1.9.22.tgz#57b374558a1f350b990bb2a8c18e88e785c9b4f8"
   integrity sha512-4tSJC3GiFH1HA3kfyht7m+AbGro4dx0QrY/nmIxnt/0jD6NK9F87dwgQx9j8q+pE51Le2OKA0WWyPk/s2tywcg==

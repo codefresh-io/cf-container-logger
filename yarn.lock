@@ -38,10 +38,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@codefresh-io/task-logger@^1.9.22":
-  version "1.9.22"
-  resolved "https://registry.yarnpkg.com/@codefresh-io/task-logger/-/task-logger-1.9.22.tgz#57b374558a1f350b990bb2a8c18e88e785c9b4f8"
-  integrity sha512-4tSJC3GiFH1HA3kfyht7m+AbGro4dx0QrY/nmIxnt/0jD6NK9F87dwgQx9j8q+pE51Le2OKA0WWyPk/s2tywcg==
+"@codefresh-io/task-logger@^1.9.24":
+  version "1.9.24"
+  resolved "https://registry.yarnpkg.com/@codefresh-io/task-logger/-/task-logger-1.9.24.tgz#848d4a95b3374f9c5f74ece9690530d4f1520047"
+  integrity sha512-U2ZFiQixI9Brb/JxArBaPehElDVUsaFTQPNGbuCqetAn0vopDFmexWG7vf7B1Eo5i9/vy8namlcTBWqoEgsAqQ==
   dependencies:
     cf-errors "^0.1.16"
     debug "^4.1.1"
@@ -54,7 +54,7 @@
     q "^1.4.1"
     redis "^2.8.0"
     request "^2.88.2"
-    requestretry "^4.1.2"
+    requestretry "^7.0.0"
     retry "^0.12.0"
 
 "@eslint/eslintrc@^0.4.0":
@@ -4169,14 +4169,13 @@ request@^2.88.2:
     tunnel-agent "^0.6.0"
     uuid "^3.3.2"
 
-requestretry@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/requestretry/-/requestretry-4.1.2.tgz#f5975c0c3be9e352e25038c9fed482d5cc51978e"
-  integrity sha512-N1WAp+8eOy8NfsVBChcSxNCKvPY1azOpliQ4Sby4WDe0HFEhdKywlNZeROMBQ+BI3Jpc0eNOT1KVFGREawtahA==
+requestretry@^7.0.0:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/requestretry/-/requestretry-7.0.2.tgz#22a169e5d3aaadd95d00401d7347511f3695faf4"
+  integrity sha512-Zz8z7G2OuVs4F0wR0shKMEMm7lNvPNHM0UIHNns9qfyuBDKSExoTsZGtSjKst6nPEwlMrbA9G+m/yC0AbGj+8w==
   dependencies:
     extend "^3.0.2"
     lodash "^4.17.15"
-    when "^3.7.7"
 
 require-directory@^2.1.1:
   version "2.1.1"
@@ -5103,11 +5102,6 @@ websocket-extensions@0.1.4, websocket-extensions@>=0.1.1:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.4.tgz#7f8473bc839dfd87608adb95d7eb075211578a42"
   integrity sha512-OqedPIGOfsDlo31UNwYbCFMSaO9m9G/0faIHj5/dZFDMFqPTcx6UwqyOy3COEaEOg/9VsGIpdqn62W5KhoKSpg==
-
-when@^3.7.7:
-  version "3.7.8"
-  resolved "https://registry.yarnpkg.com/when/-/when-3.7.8.tgz#c7130b6a7ea04693e842cdc9e7a1f2aa39a39f82"
-  integrity sha1-xxMLan6gRpPoQs3J56Hyqjmjn4I=
 
 which-boxed-primitive@^1.0.1:
   version "1.0.1"

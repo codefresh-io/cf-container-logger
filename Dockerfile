@@ -5,23 +5,15 @@ WORKDIR /root/cf-runtime
 RUN apk -U upgrade
 
 # install cf-runtime required binaries
-RUN apk add --no-cache --virtual deps \
-    bash \
-    g++ \
-    git \
-    make \
-    openssh-client \
-    python3 \
-    tini
+RUN apk add --no-cache bash git openssh-client tini
 
 COPY package.json ./
 
 COPY yarn.lock ./
 
-RUN apk -U upgrade
-
 # install cf-runtime required binaries
-RUN yarn install --frozen-lockfile --production && \
+RUN apk add --no-cache --virtual deps python3 make g++ && \
+    yarn install --frozen-lockfile --production && \
     yarn cache clean && \
     apk del deps && \
     rm -rf /tmp/*
@@ -32,4 +24,4 @@ COPY . ./
 # Set tini as entrypoint
 ENTRYPOINT ["/sbin/tini", "--"]
 
-CMD ["nodemon", "--delay", "1", "lib/index.js"]
+CMD ["./node_modules/.bin/nodemon", "--delay", "1", "lib/index.js"]

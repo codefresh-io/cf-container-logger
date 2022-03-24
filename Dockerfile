@@ -5,9 +5,7 @@ WORKDIR /root/cf-runtime
 RUN apk -U upgrade
 
 # install cf-runtime required binaries
-RUN apk add --no-cache bash git openssh-client tini
-
-RUN npm install pm2 -g
+RUN apk add --no-cache bash git openssh-client
 
 COPY package.json yarn.lock ./
 
@@ -21,7 +19,4 @@ RUN apk add --no-cache --virtual deps python3 make g++ && \
 # copy app files
 COPY . ./
 
-# Set tini as entrypoint
-ENTRYPOINT ["/sbin/tini", "--"]
-
-CMD ["pm2-runtime", "--restart-delay", "1000", "lib/index.js"]
+CMD ["node", "lib/index.js"]

@@ -4,14 +4,10 @@ WORKDIR /root/cf-runtime
 
 RUN apk -U upgrade
 
-# install cf-runtime required binaries
-# RUN apk add --no-cache bash git openssh-client
-
 COPY package.json yarn.lock ./
 
 # install cf-runtime required binaries
-RUN apk add --no-cache --virtual \
-    deps \
+RUN apk add --no-cache --virtual deps \
     g++ \
     git \
     make \

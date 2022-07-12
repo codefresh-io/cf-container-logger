@@ -5,6 +5,10 @@
   "keywords": [
     "cf-container-logger"
   ],
+  "resolutions": {
+    "minimist": "^0.2.1",
+    "redis": "^3.1.1"
+  },
   "dependencies": {
     "@codefresh-io/task-logger": "^1.9.24",
     "body-parser": "^1.19.0",

@@ -13,7 +13,7 @@
     "@codefresh-io/task-logger": "^1.9.24",
     "body-parser": "^1.19.0",
     "cf-errors": "^0.1.16",
-    "cf-logs": "^1.1.25",
+    "cf-logs": "^1.1.26",
     "docker-events": "0.0.2",
     "dockerode": "^2.5.8",
     "express": "^4.17.3",

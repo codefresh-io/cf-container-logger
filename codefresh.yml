@@ -6,9 +6,8 @@ stages:
   - test
   - release
 steps:
-
   main_clone:
-    title: 'Cloning main repository...'
+    title: "Cloning main repository..."
     stage: clone
     type: git-clone
     repo: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
@@ -16,29 +15,29 @@ steps:
     git: ${{GIT_CONTEXT}}
 
   prepare_env_vars:
-    title: 'Preparing environment variables...'
+    title: "Preparing environment variables..."
     stage: prepare
     image: codefreshio/ci-helpers
     working_directory: ${{main_clone}}
     commands:
-      - cf_export NODE_VERSION=11.10.0
+      - cf_export NODE_VERSION=16.18.1
       - cf_export SERVICE_VERSION=$(yq r service.yaml version)
       - cf_export IMAGE_NAME=codefresh/cf-container-logger
 
   validate_version:
-    title: 'Validating the service version...'
+    title: "Validating the service version..."
     stage: prepare
     image: codefreshio/ci-helpers
     fail_fast: false
     commands:
-    - |
-      err() { echo -e "\e[31m$@\e[0m" ; return 1 ; }
-      ok() { echo -e "\e[32m$@\e[0m" ; return 0 ; }
+      - |
+        err() { echo -e "\e[31m$@\e[0m" ; return 1 ; }
+        ok() { echo -e "\e[32m$@\e[0m" ; return 0 ; }
 
-      current_version=${SERVICE_VERSION}
-      last_version=$(git describe --abbrev=0 --tags)
-      echo "Current version is $current_version, last version - $last_version"
-      semver-cli greater $current_version $last_version && ok "Version check ok" || err "Please the update the version in the service.yaml file"
+        current_version=${SERVICE_VERSION}
+        last_version=$(git describe --abbrev=0 --tags)
+        echo "Current version is $current_version, last version - $last_version"
+        semver-cli greater $current_version $last_version && ok "Version check ok" || err "Please the update the version in the service.yaml file"
 
   build_image:
     title: "Building the image..."
@@ -69,36 +68,35 @@ steps:
       branch:
         only: [master]
       steps:
-       - name: validate_version
-         on:
-           - failure
+        - name: validate_version
+          on:
+            - failure
 
   release:
     type: parallel
     stage: release
     steps:
-
       add_git_tag:
-          title: "Adding Git tag..."
-          stage: release
-          image: codefreshio/ci-helpers
-          commands:
-            - source /get-token/get-gh-token.sh
-            - |
-              curl --fail -X POST -d '{"ref": "refs/tags/${{SERVICE_VERSION}}","sha": "${{CF_REVISION}}"}' -H "Content-Type: application/json" -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}/git/refs
-          when:
-            branch:
-              only: [master]
-            steps:
-             - name: validate_version
-               on:
-                 - success
-                 
+        title: "Adding Git tag..."
+        stage: release
+        image: codefreshio/ci-helpers
+        commands:
+          - source /get-token/get-gh-token.sh
+          - |
+            curl --fail -X POST -d '{"ref": "refs/tags/${{SERVICE_VERSION}}","sha": "${{CF_REVISION}}"}' -H "Content-Type: application/json" -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}/git/refs
+        when:
+          branch:
+            only: [master]
+          steps:
+            - name: validate_version
+              on:
+                - success
+
       push_image_prod:
         type: push
         title: "Pushing the image to the public registry..."
         stage: release
-        image_name: '${{IMAGE_NAME}}'
+        image_name: "${{IMAGE_NAME}}"
         registry: "${{REGISTRY_INTEGRATION}}"
         candidate: "${{build_image}}"
         tags:
@@ -107,3 +105,4 @@ steps:
         when:
           branch:
             only: [master]
+

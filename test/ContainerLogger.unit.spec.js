@@ -2,14 +2,20 @@
 
 const Q = require('q');
 const chai = require('chai');
-const expect = chai.expect;
 const sinon = require('sinon');
+const proxyquire = require('proxyquire');
+const promiseRetry = require('promise-retry');
 const sinonChai = require('sinon-chai');
-chai.use(sinonChai);
-const ContainerLogger = require('../lib/ContainerLogger');
 const LoggerStrategy = require('../lib/enums').LoggerStrategy;
 const { EventEmitter } = require('events');
 const { Writable, Readable, PassThrough } = require('stream');
+
+const expect = chai.expect;
+chai.use(sinonChai);
+
+const ContainerLogger = proxyquire('../lib/ContainerLogger', {
+    'promise-retry': (cb) => promiseRetry(cb, { retries: 0 }),
+});
 
 describe('Container Logger tests', () => {
 

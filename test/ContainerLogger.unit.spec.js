@@ -726,14 +726,15 @@ describe('Container Logger tests', () => {
             };
 
             const stdoutStream = new EventEmitter();
+            const stderrStream = new EventEmitter();
 
             const containerId = 'containerId';
             const containerInterface = {
                 inspect: (callback) => {
                     callback(null, containerInspect);
                 },
-                attach: (opt, callback) => {
-                    callback(null, stdoutStream);
+                attach: ({ stderr }, callback) => {
+                    callback(null, stderr ? stderrStream : stdoutStream);
                 }
             };
             const stepLogger = {
@@ -752,12 +753,14 @@ describe('Container Logger tests', () => {
             containerLogger._logMessage = sinon.spy();
             await containerLogger.start();
 
-            expect(containerLogger.handledStreams).to.be.equal(1);
+            expect(containerLogger.handledStreams).to.be.equal(2);
             expect(containerLogger.finishedStreams).to.be.equal(0);
             expect(endEventCalled).to.be.false;
             stdoutStream.emit('end');
+            expect(endEventCalled).to.be.false;
+            stderrStream.emit('end');
             expect(endEventCalled).to.be.true;
-            expect(containerLogger.finishedStreams).to.be.equal(1);
+            expect(containerLogger.finishedStreams).to.be.equal(2);
         });
 
         it('should emit "end" event - writable stream', async () => {

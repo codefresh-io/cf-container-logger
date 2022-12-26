@@ -13,11 +13,16 @@ const { Writable, Readable, PassThrough } = require('stream');
 const expect = chai.expect;
 chai.use(sinonChai);
 
+const promiseRetrySpy = sinon.spy((err) => Q.reject(err));
+
 const ContainerLogger = proxyquire('../lib/ContainerLogger', {
-    'promise-retry': (cb) => promiseRetry(cb, { retries: 0 }),
+    'promise-retry': (cb) => cb(promiseRetrySpy, 1),
 });
 
 describe('Container Logger tests', () => {
+    beforeEach(() => {
+        promiseRetrySpy.resetHistory();
+    });
 
     describe('start', () => {
 
@@ -197,6 +202,7 @@ describe('Container Logger tests', () => {
                     .then(() => {
                         return Q.reject(new Error('should have failed'));
                     }, (err) => {
+                        expect(promiseRetrySpy).not.to.have.been.called;
                         expect(err.toString())
                             .to
                             .contain('Strategy: non-existing-strategy is not supported');
@@ -222,6 +228,7 @@ describe('Container Logger tests', () => {
                     .then(() => {
                         return Q.reject(new Error('should have failed'));
                     }, (err) => {
+                        expect(promiseRetrySpy).to.have.been.calledOnceWith(err);
                         expect(err.toString()).to.contain('inspect error');
                     })
                     .done(done, done);
@@ -262,6 +269,7 @@ describe('Container Logger tests', () => {
                             expect(options.tty).to.equal(true);
                         });
                         expect(err.toString()).to.contain('attach error');
+                        expect(promiseRetrySpy).to.have.been.calledOnceWith(err);
                     })
                     .done(done, done);
             });
@@ -299,6 +307,7 @@ describe('Container Logger tests', () => {
                             expect(options.follow).to.equal(true);
                         });
                         expect(err.toString()).to.contain('logs error');
+                        expect(promiseRetrySpy).to.have.been.calledOnceWith(err);
                     })
                     .done(done, done);
             });

@@ -29,7 +29,7 @@ describe('isReady script', () => {
             expect(process.exit).to.have.been.calledOnceWith(0);
         });
         it('Should check exit with 1 code if container logger is not ready', () => {
-            const state = JSON.stringify({ status: 'noteReady', containers: {} })
+            const state = JSON.stringify({ status: 'notReady', containers: {} })
             process.argv = [];
             proxyquire('../lib/isReady.js', {
                 'fs': {
@@ -42,6 +42,16 @@ describe('isReady script', () => {
     describe('Container Checks', () => {
         it('Should check exit with 0 code if container is ready', () => {
             const state = JSON.stringify({ status: 'ready', containers: { 'container-id': { status: ContainerHandlingStatus.LISTENING } } })
+            process.argv = ['foo', 'bar', 'container-id'];
+            proxyquire('../lib/isReady.js', {
+                'fs': {
+                    readFileSync: () => Buffer.from(state),
+                },
+            });
+            expect(process.exit).to.have.been.calledOnceWith(0);
+        });
+        it('Should check exit with 0 code if container is waiting for start status', () => {
+            const state = JSON.stringify({ status: 'ready', containers: { 'container-id': { status: ContainerHandlingStatus.WAITING_FOR_START } } })
             process.argv = ['foo', 'bar', 'container-id'];
             proxyquire('../lib/isReady.js', {
                 'fs': {

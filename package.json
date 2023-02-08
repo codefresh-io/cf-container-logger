@@ -10,7 +10,7 @@
     "redis": "^3.1.1"
   },
   "dependencies": {
-    "@codefresh-io/task-logger": "https://github.com/codefresh-io/task-logger.git#b0a40d42157fbd5d5edb6d599b7c9f264c7c671c",
+    "@codefresh-io/task-logger": "https://github.com/codefresh-io/task-logger.git#a369c1c3ddfdabd7c28ae28f8456514d0289ebff",
     "body-parser": "^1.19.0",
     "cf-errors": "^0.1.16",
     "cf-logs": "^1.1.25",

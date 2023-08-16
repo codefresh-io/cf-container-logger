@@ -1,4 +1,4 @@
-FROM node:16.20-bullseye-slim
+FROM node:16.20.2-bullseye-slim
 
 WORKDIR /root/cf-runtime
 

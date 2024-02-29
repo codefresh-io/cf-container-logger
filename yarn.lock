@@ -640,10 +640,10 @@ cf-errors@^0.1.16:
   dependencies:
     lodash "^4.17.21"
 
-cf-logs@^1.1.25:
-  version "1.1.25"
-  resolved "https://registry.yarnpkg.com/cf-logs/-/cf-logs-1.1.25.tgz#0ee1aaa11756a4924ac32b64bc1cf97dc2f8d4ff"
-  integrity sha512-YwutDhQ601IFObemKeESq8+rRq+XDPSDHG7erDHytCPNaiLMI9llAKgAMWDFUMtpsHttAiaQCt9wemmQPqgEvQ==
+cf-logs@^1.1.26:
+  version "1.1.26"
+  resolved "https://registry.yarnpkg.com/cf-logs/-/cf-logs-1.1.26.tgz#a226255cacff0287678c0ba9674c4a46757ca47c"
+  integrity sha512-B98GRPf4gj8L2nsASFLW0KGJhLp5qNzJgkjDDRC/tLWF6gBw6DZimnwDkCqdJdrdLctoWHkOUBb+dvSDGr1e+g==
   dependencies:
     lodash "^4.17.21"
     winston "3.3.3"

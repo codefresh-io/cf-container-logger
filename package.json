@@ -7,7 +7,6 @@
   ],
   "resolutions": {
     "minimist": "^1.2.6",
-    "redis": "^3.1.1",
     "semver": "^7.5.2"
   },
   "dependencies": {

@@ -11,7 +11,7 @@
     "semver": "^7.5.2"
   },
   "dependencies": {
-    "@codefresh-io/task-logger": "git+https://github.com/codefresh-io/task-logger.git#14c5112d67a83d34dffa08064bcd577188567942",
+    "@codefresh-io/task-logger": "git+https://github.com/codefresh-io/task-logger.git#6eeb79ed764c16cc9a25d7fb686aa40b2749987c",
     "body-parser": "^1.19.0",
     "cf-errors": "^0.1.16",
     "cf-logs": "^1.1.25",

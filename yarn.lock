@@ -529,9 +529,9 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@codefresh-io/task-logger@git+https://github.com/codefresh-io/task-logger.git#ddd5fbf8f3fc43ed6a98aab6e0bf8a2a0c98c6f0":
+"@codefresh-io/task-logger@git+https://github.com/codefresh-io/task-logger.git#14c5112d67a83d34dffa08064bcd577188567942":
   version "1.12.3"
-  resolved "git+https://github.com/codefresh-io/task-logger.git#ddd5fbf8f3fc43ed6a98aab6e0bf8a2a0c98c6f0"
+  resolved "git+https://github.com/codefresh-io/task-logger.git#14c5112d67a83d34dffa08064bcd577188567942"
   dependencies:
     cf-errors "^0.1.17"
     debug "^4.1.1"

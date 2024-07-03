@@ -1,12 +1,11 @@
 /* jshint ignore:start */
 
-'use strict';
-const Q = require('q');
-
+const timers = require('node:timers/promises');
 const chai       = require('chai');
 const expect     = chai.expect;
 const sinon      = require('sinon');
 const sinonChai  = require('sinon-chai');
+const { getPromiseWithResolvers } = require('../lib/helpers');
 const proxyquire = require('proxyquire').noCallThru();
 chai.use(sinonChai);
 
@@ -27,21 +26,24 @@ describe('addNewMask', () => {
 
     describe('positive', () => {
         it('should send a request to add a secret', async () => {
-            const rpSpy = sinon.spy(() => Q.resolve({ statusCode: 201 }));
+            const rpSpy = sinon.spy(async () => ({ statusCode: 201 }));
+            const deferredAddress = getPromiseWithResolvers();
             const addNewMask = proxyquire('../lib/addNewMask', {
-                'request-promise': rpSpy
+                'request-promise': rpSpy,
+                './logger': {
+                    secretsServerAddress: deferredAddress.promise,
+                },
             });
-
-            process.env.PORT = 1337;
-            process.env.HOST = '127.0.0.1';
     
             const secret = {
                 key: '123',
                 value: 'ABC',
             };
 
+            deferredAddress.resolve('http://127.0.0.1:1337');
             addNewMask(secret);
     
+            await timers.setTimeout(10);
             expect(rpSpy).to.have.been.calledOnceWith({
                 uri: `http://127.0.0.1:1337/secrets`,
                 method: 'POST',
@@ -49,30 +51,31 @@ describe('addNewMask', () => {
                 body: secret,
                 resolveWithFullResponse: true,
             });
-            await Q.delay(10);
+            await timers.setTimeout(10);
             expect(process.exit).to.have.been.calledOnceWith(0);
         });
     });
 
     describe('negative', () => {
         it('should send a request to add a secret', async () => {
-            const rpSpy = sinon.spy(() => Q.reject('could not send request'));
+            const rpSpy = sinon.spy(async () => { throw 'could not send request';});
+            deferredAddress = getPromiseWithResolvers();
             const addNewMask = proxyquire('../lib/addNewMask', {
-                'request-promise': rpSpy
+                'request-promise': rpSpy,
+                './logger': {
+                    secretsServerAddress: deferredAddress.promise,
+                },
             });
-
-            process.env.PORT = 1337;
-            process.env.HOST = '127.0.0.1';
     
             const secret = {
                 key: '123',
                 value: 'ABC',
             };
 
+            deferredAddress.resolve('http://127.0.0.1:1337');
             addNewMask(secret);
-            await Q.delay(10);
+            await timers.setTimeout(10);
             expect(process.exit).to.have.been.calledOnceWith(1);
         });
     });
 });
-

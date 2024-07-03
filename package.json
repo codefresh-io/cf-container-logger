@@ -13,6 +13,7 @@
     "@codefresh-io/task-logger": "^1.12.3",
     "cf-errors": "^0.1.16",
     "cf-logs": "^1.1.25",
+    "core-js-pure": "^3.37.1",
     "docker-events": "0.0.2",
     "dockerode": "^2.5.8",
     "fastify": "^4.28.1",

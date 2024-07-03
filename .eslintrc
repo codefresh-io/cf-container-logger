@@ -78,7 +78,6 @@
     "quote-props": ["error", "consistent"],
 
     "promise/catch-or-return": ["error", { "allowThen": true }],
-    "promise/no-native": "error",
 
     "mocha/no-exclusive-tests": "error",
 

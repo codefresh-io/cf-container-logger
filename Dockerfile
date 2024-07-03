@@ -1,4 +1,4 @@
-FROM node:20.15.0-bookworm-slim as base
+FROM node:20.15.0-bookworm-slim AS base
 RUN adduser --disabled-password -home /home/cfu -shell /bin/bash cfu
 WORKDIR /root/cf-runtime
 COPY package.json yarn.lock ./

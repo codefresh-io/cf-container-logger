@@ -17,11 +17,10 @@
     "docker-events": "0.0.2",
     "dockerode": "^2.5.8",
     "fastify": "^4.28.1",
+    "got": "^14.4.1",
     "lodash": "^4.17.21",
     "promise-retry": "^2.0.1",
-    "q": "^1.5.1",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.6"
+    "q": "^1.5.1"
   },
   "devDependencies": {
     "chai": "^4.3.6",

@@ -35,7 +35,7 @@ describe('Logger tests', () => {
     describe('constructor', () => {
 
         it('should define workflow log size limit default in case of non provided value', () => {
-            const { Logger } = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger', {});
 
             const loggerId = 'loggerId';
             const firebaseAuthUrl = 'firebaseAuthUrl';
@@ -54,7 +54,7 @@ describe('Logger tests', () => {
         });
 
         it('should use passed workflow log size limit in case passed', () => {
-            const { Logger } = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger', {});
 
             const loggerId = 'loggerId';
             const firebaseAuthUrl = 'firebaseAuthUrl';
@@ -91,7 +91,7 @@ describe('Logger tests', () => {
                     return Q.resolve(taskLogger);
                 });
 
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
                     'express': expressMock,
                 });
@@ -135,7 +135,7 @@ describe('Logger tests', () => {
                     return Q.resolve(taskLogger);
                 });
 
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
                     'express': expressMock,
                 });
@@ -177,7 +177,7 @@ describe('Logger tests', () => {
                     return Q.resolve(taskLogger);
                 });
 
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
                     'express': expressMock,
                 });
@@ -218,7 +218,7 @@ describe('Logger tests', () => {
                     return Q.resolve(taskLogger);
                 });
 
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
                     'express': expressMock,
                 });
@@ -264,7 +264,7 @@ describe('Logger tests', () => {
                     return Q.reject(new Error('my error'));
                 });
 
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
                     'express': expressMock,
                 });
@@ -294,7 +294,7 @@ describe('Logger tests', () => {
                     callback(null, [{}, {}]);
                 });
 
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'dockerode': function () {
                         return {
                             listContainers: listContainersSpy
@@ -317,7 +317,7 @@ describe('Logger tests', () => {
                     callback(null, []);
                 });
 
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'dockerode': function () {
                         return {
                             listContainers: listContainersSpy
@@ -344,7 +344,7 @@ describe('Logger tests', () => {
                     callback(new Error('getting containers error'));
                 });
 
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'dockerode': function () {
                         return {
                             listContainers: listContainersSpy
@@ -373,7 +373,7 @@ describe('Logger tests', () => {
         it('should call handleContainer in case of an create event', () => {
             const startSpy = sinon.spy();
             const onSpy = sinon.spy();
-            const { Logger } = proxyquire('../lib/logger', {
+            const Logger = proxyquire('../lib/logger', {
                 'docker-events': function () {
                     return {
                         start: startSpy,
@@ -400,7 +400,7 @@ describe('Logger tests', () => {
                 callback();
             });
 
-            const { Logger } = proxyquire('../lib/logger', {
+            const Logger = proxyquire('../lib/logger', {
                 'fs': {
                     writeFile: writeFileSpy,
                     readFileSync: sinon.spy(() => {
@@ -420,7 +420,7 @@ describe('Logger tests', () => {
                 callback(new Error('write error'));
             });
 
-            const { Logger } = proxyquire('../lib/logger', {
+            const Logger = proxyquire('../lib/logger', {
                 'fs': {
                     writeFile: writeFileSpy,
                     readFileSync: sinon.spy(() => {
@@ -440,7 +440,7 @@ describe('Logger tests', () => {
     describe('validate', () => {
 
         it('should call process exit in case firebase authentication url was not provided', () => {
-            const { Logger } = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger', {});
 
             const loggerId = 'loggerId';
             const firebaseAuthUrl = 'firebaseAuthUrl';
@@ -461,7 +461,7 @@ describe('Logger tests', () => {
             });
             process.exit = processExitSpy;
 
-            const { Logger } = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger', {});
 
             const loggerId = 'loggerId';
             const firebaseAuthUrl = '';
@@ -482,7 +482,7 @@ describe('Logger tests', () => {
             });
             process.exit = processExitSpy;
 
-            const { Logger } = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger', {});
 
             const loggerId = 'loggerId';
             const firebaseAuthUrl = 'firebaseAuthUrl';
@@ -503,7 +503,7 @@ describe('Logger tests', () => {
             });
             process.exit = processExitSpy;
 
-            const { Logger } = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger', {});
 
             const loggerId = '';
             const firebaseAuthUrl = 'firebaseAuthUrl';
@@ -538,7 +538,7 @@ describe('Logger tests', () => {
                             emitter.start = startSpy;
                             return emitter;
                         });
-                        const { Logger } = proxyquire('../lib/logger', {
+                        const Logger = proxyquire('../lib/logger', {
                             'cf-logs': {
                                 Logger: () => {
                                     return {
@@ -586,7 +586,7 @@ describe('Logger tests', () => {
                     it('should pass received step log size limit to ContainerLogger', async () => {
                         const infoSpy = sinon.spy();
                         const errorSpy = sinon.spy();
-                        const { Logger } = proxyquire('../lib/logger', {
+                        const Logger = proxyquire('../lib/logger', {
                             'cf-logs': {
                                 Logger: () => {
                                     return {
@@ -633,7 +633,7 @@ describe('Logger tests', () => {
                     it('should pass undefined step log size limit to ContainerLogger in case of no label', async () => {
                         const infoSpy = sinon.spy();
                         const errorSpy = sinon.spy();
-                        const { Logger } = proxyquire('../lib/logger', {
+                        const Logger = proxyquire('../lib/logger', {
                             'cf-logs': {
                                 Logger: () => {
                                     return {
@@ -676,7 +676,7 @@ describe('Logger tests', () => {
                     it('should update total log size when new log message event was sent', async () => {
                         const infoSpy = sinon.spy();
                         const errorSpy = sinon.spy();
-                        const { Logger } = proxyquire('../lib/logger', {
+                        const Logger = proxyquire('../lib/logger', {
                             'cf-logs': {
                                 Logger: () => {
                                     return {
@@ -735,7 +735,7 @@ describe('Logger tests', () => {
                         });
                         const infoSpy = sinon.spy();
                         const errorSpy = sinon.spy();
-                        const { Logger } = proxyquire('../lib/logger', {
+                        const Logger = proxyquire('../lib/logger', {
                             'cf-logs': {
                                 Logger: () => {
                                     return {
@@ -804,7 +804,7 @@ describe('Logger tests', () => {
             it('was previously handled', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -849,7 +849,7 @@ describe('Logger tests', () => {
             it('no loggerId', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -889,7 +889,7 @@ describe('Logger tests', () => {
             it('no containerId', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -922,7 +922,7 @@ describe('Logger tests', () => {
             it('no container status', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -955,7 +955,7 @@ describe('Logger tests', () => {
             it('no step name', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -988,7 +988,7 @@ describe('Logger tests', () => {
             it('no strategy provided', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -1022,7 +1022,7 @@ describe('Logger tests', () => {
             it('provided strategy does not exist', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -1057,7 +1057,7 @@ describe('Logger tests', () => {
             it('container status is create and strategy is logs', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
-                const { Logger } = proxyquire('../lib/logger', {
+                const Logger = proxyquire('../lib/logger', {
                     'cf-logs': {
                         Logger: () => {
                             return {
@@ -1103,7 +1103,7 @@ describe('Logger tests', () => {
         it('should return true in case log limit exceeded', async () => {
             const infoSpy = sinon.spy();
             const errorSpy = sinon.spy();
-            const { Logger } = proxyquire('../lib/logger', {
+            const Logger = proxyquire('../lib/logger', {
                 'cf-logs': {
                     Logger: () => {
                         return {
@@ -1151,7 +1151,7 @@ describe('Logger tests', () => {
         it('should return false in case log limit not exceeded', async () => {
             const infoSpy = sinon.spy();
             const errorSpy = sinon.spy();
-            const { Logger } = proxyquire('../lib/logger', {
+            const Logger = proxyquire('../lib/logger', {
                 'cf-logs': {
                     Logger: () => {
                         return {
@@ -1207,7 +1207,7 @@ describe('Logger tests', () => {
         it('should return false in case log limit was not defined', async () => {
             const infoSpy = sinon.spy();
             const errorSpy = sinon.spy();
-            const { Logger } = proxyquire('../lib/logger', {
+            const Logger = proxyquire('../lib/logger', {
                 'cf-logs': {
                     Logger: () => {
                         return {
@@ -1258,7 +1258,7 @@ describe('Logger tests', () => {
         it('should return true in case log limit exceeded for one container logger', async () => {
             const infoSpy = sinon.spy();
             const errorSpy = sinon.spy();
-            const { Logger } = proxyquire('../lib/logger', {
+            const Logger = proxyquire('../lib/logger', {
                 'cf-logs': {
                     Logger: () => {
                         return {
@@ -1309,7 +1309,7 @@ describe('Logger tests', () => {
                 emitter.start = sinon.spy(() => Q.resolve());
                 return emitter;
             });
-            const { Logger } = proxyquire('../lib/logger', {
+            const Logger = proxyquire('../lib/logger', {
                 'cf-logs': {
                     Logger: () => {
                         return {
@@ -1376,7 +1376,7 @@ describe('Logger tests', () => {
             const containerLogger = new EventEmitter();
             containerLogger.start = () => Q.resolve();
 
-            const { Logger } = proxyquire('../lib/logger', {
+            const Logger = proxyquire('../lib/logger', {
                 '@codefresh-io/task-logger': { TaskLogger: () => Q.resolve(taskLogger) },
                 'docker-events': function () { return dockerEvents; },
                 './ContainerLogger': function () { return containerLogger; },
@@ -1466,7 +1466,7 @@ describe('Logger tests', () => {
             const containerLogger = new EventEmitter();
             containerLogger.start = () => Q.resolve();
 
-            const { Logger } = proxyquire('../lib/logger', {
+            const Logger = proxyquire('../lib/logger', {
                 '@codefresh-io/task-logger': { TaskLogger: () => Q.resolve(taskLogger) },
                 'docker-events': function () { return dockerEvents; },
                 './ContainerLogger': function () { return containerLogger; },
@@ -1506,7 +1506,7 @@ describe('Logger tests', () => {
     //             return Q.resolve(taskLogger);
     //         });
 
-    //         const { Logger } = proxyquire('../lib/logger', {
+    //         const Logger = proxyquire('../lib/logger', {
     //             '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
     //             'express': expressMock,
     //         });

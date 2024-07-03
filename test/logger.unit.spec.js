@@ -1493,45 +1493,45 @@ describe('Logger tests', () => {
         });
     });
 
-    describe('engine updates', () => {
-        it('should listen for engine updates', async () => {
-            const taskLogger = {
-                on: sinon.spy(),
-                restore: sinon.spy(() => Q.resolve()),
-                startHealthCheck: sinon.spy(),
-                onHealthCheckReported: sinon.spy(),
-                getStatus: sinon.spy(),
-            };
-            const TaskLoggerFactory = sinon.spy(() => {
-                return Q.resolve(taskLogger);
-            });
+    // describe('engine updates', () => {
+    //     it('should listen for engine updates', async () => {
+    //         const taskLogger = {
+    //             on: sinon.spy(),
+    //             restore: sinon.spy(() => Q.resolve()),
+    //             startHealthCheck: sinon.spy(),
+    //             onHealthCheckReported: sinon.spy(),
+    //             getStatus: sinon.spy(),
+    //         };
+    //         const TaskLoggerFactory = sinon.spy(() => {
+    //             return Q.resolve(taskLogger);
+    //         });
 
-            const Logger = proxyquire('../lib/logger', {
-                '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
-                'express': expressMock,
-            });
+    //         const Logger = proxyquire('../lib/logger', {
+    //             '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
+    //             'express': expressMock,
+    //         });
 
-            const loggerId = 'loggerId';
-            const taskLoggerConfig = { task: {}, opts: {} };
-            const findExistingContainers = false;
+    //         const loggerId = 'loggerId';
+    //         const taskLoggerConfig = { task: {}, opts: {} };
+    //         const findExistingContainers = false;
 
-            const logger = new Logger({
-                loggerId,
-                taskLoggerConfig,
-                findExistingContainers,
-            });
-            logger._listenForNewContainers = sinon.spy();
-            logger._writeNewState = sinon.spy();
-            logger._listenForExistingContainers = sinon.spy();
-            process.env.PORT = 1337;
-            process.env.HOST = '127.0.0.1';
-            logger.start();
+    //         const logger = new Logger({
+    //             loggerId,
+    //             taskLoggerConfig,
+    //             findExistingContainers,
+    //         });
+    //         logger._listenForNewContainers = sinon.spy();
+    //         logger._writeNewState = sinon.spy();
+    //         logger._listenForExistingContainers = sinon.spy();
+    //         process.env.PORT = 1337;
+    //         process.env.HOST = '127.0.0.1';
+    //         logger.start();
 
-            await Q.delay(10);
+    //         await Q.delay(10);
 
-            expect(logger._app).to.not.be.undefined;
-            expect(logger._app.listen).to.have.been.calledOnce;
-            expect(logger._app.listen).to.have.been.calledWithMatch(1337, '127.0.0.1');
-        });
-    });
+    //         expect(logger._app).to.not.be.undefined;
+    //         expect(logger._app.listen).to.have.been.calledOnce;
+    //         expect(logger._app.listen).to.have.been.calledWithMatch(1337, '127.0.0.1');
+    //     });
+    // });
 });

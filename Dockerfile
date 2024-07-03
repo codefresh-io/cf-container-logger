@@ -1,26 +1,21 @@
-FROM node:20.8.1-bookworm-slim
-
+FROM node:20.15.0-bookworm-slim AS base
+RUN adduser --disabled-password -home /home/cfu -shell /bin/bash cfu
 WORKDIR /root/cf-runtime
-
-RUN apt-get update && apt upgrade -y && \
-    apt-get install g++ git  make python3 -y
-
 COPY package.json yarn.lock ./
 
-# install cf-runtime required binaries
-RUN yarn install --frozen-lockfile --production && \
-    yarn cache clean && \
-    apt-get purge g++ git make python3 -y && \
-    apt-get autoremove -y && \
-    apt-get clean -y && \
-    rm -rf /tmp/* && \
-    rm -rf /var/lib/apt/lists/*
+FROM base AS dependencies
+RUN apt-get update \
+    && apt upgrade -y \
+    && apt-get install -y \
+    g++ \
+    git \
+    make \
+    python3
+RUN yarn install --frozen-lockfile --production
 
-# copy app files
-COPY . ./
-
-RUN adduser --disabled-password  -home /home/cfu -shell /bin/bash cfu
+FROM base AS production
+COPY --from=dependencies /root/cf-runtime/node_modules ./node_modules
+COPY . .
 
 USER cfu
-
 CMD ["node", "lib/index.js"]

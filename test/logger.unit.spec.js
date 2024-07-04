@@ -1,24 +1,25 @@
-'use strict';
-
+const timers = require('node:timers/promises')
 const Q = require('q');
 const proxyquire = require('proxyquire').noCallThru();
 const chai = require('chai');
-const expect = chai.expect;
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
-chai.use(sinonChai);
-const ContainerStatus = require('../lib/enums').ContainerStatus;
-const LoggerStrategy = require('../lib/enums').LoggerStrategy;
 const { EventEmitter } = require('events');
+const { ContainerStatus } = require('../lib/enums');
+const { LoggerStrategy } = require('../lib/enums');
+const { getPromiseWithResolvers } = require('../lib/helpers');
 
-const expressMock = function () {
-    return {
-        use: sinon.spy(),
-        listen: sinon.spy(),
-        post: sinon.spy(),
-        get: sinon.spy(),
-    }
-}
+const expect = chai.expect;
+chai.use(sinonChai);
+
+const mockAddress = 'mockAddress';
+const stubFastifyPost = sinon.stub();
+const stubFastifyListen = sinon.stub().resolves(mockAddress);
+const stubFastify = sinon.stub().returns({
+    listen: stubFastifyListen,
+    post: stubFastifyPost,
+});
+const stubSaveServerAddress = sinon.stub().resolves();
 
 describe('Logger tests', () => {
 
@@ -28,6 +29,13 @@ describe('Logger tests', () => {
         processExit = process.exit;
     });
 
+    beforeEach(() => {
+        stubFastify.resetHistory();
+        stubFastifyPost.resetHistory();
+        stubFastifyListen.resetHistory();
+        stubSaveServerAddress.resetHistory();
+    });
+
     after(() => {
         process.exit = processExit;
     });
@@ -35,7 +43,13 @@ describe('Logger tests', () => {
     describe('constructor', () => {
 
         it('should define workflow log size limit default in case of non provided value', () => {
-            const Logger = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger', {
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
+            });
 
             const loggerId = 'loggerId';
             const firebaseAuthUrl = 'firebaseAuthUrl';
@@ -54,7 +68,13 @@ describe('Logger tests', () => {
         });
 
         it('should use passed workflow log size limit in case passed', () => {
-            const Logger = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger', {
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
+            });
 
             const loggerId = 'loggerId';
             const firebaseAuthUrl = 'firebaseAuthUrl';
@@ -93,7 +113,11 @@ describe('Logger tests', () => {
 
                 const Logger = proxyquire('../lib/logger', {
                     '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
-                    'express': expressMock,
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const loggerId = 'loggerId';
@@ -137,7 +161,11 @@ describe('Logger tests', () => {
 
                 const Logger = proxyquire('../lib/logger', {
                     '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
-                    'express': expressMock,
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const loggerId = 'loggerId';
@@ -179,7 +207,11 @@ describe('Logger tests', () => {
 
                 const Logger = proxyquire('../lib/logger', {
                     '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
-                    'express': expressMock,
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const loggerId = 'loggerId';
@@ -220,7 +252,11 @@ describe('Logger tests', () => {
 
                 const Logger = proxyquire('../lib/logger', {
                     '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
-                    'express': expressMock,
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const loggerId = 'loggerId';
@@ -266,7 +302,11 @@ describe('Logger tests', () => {
 
                 const Logger = proxyquire('../lib/logger', {
                     '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
-                    'express': expressMock,
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const loggerId = 'loggerId';
@@ -299,7 +339,12 @@ describe('Logger tests', () => {
                         return {
                             listContainers: listContainersSpy
                         };
-                    }
+                    },
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const logger = new Logger({});
@@ -322,7 +367,12 @@ describe('Logger tests', () => {
                         return {
                             listContainers: listContainersSpy
                         };
-                    }
+                    },
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const logger = new Logger({});
@@ -349,7 +399,12 @@ describe('Logger tests', () => {
                         return {
                             listContainers: listContainersSpy
                         };
-                    }
+                    },
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const logger = new Logger({});
@@ -382,7 +437,12 @@ describe('Logger tests', () => {
                 },
                 'dockerode': function () {
                     return {};
-                }
+                },
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
             });
 
             const logger = new Logger({});
@@ -407,7 +467,12 @@ describe('Logger tests', () => {
                         return '{}';
                     }),
                     existsSync: () => { return true; }
-                }
+                },
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
             });
 
             const logger = new Logger({});
@@ -427,7 +492,12 @@ describe('Logger tests', () => {
                         return '{}';
                     }),
                     existsSync: () => { return true; },
-                }
+                },
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
             });
 
             const logger = new Logger({});
@@ -440,7 +510,13 @@ describe('Logger tests', () => {
     describe('validate', () => {
 
         it('should call process exit in case firebase authentication url was not provided', () => {
-            const Logger = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger', {
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
+            });
 
             const loggerId = 'loggerId';
             const firebaseAuthUrl = 'firebaseAuthUrl';
@@ -461,7 +537,13 @@ describe('Logger tests', () => {
             });
             process.exit = processExitSpy;
 
-            const Logger = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger', {
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
+            });
 
             const loggerId = 'loggerId';
             const firebaseAuthUrl = '';
@@ -482,7 +564,13 @@ describe('Logger tests', () => {
             });
             process.exit = processExitSpy;
 
-            const Logger = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger', {
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
+            });
 
             const loggerId = 'loggerId';
             const firebaseAuthUrl = 'firebaseAuthUrl';
@@ -503,7 +591,13 @@ describe('Logger tests', () => {
             });
             process.exit = processExitSpy;
 
-            const Logger = proxyquire('../lib/logger', {});
+            const Logger = proxyquire('../lib/logger', {
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
+            });
 
             const loggerId = '';
             const firebaseAuthUrl = 'firebaseAuthUrl';
@@ -548,7 +642,12 @@ describe('Logger tests', () => {
 
                                 }
                             },
-                            './ContainerLogger': ContainerLoggerSpy
+                            './ContainerLogger': ContainerLoggerSpy,
+                            'fastify': stubFastify,
+                            './helpers': {
+                                saveServerAddress: stubSaveServerAddress,
+                                getPromiseWithResolvers,
+                            },
                         });
 
                         const loggerId = 'loggerId';
@@ -598,7 +697,12 @@ describe('Logger tests', () => {
                             },
                             'firebase': function () {
                                 return {};
-                            }
+                            },
+                            'fastify': stubFastify,
+                            './helpers': {
+                                saveServerAddress: stubSaveServerAddress,
+                                getPromiseWithResolvers,
+                            },
                         });
 
                         const loggerId = 'loggerId';
@@ -642,7 +746,12 @@ describe('Logger tests', () => {
                                     };
 
                                 }
-                            }
+                            },
+                            'fastify': stubFastify,
+                            './helpers': {
+                                saveServerAddress: stubSaveServerAddress,
+                                getPromiseWithResolvers,
+                            },
                         });
 
                         const loggerId = 'loggerId';
@@ -688,7 +797,12 @@ describe('Logger tests', () => {
                             },
                             'firebase': function () {
                                 return {};
-                            }
+                            },
+                            'fastify': stubFastify,
+                            './helpers': {
+                                saveServerAddress: stubSaveServerAddress,
+                                getPromiseWithResolvers,
+                            },
                         });
 
                         const loggerId = 'loggerId';
@@ -752,7 +866,12 @@ describe('Logger tests', () => {
                                 const emitter = new EventEmitter();
                                 emitter.start = startSpy;
                                 return emitter;
-                            }
+                            },
+                            'fastify': stubFastify,
+                            './helpers': {
+                                saveServerAddress: stubSaveServerAddress,
+                                getPromiseWithResolvers,
+                            },
                         });
 
                         const loggerId = 'loggerId';
@@ -813,7 +932,12 @@ describe('Logger tests', () => {
                             };
 
                         }
-                    }
+                    },
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const loggerId = 'loggerId';
@@ -858,7 +982,12 @@ describe('Logger tests', () => {
                             };
 
                         }
-                    }
+                    },
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const loggerId = 'loggerId';
@@ -898,7 +1027,12 @@ describe('Logger tests', () => {
                             };
 
                         }
-                    }
+                    },
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const loggerId = 'loggerId';
@@ -931,7 +1065,12 @@ describe('Logger tests', () => {
                             };
 
                         }
-                    }
+                    },
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const loggerId = 'loggerId';
@@ -964,7 +1103,12 @@ describe('Logger tests', () => {
                             };
 
                         }
-                    }
+                    },
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const loggerId = 'loggerId';
@@ -997,7 +1141,12 @@ describe('Logger tests', () => {
                             };
 
                         }
-                    }
+                    },
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const loggerId = 'loggerId';
@@ -1031,7 +1180,12 @@ describe('Logger tests', () => {
                             };
 
                         }
-                    }
+                    },
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const loggerId = 'loggerId';
@@ -1066,7 +1220,12 @@ describe('Logger tests', () => {
                             };
 
                         }
-                    }
+                    },
+                    'fastify': stubFastify,
+                    './helpers': {
+                        saveServerAddress: stubSaveServerAddress,
+                        getPromiseWithResolvers,
+                    },
                 });
 
                 const loggerId = 'loggerId';
@@ -1112,7 +1271,12 @@ describe('Logger tests', () => {
                         };
 
                     }
-                }
+                },
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
             });
 
             const loggerId = 'loggerId';
@@ -1160,7 +1324,12 @@ describe('Logger tests', () => {
                         };
 
                     }
-                }
+                },
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
             });
 
             const loggerId = 'loggerId';
@@ -1216,7 +1385,12 @@ describe('Logger tests', () => {
                         };
 
                     }
-                }
+                },
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
             });
 
             const loggerId = 'loggerId';
@@ -1267,7 +1441,12 @@ describe('Logger tests', () => {
                         };
 
                     }
-                }
+                },
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
             });
 
             const loggerId = 'loggerId';
@@ -1319,7 +1498,12 @@ describe('Logger tests', () => {
 
                     }
                 },
-                './ContainerLogger': ContainerLoggerSpy
+                './ContainerLogger': ContainerLoggerSpy,
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
             });
 
             const loggerId = 'loggerId';
@@ -1380,7 +1564,11 @@ describe('Logger tests', () => {
                 '@codefresh-io/task-logger': { TaskLogger: () => Q.resolve(taskLogger) },
                 'docker-events': function () { return dockerEvents; },
                 './ContainerLogger': function () { return containerLogger; },
-                'express': expressMock,
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
             });
 
             const loggerId = 'loggerId';
@@ -1470,7 +1658,11 @@ describe('Logger tests', () => {
                 '@codefresh-io/task-logger': { TaskLogger: () => Q.resolve(taskLogger) },
                 'docker-events': function () { return dockerEvents; },
                 './ContainerLogger': function () { return containerLogger; },
-                'express': expressMock,
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
             });
 
             const logger = new Logger({
@@ -1493,45 +1685,90 @@ describe('Logger tests', () => {
         });
     });
 
-    // describe('engine updates', () => {
-    //     it('should listen for engine updates', async () => {
-    //         const taskLogger = {
-    //             on: sinon.spy(),
-    //             restore: sinon.spy(() => Q.resolve()),
-    //             startHealthCheck: sinon.spy(),
-    //             onHealthCheckReported: sinon.spy(),
-    //             getStatus: sinon.spy(),
-    //         };
-    //         const TaskLoggerFactory = sinon.spy(() => {
-    //             return Q.resolve(taskLogger);
-    //         });
+    describe('engine updates', () => {
+        it('should listen for engine updates', async () => {
+            const taskLogger = {
+                on: sinon.spy(),
+                restore: sinon.spy(async () => {}),
+                startHealthCheck: sinon.spy(),
+                onHealthCheckReported: sinon.spy(),
+                getStatus: sinon.spy(),
+            };
+            const TaskLoggerFactory = sinon.spy(async () => taskLogger);
 
-    //         const Logger = proxyquire('../lib/logger', {
-    //             '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
-    //             'express': expressMock,
-    //         });
+            const Logger = proxyquire('../lib/logger', {
+                '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
+            });
 
-    //         const loggerId = 'loggerId';
-    //         const taskLoggerConfig = { task: {}, opts: {} };
-    //         const findExistingContainers = false;
+            const loggerId = 'loggerId';
+            const taskLoggerConfig = { task: {}, opts: {} };
+            const findExistingContainers = false;
 
-    //         const logger = new Logger({
-    //             loggerId,
-    //             taskLoggerConfig,
-    //             findExistingContainers,
-    //         });
-    //         logger._listenForNewContainers = sinon.spy();
-    //         logger._writeNewState = sinon.spy();
-    //         logger._listenForExistingContainers = sinon.spy();
-    //         process.env.PORT = 1337;
-    //         process.env.HOST = '127.0.0.1';
-    //         logger.start();
+            const logger = new Logger({
+                loggerId,
+                taskLoggerConfig,
+                findExistingContainers,
+            });
+            logger._listenForNewContainers = sinon.spy();
+            logger._writeNewState = sinon.spy();
+            logger._listenForExistingContainers = sinon.spy();
+            process.env.PORT = 1337;
+            process.env.HOST = '127.0.0.1';
+            await logger.start();
 
-    //         await Q.delay(10);
+            expect(stubFastify).to.have.been.calledOnce;
+            expect(stubFastifyListen).to.have.been.calledOnceWithExactly({
+                port: 1337,
+                host: '127.0.0.1',
+            });
+            expect(stubSaveServerAddress).to.have.been.calledOnceWithExactly(mockAddress);
+        });
 
-    //         expect(logger._app).to.not.be.undefined;
-    //         expect(logger._app.listen).to.have.been.calledOnce;
-    //         expect(logger._app.listen).to.have.been.calledWithMatch(1337, '127.0.0.1');
-    //     });
-    // });
+        it('should fails if unable to start server', async () => {
+            const taskLogger = {
+                on: sinon.spy(),
+                restore: sinon.spy(async () => {}),
+                startHealthCheck: sinon.spy(),
+                onHealthCheckReported: sinon.spy(),
+                getStatus: sinon.spy(),
+            };
+            const TaskLoggerFactory = sinon.spy(async () => taskLogger);
+
+            const Logger = proxyquire('../lib/logger', {
+                '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
+                'fastify': stubFastify,
+                './helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                    getPromiseWithResolvers,
+                },
+            });
+
+            const loggerId = 'loggerId';
+            const taskLoggerConfig = { task: {}, opts: {} };
+            const findExistingContainers = false;
+
+            const logger = new Logger({
+                loggerId,
+                taskLoggerConfig,
+                findExistingContainers,
+            });
+            logger._listenForNewContainers = sinon.spy();
+            logger._writeNewState = sinon.spy();
+            logger._listenForExistingContainers = sinon.spy();
+
+            const expectedError = new Error('failed to start server');
+            stubFastifyListen.rejects(expectedError);
+            try {
+                await logger.start();
+                expect.fail('should have thrown an error');
+            } catch (error) {
+                expect(error).to.equal(expectedError);
+            }
+        });
+    });
 });

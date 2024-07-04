@@ -5,17 +5,13 @@
   "keywords": [
     "cf-container-logger"
   ],
-  "resolutions": {
-    "minimist": "^1.2.6",
-    "semver": "^7.5.2"
-  },
   "dependencies": {
     "@codefresh-io/task-logger": "^1.12.3",
-    "cf-errors": "^0.1.16",
-    "cf-logs": "^1.1.25",
+    "cf-errors": "^0.1.17",
+    "cf-logs": "^1.1.28",
     "core-js-pure": "^3.37.1",
     "docker-events": "0.0.2",
-    "dockerode": "^2.5.8",
+    "dockerode": "^4.0.2",
     "fastify": "^4.28.1",
     "got": "^14.4.1",
     "lodash": "^4.17.21",

@@ -5,40 +5,34 @@
   "keywords": [
     "cf-container-logger"
   ],
-  "resolutions": {
-    "minimist": "^1.2.6",
-    "semver": "^7.5.2"
-  },
   "dependencies": {
     "@codefresh-io/task-logger": "^1.12.3",
-    "body-parser": "^1.19.0",
-    "cf-errors": "^0.1.16",
-    "cf-logs": "^1.1.25",
+    "cf-errors": "^0.1.17",
+    "cf-logs": "^1.1.28",
+    "core-js-pure": "^3.37.1",
     "docker-events": "0.0.2",
-    "dockerode": "^2.5.8",
-    "express": "^4.17.3",
+    "dockerode": "^4.0.2",
+    "fastify": "^4.28.1",
+    "got": "^14.4.1",
     "lodash": "^4.17.21",
     "promise-retry": "^2.0.1",
-    "q": "^1.5.1",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.6"
+    "q": "^1.5.1"
   },
   "devDependencies": {
-    "chai": "^4.3.6",
-    "eslint": "^7.32.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-plugin-chai-friendly": "^0.6.0",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-mocha": "^8.2.0",
+    "chai": "^4.4.1",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-chai-friendly": "^1.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.9.0",
+    "eslint-plugin-mocha": "^10.4.3",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.3.1",
-    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-promise": "^6.4.0",
     "isparta": "^4.1.1",
-    "mocha": "^8.4.0",
+    "mocha": "^10.6.0",
     "proxyquire": "^1.8.0",
     "shelljs": "^0.6.1",
-    "sinon": "^7.5.0",
+    "sinon": "^18.0.0",
     "sinon-chai": "^3.7.0"
   },
   "engines": {

@@ -1,6 +1,10 @@
 .git
 .gitignore
+.github
 node_modules
 logs/*.log
 lib/state.json
 *.md
+.eslintrc.json
+test
+.eslintignore

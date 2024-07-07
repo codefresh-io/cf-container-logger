@@ -1,21 +1,20 @@
 {
-  "extends": "airbnb",
-  "ignorePatterns":[
-    "node_modules"
-  ],
+  "extends": "airbnb-base",
+
+  "env": {
+    "node": true,
+    "mocha": true,
+    "es6": true
+  },
+
   "parserOptions": {
-    "ecmaVersion": 2018,
+    "ecmaVersion": 2021,
     "sourceType": "script",
     "ecmaFeatures": {
       "impliedStrict": true
     }
   },
-
-  "env": {
-    "node": true,
-    "mocha": true
-  },
-
+  
   "plugins": [
     "chai-friendly",
     "import",
@@ -78,7 +77,6 @@
     "quote-props": ["error", "consistent"],
 
     "promise/catch-or-return": ["error", { "allowThen": true }],
-    "promise/no-native": "error",
 
     "mocha/no-exclusive-tests": "error",
 
@@ -91,25 +89,5 @@
     "node/no-deprecated-api": "warn",
     "no-useless-constructor": "warn",
     "no-return-await": "off"
-  },
-  "overrides": [
-    {
-      "plugins": ["jest"],
-      "env": {
-        "jest": true
-      },
-      "files": [
-        "**/__tests__/**/*.[jt]s?(x)",
-        "__mocks__/**/*.js",
-        "**/__mocks__/**/*.js"
-      ],
-      "rules": {
-        "jest/no-disabled-tests": "warn",
-        "jest/no-focused-tests": "error",
-        "jest/no-identical-title": "error",
-        "jest/prefer-to-have-length": "warn",
-        "jest/valid-expect": "error"
-      }
-    }
-  ]
+  }
 }

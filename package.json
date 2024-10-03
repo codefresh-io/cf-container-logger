@@ -5,6 +5,9 @@
   "keywords": [
     "cf-container-logger"
   ],
+  "resolutions": {
+    "tough-cookie": "4.1.3"
+  },
   "dependencies": {
     "@codefresh-io/task-logger": "^1.12.3",
     "cf-errors": "^0.1.17",

@@ -17,5 +17,8 @@ FROM base AS production
 COPY --from=dependencies /root/cf-runtime/node_modules ./node_modules
 COPY . .
 
+#purpose of security
+RUN npm -g uninstall npm
+
 USER cfu
 CMD ["node", "lib/index.js"]

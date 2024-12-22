@@ -10,3 +10,4 @@ state.json
 .idea
 .vscode
 lib/manual-test.js
+dist/

@@ -6,7 +6,7 @@ $CONTAINER_ID=$args[0]
 
 if ( $CONTAINER_ID ) {
     echo "checking if container:$CONTAINER_ID exists"
-    if (select-string -Pattern $CONTAINER_ID -Path ./lib/state.json) {
+    if (select-string -Pattern $CONTAINER_ID -Path ./dist/state.json) {
         echo "container $CONTAINER_ID is ready"
         Exit 0
     } else {
@@ -15,7 +15,7 @@ if ( $CONTAINER_ID ) {
     }
 } else {
     echo "checking if container logger is ready"
-    if (select-string -Pattern "ready" -Path ./lib/state.json) {
+    if (select-string -Pattern "ready" -Path ./dist/state.json) {
         echo "ready"
         Exit 0
     } else {

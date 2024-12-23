@@ -85,7 +85,7 @@
 
     "node/no-unsupported-features": "error",
     "node/process-exit-as-throw": "error",
-    "node/shebang": "warn",
+    "node/shebang": "off",
     "node/no-deprecated-api": "warn",
     "no-useless-constructor": "warn",
     "no-return-await": "off"

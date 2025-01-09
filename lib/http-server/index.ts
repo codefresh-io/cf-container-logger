@@ -4,6 +4,8 @@ import fastify from 'fastify';
 import cfLogs from 'cf-logs';
 
 import { saveServerAddress } from '../helpers';
+
+// eslint-disable-next-line import/no-unresolved
 import deprecatedImagesCollector from '../metric/deprecated-images/deprecated-images.collector';
 
 const logger = cfLogs.Logger('codefresh:containerLogger');

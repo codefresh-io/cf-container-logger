@@ -47,9 +47,9 @@
     "node": ">=16.20.2 <=20"
   },
   "scripts": {
-    "lint": "eslint '*/**/*.js'",
-    "lint-fix": "eslint '*/**/*.js' --fix",
-    "test": "node ./node_modules/mocha/bin/_mocha './{,!(node_modules)/**/}*.spec.js' --exit",
+    "lint": "eslint '*/**/*.{j,t}s'",
+    "lint-fix": "eslint '*/**/*.{j,t}s' --fix",
+    "test": "node ./node_modules/mocha/bin/_mocha --require ts-node/register 'test/**/*.spec.js' --exit",
     "test:ci": "yarn test",
     "start": "node dist/index.js",
     "version": "exit 0",

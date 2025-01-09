@@ -6,7 +6,7 @@ const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 const promiseRetry = require('promise-retry');
 const sinonChai = require('sinon-chai');
-const LoggerStrategy = require('../enums').LoggerStrategy;
+const LoggerStrategy = require('../lib/enums').LoggerStrategy;
 const { EventEmitter } = require('events');
 const { Writable, Readable, PassThrough } = require('stream');
 
@@ -15,7 +15,7 @@ chai.use(sinonChai);
 
 const promiseRetrySpy = sinon.spy((err) => Q.reject(err));
 
-const ContainerLogger = proxyquire('../ContainerLogger', {
+const ContainerLogger = proxyquire('../lib/ContainerLogger', {
     'promise-retry': (cb) => cb(promiseRetrySpy, 1),
 });
 

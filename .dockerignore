@@ -6,6 +6,6 @@ logs/*.log
 lib/state.json
 *.md
 .eslintrc.json
-lib/test
+test
 .eslintignore
 dist

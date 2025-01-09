@@ -28,7 +28,7 @@ describe('helpers', () => {
       it('should write the server address to the file', async () => {
         const SERVER_ADDRESS_PATH = 'little/bobby/tables/we/call/him';
         const serverAddress = 'foo';
-        const { saveServerAddress } = proxyquire('../helpers.js', {
+        const { saveServerAddress } = proxyquire('../lib/helpers.js', {
           'node:fs/promises': stubFsPromises,
           'cf-logs': { Logger: () => stubLogger },
           './const': { SERVER_ADDRESS_PATH },
@@ -36,9 +36,9 @@ describe('helpers', () => {
         await saveServerAddress(serverAddress);
         expect(stubFsPromises.writeFile).to.have.been.calledOnceWithExactly(SERVER_ADDRESS_PATH, serverAddress, { encoding: 'utf8' });
       });
-
+  
       it('should fail if the file cannot be written', async () => {
-        const { saveServerAddress } = proxyquire('../helpers.js', {
+        const { saveServerAddress } = proxyquire('../lib/helpers.js', {
           'node:fs/promises': stubFsPromises,
           'cf-logs': { Logger: () => stubLogger },
         });
@@ -53,12 +53,12 @@ describe('helpers', () => {
         }
       });
     });
-
+  
     describe('getServerAddress()', () => {
       it('should read the server address from the file', async () => {
         const SERVER_ADDRESS_PATH = 'little/bobby/tables/we/call/him';
         const serverAddress = 'foo';
-        const { getServerAddress } = proxyquire('../helpers.js', {
+        const { getServerAddress } = proxyquire('../lib/helpers.js', {
           'node:fs/promises': stubFsPromises,
           'cf-logs': { Logger: () => stubLogger },
           './const': { SERVER_ADDRESS_PATH },
@@ -68,9 +68,9 @@ describe('helpers', () => {
         expect(result).to.be.equal(serverAddress);
         expect(stubFsPromises.readFile).to.have.been.calledOnceWithExactly(SERVER_ADDRESS_PATH, { encoding: 'utf8' });
       });
-
+  
       it('should fail if the file cannot be read', async () => {
-        const { getServerAddress } = proxyquire('../helpers.js', {
+        const { getServerAddress } = proxyquire('../lib/helpers.js', {
           'node:fs/promises': stubFsPromises,
           'cf-logs': { Logger: () => stubLogger },
         });
@@ -87,7 +87,7 @@ describe('helpers', () => {
     });
 
     it('should write/read to/from the same location', async () => {
-      const { saveServerAddress, getServerAddress } = require('../helpers.js');
+      const { saveServerAddress, getServerAddress } = require('../lib/helpers.js');
       const serverAddress = 'http://g.codefresh.io';
       await saveServerAddress(serverAddress);
       const result = await getServerAddress();

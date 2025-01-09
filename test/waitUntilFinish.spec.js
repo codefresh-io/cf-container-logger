@@ -12,11 +12,11 @@ const expect     = chai.expect;
 const sinon      = require('sinon');
 const sinonChai  = require('sinon-chai');
 const proxyquire = require('proxyquire');
-const { BuildFinishedSignalFilename } = require('../enums');
+const { BuildFinishedSignalFilename } = require('../lib/enums');
 chai.use(sinonChai);
 
 const writeFileSpy = sinon.spy();
-const Waiter = proxyquire('../waitUntilFinish', {
+const Waiter = proxyquire('../lib/waitUntilFinish', {
     fs: {
         ...fs,
         writeFileSync: writeFileSpy,
@@ -49,7 +49,7 @@ describe('waitUntilFinish script test', function () {
     it('should write build finished file to the correct location', async () => {
         writeDate(undefined, 'done', 1111);
         await Waiter.wait(statePath);
-        const expectedPath = path.join(path.resolve(__dirname, '../'), BuildFinishedSignalFilename);
+        const expectedPath = path.join(path.resolve(__dirname, '../lib'), BuildFinishedSignalFilename);
         expect(writeFileSpy).to.have.been.calledOnceWith(expectedPath, 'build is finished');
     });
 
@@ -61,6 +61,6 @@ describe('waitUntilFinish script test', function () {
         await Q.delay(300);
         writeDate(Date.now(), 'done');
         await waitPromise;
-        expect(Waiter.prototype._checkFinished.getCalls()).to.have.lengthOf(3);
+        expect(Waiter.prototype._checkFinished.getCalls()).to.have.lengthOf(3);        
     });
 });

@@ -1,6 +1,7 @@
 // @ts-expect-error it's a js library
 import cfLogs from 'cf-logs';
 
+// eslint-disable-next-line import/no-unresolved
 import { DeprecatedImageDto } from './deprecated-image.dto';
 
 const logger = cfLogs.Logger('codefresh:containerLogger');
@@ -22,33 +23,22 @@ class DeprecatedImagesCollector {
     }
 
     catchDeprecatedImage(logText: string) {
-        if (logText.includes('[DEPRECATION NOTICE]')) {
-            const imageName = this._parseImageName(logText);
+        const imageName = this._parseImageName(logText);
 
-            if (imageName === null) {
-                logger.error(`detected pulling of the deprecated image but failed to parse the image name. The original log text: '${logText}'`);
-            } else {
-                logger.warn(`detected pulling of the deprecated image '${imageName}'. The original log text: '${logText}'`);
+        if (imageName !== null) {
+            logger.warn(`detected pulling of the deprecated image '${imageName}'. The original log text: '${logText}'`);
 
-                this.push({
-                    image: imageName,
-                });
-            }
+            this.push({
+                image: imageName,
+            });
         }
     }
 
     private _parseImageName(logText: string) {
-        const startMarker = 'Suggest the author of ';
-        const endMarker = ' to upgrade the image';
-
-        const startIndex = logText.indexOf(startMarker);
-        const endIndex = logText.indexOf(endMarker);
-
-        if (startIndex > -1 && endIndex > -1 && endIndex > startIndex) {
-            return logText.substring(startIndex + startMarker.length, endIndex);
-        }
-
-        return null;
+        // eslint-disable-next-line no-control-regex
+        const regex = /^\u001b\[31m\u001b\[1m\[DEPRECATION NOTICE].+?Suggest the author of (?<image>.+?) to/;
+        const match = logText.match(regex);
+        return match?.groups?.image ?? null;
     }
 }
 

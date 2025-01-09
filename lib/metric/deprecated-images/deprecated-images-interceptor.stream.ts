@@ -4,31 +4,34 @@ import { Transform, TransformCallback } from 'stream';
 import deprecatedImagesCollector from './deprecated-images.collector';
 
 export class DeprecatedImagesInterceptorStream extends Transform {
-    private _lastChunk: Buffer;
+    private lastChunk: Buffer;
 
-    constructor() {
+    constructor(private readonly noPush = false) {
         super();
-        this._lastChunk = Buffer.alloc(0);
+        this.lastChunk = Buffer.alloc(0);
     }
 
     _transform(chunk: Buffer, encoding: BufferEncoding, callback: TransformCallback): void {
         try {
 
             const text = Buffer
-                .concat([this._lastChunk, chunk])
+                .concat([this.lastChunk, chunk])
                 .toString('utf8');
 
             const lines = text.split('\n');
 
             // the final element in 'lines' may be an incomplete line
-            // save it in _lastChunk for next time
-            this._lastChunk = Buffer.from(lines.pop() ?? '', 'utf8');
+            // save it in lastChunk for next time
+            this.lastChunk = Buffer.from(lines.pop() ?? '', 'utf8');
 
             for (const line of lines) {
                 deprecatedImagesCollector.catchDeprecatedImage(line.trim());
             }
 
-            this.push(chunk);
+            if (!this.noPush) {
+                this.push(chunk);
+            }
+
             callback();
         } catch (error) {
             callback(error as any);
@@ -42,7 +45,7 @@ export class DeprecatedImagesInterceptorStream extends Transform {
      */
     _flush(callback: TransformCallback): void {
         try {
-            const finalLine = this._lastChunk.toString('utf8');
+            const finalLine = this.lastChunk.toString('utf8');
             deprecatedImagesCollector.catchDeprecatedImage(finalLine.trim());
             callback();
         } catch (error) {

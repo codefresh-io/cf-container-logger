@@ -1,6 +1,4 @@
 import fastify from 'fastify';
-
-// @ts-expect-error it's a js library
 import cfLogs from 'cf-logs';
 
 import { saveServerAddress } from '../helpers';

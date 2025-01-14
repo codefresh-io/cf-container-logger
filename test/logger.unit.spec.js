@@ -14,10 +14,12 @@ chai.use(sinonChai);
 
 const mockAddress = 'mockAddress';
 const stubFastifyPost = sinon.stub();
+const stubFastifyGet = sinon.stub();
 const stubFastifyListen = sinon.stub().resolves(mockAddress);
 const stubFastify = sinon.stub().returns({
     listen: stubFastifyListen,
     post: stubFastifyPost,
+    get: stubFastifyGet,
 });
 const stubSaveServerAddress = sinon.stub().resolves();
 
@@ -1696,11 +1698,17 @@ describe('Logger tests', () => {
             };
             const TaskLoggerFactory = sinon.spy(async () => taskLogger);
 
+            const HttpServer = proxyquire('../lib/http-server', {
+                'fastify': stubFastify,
+                '../helpers': {
+                    saveServerAddress: stubSaveServerAddress,
+                }
+            });
+
             const Logger = proxyquire('../lib/logger', {
                 '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
-                'fastify': stubFastify,
+                './http-server': HttpServer,
                 './helpers': {
-                    saveServerAddress: stubSaveServerAddress,
                     getPromiseWithResolvers,
                 },
             });
@@ -1709,6 +1717,8 @@ describe('Logger tests', () => {
             const taskLoggerConfig = { task: {}, opts: {} };
             const findExistingContainers = false;
 
+            process.env.PORT = 1337;
+            process.env.HOST = '127.0.0.1';
             const logger = new Logger({
                 loggerId,
                 taskLoggerConfig,
@@ -1717,8 +1727,6 @@ describe('Logger tests', () => {
             logger._listenForNewContainers = sinon.spy();
             logger._writeNewState = sinon.spy();
             logger._listenForExistingContainers = sinon.spy();
-            process.env.PORT = 1337;
-            process.env.HOST = '127.0.0.1';
             await logger.start();
 
             expect(stubFastify).to.have.been.calledOnce;
@@ -1739,9 +1747,13 @@ describe('Logger tests', () => {
             };
             const TaskLoggerFactory = sinon.spy(async () => taskLogger);
 
+            const HttpServer = proxyquire('../lib/http-server', {
+                'fastify': stubFastify,
+            });
+
             const Logger = proxyquire('../lib/logger', {
                 '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
-                'fastify': stubFastify,
+                './http-server': HttpServer,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
                     getPromiseWithResolvers,

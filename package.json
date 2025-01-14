@@ -22,6 +22,9 @@
     "q": "^1.5.1"
   },
   "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@typescript-eslint/eslint-plugin": "^8.18.1",
+    "@typescript-eslint/parser": "^8.18.1",
     "chai": "^4.4.1",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -36,17 +39,20 @@
     "proxyquire": "^1.8.0",
     "shelljs": "^0.6.1",
     "sinon": "^18.0.0",
-    "sinon-chai": "^3.7.0"
+    "sinon-chai": "^3.7.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
   },
   "engines": {
     "node": ">=16.20.2 <=20"
   },
   "scripts": {
-    "lint": "eslint '*/**/*.js'",
-    "lint-fix": "eslint '*/**/*.js' --fix",
-    "test": "node ./node_modules/mocha/bin/_mocha './{,!(node_modules)/**/}*.spec.js' --exit",
+    "lint": "eslint '*/**/*.{j,t}s'",
+    "lint-fix": "eslint '*/**/*.{j,t}s' --fix",
+    "test": "node ./node_modules/mocha/bin/_mocha --require ts-node/register './{,!(node_modules|dist)/**/}*.spec.js' --exit",
     "test:ci": "yarn test",
-    "start": "node lib/index.js",
-    "version": "exit 0"
+    "start": "node dist/index.js",
+    "version": "exit 0",
+    "build": "rm -rf dist && tsc -p tsconfig.json"
   }
 }

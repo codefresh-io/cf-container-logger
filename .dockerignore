@@ -8,3 +8,4 @@ lib/state.json
 .eslintrc.json
 test
 .eslintignore
+dist

@@ -6,7 +6,7 @@ import { DeprecatedImageDto } from './deprecated-image.dto';
 const logger = cfLogs.Logger('codefresh:containerLogger');
 
 // eslint-disable-next-line no-control-regex
-const DEPRECATED_IMAGE_REGEX = /^\u001b\[31m\u001b\[1m\[DEPRECATION NOTICE].+?Suggest the author of (?<image>.+?) to/;
+const DEPRECATED_IMAGE_REGEX = /^(?:\u001b\[31m\u001b\[1m)?\[DEPRECATION NOTICE].+?Suggest the author of (?<image>.+?) to/;
 
 class DeprecatedImagesCollector {
 

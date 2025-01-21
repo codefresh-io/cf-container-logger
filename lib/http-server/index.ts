@@ -14,7 +14,7 @@ export class HttpServer {
     private readonly port;
     private readonly server;
 
-    constructor(private taskLogger: any) {
+    constructor(private taskLogger?: any) {
         try {
             this.host = process.env.HOST || '0.0.0.0';
             this.port = +(process.env.PORT || 8080);
@@ -26,6 +26,10 @@ export class HttpServer {
             logger.error(`could not initialize server for engine's requests due to error: ${error}`);
             throw error;
         }
+    }
+
+    setTaskLogger(taskLogger: any) {
+        this.taskLogger = taskLogger;
     }
 
     private initSecrets() {
@@ -44,8 +48,7 @@ export class HttpServer {
 
         this.server.post('/secrets', secretsOptions, async (request, reply) => {
             try {
-                const { body }: { body: any } = request;
-                const { secret } = body;
+                const { body: secret }: { body: any } = request;
                 logger.info(`got request to add new mask: ${secret.key}`);
                 this.taskLogger.addNewMask(secret);
                 reply.code(201);

@@ -7,10 +7,10 @@ CONTAINER_ID=$1
 
 if [ -n "$CONTAINER_ID" ]; then
    echo "checking if container: $CONTAINER_ID exists"
-   grep -q $CONTAINER_ID ./dist/state.json
+   grep -q $CONTAINER_ID ./lib/state.json
 else
    echo "checking if container logger is ready"
-   grep -q "ready" ./dist/state.json
+   grep -q "ready" ./lib/state.json
 fi
 
 

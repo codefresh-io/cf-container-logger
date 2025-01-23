@@ -22,11 +22,10 @@ RUN yarn install --frozen-lockfile --production
 
 FROM base AS production
 COPY --from=prod-dependencies /root/cf-runtime/node_modules ./node_modules
-COPY --from=build /root/cf-runtime/dist ./dist
-COPY . .
+COPY --from=build /root/cf-runtime/dist ./lib
 
 #purpose of security
 RUN npm -g uninstall npm
 
 USER cfu
-CMD ["node", "dist/index.js"]
+CMD ["node", "lib/index.js"]

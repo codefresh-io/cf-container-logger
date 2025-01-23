@@ -53,6 +53,7 @@
     "test:ci": "yarn test",
     "start": "node dist/index.js",
     "version": "exit 0",
-    "build": "rm -rf dist && tsc -p tsconfig.json"
+    "build": "rm -rf dist && tsc -p tsconfig.json && yarn run build:copy-scripts",
+    "build:copy-scripts": "cp ./lib/*.sh ./lib/*.ps1 ./dist"
   }
 }

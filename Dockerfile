@@ -1,6 +1,6 @@
 ARG NODE_VERSION=22.14.0
 FROM node:${NODE_VERSION}-bookworm-slim AS base
-WORKDIR /app
+WORKDIR /root/cf-runtime
 
 FROM base AS build-dependencies
 RUN apt-get update \

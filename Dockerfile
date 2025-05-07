@@ -1,5 +1,6 @@
 ARG NODE_VERSION=22.14.0
 FROM node:${NODE_VERSION}-bookworm-slim AS base
+# that workdir MUST NOT be changed because of backward compatibility with the engine <= 1.177.7
 WORKDIR /root/cf-runtime
 
 FROM base AS build-dependencies

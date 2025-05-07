@@ -25,7 +25,7 @@ FROM base AS final
 RUN npm uninstall -g --logs-max=0 corepack npm
 USER node
 
-COPY --from=prod-dependencies --chown=node:node /app/node_modules node_modules
-COPY --from=build --chown=node:node /app/dist lib
+COPY --from=prod-dependencies --chown=node:node /root/cf-runtime/node_modules node_modules
+COPY --from=build --chown=node:node /root/cf-runtime/dist lib
 
 CMD ["node", "lib/index.js"]

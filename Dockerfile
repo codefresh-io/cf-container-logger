@@ -1,6 +1,9 @@
 ARG NODE_VERSION=22.14.0
 FROM node:${NODE_VERSION}-bookworm-slim AS base
 # that workdir MUST NOT be changed because of backward compatibility with the engine <= 1.177.7
+# Security items. We can remove it if it don't increase vulnerabilities
+RUN apt update && \
+    apt reinstall passwd systemd libcap2 perl -y
 WORKDIR /root/cf-runtime
 
 FROM base AS build-dependencies

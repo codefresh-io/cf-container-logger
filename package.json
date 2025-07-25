@@ -6,7 +6,8 @@
     "cf-container-logger"
   ],
   "resolutions": {
-    "tough-cookie": "4.1.3"
+    "tough-cookie": "4.1.3",
+    "**/request/form-data": "2.5.5"
   },
   "dependencies": {
     "@codefresh-io/task-logger": "^1.12.3",

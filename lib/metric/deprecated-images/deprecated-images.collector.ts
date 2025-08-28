@@ -1,9 +1,9 @@
-import cfLogs from 'cf-logs';
+import { Logger } from '@codefresh-io/cf-telemetry/logs';
 
 // eslint-disable-next-line import/no-unresolved
 import { DeprecatedImageDto } from './deprecated-image.dto';
 
-const logger = cfLogs.Logger('codefresh:containerLogger');
+const logger = new Logger('codefresh:containerLogger');
 
 // eslint-disable-next-line no-control-regex
 const DEPRECATED_IMAGE_REGEX = /^(?:\u001b\[31m\u001b\[1m)?\[DEPRECATION NOTICE].+?Suggest the author of (?<image>.+?) to/;

@@ -88,7 +88,8 @@
     "node/shebang": "off",
     "node/no-deprecated-api": "warn",
     "no-useless-constructor": "warn",
-    "no-return-await": "off"
+    "no-return-await": "off",
+    "import/extensions": ["error", "never", { "json": "always" }]
   },
 
   "overrides": [
@@ -125,5 +126,17 @@
         ]
       }
     }
-  ]
+  ],
+
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": ["tsconfig.json"]
+      },
+      "node": {
+        "extensions": [".js", ".ts", ".json"]
+      }
+    }
+  }
 }

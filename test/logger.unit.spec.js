@@ -7,7 +7,6 @@ const sinonChai = require('sinon-chai');
 const { EventEmitter } = require('events');
 const { ContainerStatus } = require('../lib/enums');
 const { LoggerStrategy } = require('../lib/enums');
-const { getPromiseWithResolvers } = require('../lib/helpers');
 
 const expect = chai.expect;
 chai.use(sinonChai);
@@ -49,7 +48,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -74,7 +72,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -118,7 +115,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -166,7 +162,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -212,7 +207,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -257,7 +251,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -307,7 +300,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -345,7 +337,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -373,7 +364,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -405,7 +395,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -443,7 +432,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -473,7 +461,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -498,7 +485,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -516,7 +502,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -543,7 +528,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -570,7 +554,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -597,7 +580,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -648,7 +630,6 @@ describe('Logger tests', () => {
                             'fastify': stubFastify,
                             './helpers': {
                                 saveServerAddress: stubSaveServerAddress,
-                                getPromiseWithResolvers,
                             },
                         });
 
@@ -703,7 +684,6 @@ describe('Logger tests', () => {
                             'fastify': stubFastify,
                             './helpers': {
                                 saveServerAddress: stubSaveServerAddress,
-                                getPromiseWithResolvers,
                             },
                         });
 
@@ -752,7 +732,6 @@ describe('Logger tests', () => {
                             'fastify': stubFastify,
                             './helpers': {
                                 saveServerAddress: stubSaveServerAddress,
-                                getPromiseWithResolvers,
                             },
                         });
 
@@ -803,7 +782,6 @@ describe('Logger tests', () => {
                             'fastify': stubFastify,
                             './helpers': {
                                 saveServerAddress: stubSaveServerAddress,
-                                getPromiseWithResolvers,
                             },
                         });
 
@@ -872,7 +850,6 @@ describe('Logger tests', () => {
                             'fastify': stubFastify,
                             './helpers': {
                                 saveServerAddress: stubSaveServerAddress,
-                                getPromiseWithResolvers,
                             },
                         });
 
@@ -938,7 +915,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -988,7 +964,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -1033,7 +1008,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -1071,7 +1045,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -1109,7 +1082,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -1147,7 +1119,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -1186,7 +1157,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -1226,7 +1196,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -1277,7 +1246,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1330,7 +1298,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1391,7 +1358,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1447,7 +1413,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1504,7 +1469,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1569,7 +1533,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1663,7 +1626,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1709,7 +1671,6 @@ describe('Logger tests', () => {
                 '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
                 './http-server': HttpServer,
                 './helpers': {
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1756,7 +1717,6 @@ describe('Logger tests', () => {
                 './http-server': HttpServer,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 

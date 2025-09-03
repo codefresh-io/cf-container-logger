@@ -10,10 +10,9 @@
     "**/request/form-data": "2.5.5"
   },
   "dependencies": {
+    "@codefresh-io/cf-telemetry": "^3.1.0",
     "@codefresh-io/task-logger": "^1.12.3",
     "cf-errors": "^0.1.17",
-    "cf-logs": "^1.1.28",
-    "core-js-pure": "^3.37.1",
     "docker-events": "0.0.2",
     "dockerode": "^4.0.2",
     "fastify": "^4.28.1",
@@ -29,6 +28,7 @@
     "chai": "^4.4.1",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-chai-friendly": "^1.0.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.9.0",
@@ -45,7 +45,7 @@
     "typescript": "^5.7.2"
   },
   "engines": {
-    "node": "^22.14.0"
+    "node": "^22.18.0"
   },
   "scripts": {
     "lint": "eslint '*/**/*.{j,t}s'",

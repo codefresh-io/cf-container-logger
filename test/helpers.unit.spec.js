@@ -30,17 +30,17 @@ describe('helpers', () => {
         const serverAddress = 'foo';
         const { saveServerAddress } = proxyquire('../lib/helpers.js', {
           'node:fs/promises': stubFsPromises,
-          'cf-logs': { Logger: () => stubLogger },
+          '@codefresh-io/cf-telemetry/logs': { Logger: function() { return stubLogger } },
           './const': { SERVER_ADDRESS_PATH },
         });
         await saveServerAddress(serverAddress);
         expect(stubFsPromises.writeFile).to.have.been.calledOnceWithExactly(SERVER_ADDRESS_PATH, serverAddress, { encoding: 'utf8' });
       });
-  
+
       it('should fail if the file cannot be written', async () => {
         const { saveServerAddress } = proxyquire('../lib/helpers.js', {
           'node:fs/promises': stubFsPromises,
-          'cf-logs': { Logger: () => stubLogger },
+          '@codefresh-io/cf-telemetry/logs': { Logger: function() { return stubLogger } },
         });
         const expectedError = new Error('oh no');
         stubFsPromises.writeFile.rejects(expectedError);
@@ -53,14 +53,14 @@ describe('helpers', () => {
         }
       });
     });
-  
+
     describe('getServerAddress()', () => {
       it('should read the server address from the file', async () => {
         const SERVER_ADDRESS_PATH = 'little/bobby/tables/we/call/him';
         const serverAddress = 'foo';
         const { getServerAddress } = proxyquire('../lib/helpers.js', {
           'node:fs/promises': stubFsPromises,
-          'cf-logs': { Logger: () => stubLogger },
+          '@codefresh-io/cf-telemetry/logs': { Logger: function() { return stubLogger } },
           './const': { SERVER_ADDRESS_PATH },
         });
         stubFsPromises.readFile.resolves(serverAddress);
@@ -68,11 +68,11 @@ describe('helpers', () => {
         expect(result).to.be.equal(serverAddress);
         expect(stubFsPromises.readFile).to.have.been.calledOnceWithExactly(SERVER_ADDRESS_PATH, { encoding: 'utf8' });
       });
-  
+
       it('should fail if the file cannot be read', async () => {
         const { getServerAddress } = proxyquire('../lib/helpers.js', {
           'node:fs/promises': stubFsPromises,
-          'cf-logs': { Logger: () => stubLogger },
+          '@codefresh-io/cf-telemetry/logs': { Logger: function() { return stubLogger } },
         });
         const expectedError = new Error('oh no');
         stubFsPromises.readFile.rejects(expectedError);

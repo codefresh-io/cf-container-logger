@@ -617,13 +617,12 @@ describe('Logger tests', () => {
                             return emitter;
                         });
                         const Logger = proxyquire('../lib/logger', {
-                            'cf-logs': {
-                                Logger: () => {
+                            '@codefresh-io/cf-telemetry/logs': {
+                                Logger: function() {
                                     return {
                                         info: infoSpy,
                                         error: errorSpy
                                     };
-
                                 }
                             },
                             './ContainerLogger': ContainerLoggerSpy,
@@ -669,13 +668,12 @@ describe('Logger tests', () => {
                         const infoSpy = sinon.spy();
                         const errorSpy = sinon.spy();
                         const Logger = proxyquire('../lib/logger', {
-                            'cf-logs': {
-                                Logger: () => {
+                            '@codefresh-io/cf-telemetry/logs': {
+                                Logger: function() {
                                     return {
                                         info: infoSpy,
                                         error: errorSpy
                                     };
-
                                 }
                             },
                             'firebase': function () {
@@ -720,13 +718,12 @@ describe('Logger tests', () => {
                         const infoSpy = sinon.spy();
                         const errorSpy = sinon.spy();
                         const Logger = proxyquire('../lib/logger', {
-                            'cf-logs': {
-                                Logger: () => {
+                            '@codefresh-io/cf-telemetry/logs': {
+                                Logger: function() {
                                     return {
                                         info: infoSpy,
                                         error: errorSpy
                                     };
-
                                 }
                             },
                             'fastify': stubFastify,
@@ -767,13 +764,12 @@ describe('Logger tests', () => {
                         const infoSpy = sinon.spy();
                         const errorSpy = sinon.spy();
                         const Logger = proxyquire('../lib/logger', {
-                            'cf-logs': {
-                                Logger: () => {
+                            '@codefresh-io/cf-telemetry/logs': {
+                                Logger: function() {
                                     return {
                                         info: infoSpy,
                                         error: errorSpy
                                     };
-
                                 }
                             },
                             'firebase': function () {
@@ -830,13 +826,12 @@ describe('Logger tests', () => {
                         const infoSpy = sinon.spy();
                         const errorSpy = sinon.spy();
                         const Logger = proxyquire('../lib/logger', {
-                            'cf-logs': {
-                                Logger: () => {
+                            '@codefresh-io/cf-telemetry/logs': {
+                                Logger: function() {
                                     return {
                                         info: infoSpy,
                                         error: errorSpy
                                     };
-
                                 }
                             },
                             'firebase': function () {
@@ -903,13 +898,12 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
@@ -952,13 +946,12 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
@@ -996,13 +989,12 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
@@ -1033,13 +1025,12 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
@@ -1070,13 +1061,12 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
@@ -1107,13 +1097,12 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
@@ -1145,13 +1134,12 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
@@ -1184,13 +1172,12 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
@@ -1234,13 +1221,12 @@ describe('Logger tests', () => {
             const infoSpy = sinon.spy();
             const errorSpy = sinon.spy();
             const Logger = proxyquire('../lib/logger', {
-                'cf-logs': {
-                    Logger: () => {
+                '@codefresh-io/cf-telemetry/logs': {
+                    Logger: function() {
                         return {
                             info: infoSpy,
                             error: errorSpy
                         };
-
                     }
                 },
                 'fastify': stubFastify,
@@ -1286,13 +1272,12 @@ describe('Logger tests', () => {
             const infoSpy = sinon.spy();
             const errorSpy = sinon.spy();
             const Logger = proxyquire('../lib/logger', {
-                'cf-logs': {
-                    Logger: () => {
+                '@codefresh-io/cf-telemetry/logs': {
+                    Logger: function() {
                         return {
                             info: infoSpy,
                             error: errorSpy
                         };
-
                     }
                 },
                 'fastify': stubFastify,
@@ -1346,13 +1331,12 @@ describe('Logger tests', () => {
             const infoSpy = sinon.spy();
             const errorSpy = sinon.spy();
             const Logger = proxyquire('../lib/logger', {
-                'cf-logs': {
-                    Logger: () => {
+                '@codefresh-io/cf-telemetry/logs': {
+                    Logger: function() {
                         return {
                             info: infoSpy,
                             error: errorSpy
                         };
-
                     }
                 },
                 'fastify': stubFastify,
@@ -1401,13 +1385,12 @@ describe('Logger tests', () => {
             const infoSpy = sinon.spy();
             const errorSpy = sinon.spy();
             const Logger = proxyquire('../lib/logger', {
-                'cf-logs': {
-                    Logger: () => {
+                '@codefresh-io/cf-telemetry/logs': {
+                    Logger: function() {
                         return {
                             info: infoSpy,
                             error: errorSpy
                         };
-
                     }
                 },
                 'fastify': stubFastify,
@@ -1456,13 +1439,12 @@ describe('Logger tests', () => {
                 return emitter;
             });
             const Logger = proxyquire('../lib/logger', {
-                'cf-logs': {
-                    Logger: () => {
+                '@codefresh-io/cf-telemetry/logs': {
+                    Logger: function() {
                         return {
                             info: infoSpy,
                             error: errorSpy
                         };
-
                     }
                 },
                 './ContainerLogger': ContainerLoggerSpy,

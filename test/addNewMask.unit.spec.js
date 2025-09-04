@@ -13,7 +13,7 @@ describe('addNewMask', () => {
 
     const stubGetServerAddress = sinon.stub();
     const stubProcessExit = sinon.stub();
-    const stubConsole = {
+    const stubLogger = {
         debug: sinon.stub(),
         error: sinon.stub(),
         warn: sinon.stub(),
@@ -30,7 +30,6 @@ describe('addNewMask', () => {
 
     before(async () => {
         process.exit = stubProcessExit;
-        console = stubConsole;
         const { default: httpClient } = await import('got');
         sinon.stub(httpClient, 'post').callsFake(stubGot.post);
     });
@@ -38,8 +37,8 @@ describe('addNewMask', () => {
     beforeEach(() => {
         stubProcessExit.resetHistory();
         stubGetServerAddress.resetHistory();
-        for (const stub in stubConsole) {
-            stubConsole[stub].resetHistory();
+        for (const stub in stubLogger) {
+            stubLogger[stub].resetHistory();
         }
         for (const stub in stubGot) {
             stubGot[stub].resetHistory();
@@ -58,6 +57,11 @@ describe('addNewMask', () => {
             stubGot.post.resolves({ statusCode: 201 });
 
             const { updateMasks, exitHandler } = proxyquire('../lib/addNewMask', {
+                '@codefresh-io/cf-telemetry/init': {
+                    terminate: () => ({
+                        finally: callback => callback(),
+                    })
+                },
                 './helpers': { getServerAddress: stubGetServerAddress },
             });
             process.listeners('exit').forEach((listener) => {
@@ -78,6 +82,14 @@ describe('addNewMask', () => {
         it('should fail if the server address is not available', async () => {
             stubGetServerAddress.rejects('could not get server address');
             const { updateMasks, exitHandler } = proxyquire('../lib/addNewMask', {
+                '@codefresh-io/cf-telemetry/init': {
+                    terminate: () => ({
+                        finally: callback => callback(),
+                    })
+                },
+                '@codefresh-io/cf-telemetry/logs': {
+                    Logger: function() { return stubLogger },
+                },
                 './helpers': {
                     getServerAddress: stubGetServerAddress,
                 },
@@ -88,13 +100,21 @@ describe('addNewMask', () => {
                 }
             });
             await updateMasks(secret);
-            expect(stubConsole.error).to.have.been.calledOnceWith('could not create mask for secret: 123. Error: could not get server address');
+            expect(stubLogger.error).to.have.been.calledOnceWith('could not create mask for secret: 123. Error: could not get server address');
             expect(stubProcessExit).to.have.been.calledOnceWith(1);
         });
 
         it('should fail if the server address is not valid URL', async () => {
             stubGetServerAddress.resolves('foo');
             const { updateMasks, exitHandler } = proxyquire('../lib/addNewMask', {
+                '@codefresh-io/cf-telemetry/init': {
+                    terminate: () => ({
+                        finally: callback => callback(),
+                    })
+                },
+                '@codefresh-io/cf-telemetry/logs': {
+                    Logger: function() { return stubLogger },
+                },
                 './helpers': {
                     getServerAddress: stubGetServerAddress,
                 },
@@ -105,7 +125,7 @@ describe('addNewMask', () => {
                 }
             });
             await updateMasks(secret);
-            expect(stubConsole.error).to.have.been.calledOnceWith('could not create mask for secret: 123. Error: TypeError: Invalid URL');
+            expect(stubLogger.error).to.have.been.calledOnceWith('could not create mask for secret: 123. Error: TypeError: Invalid URL');
             expect(stubProcessExit).to.have.been.calledOnceWith(1);
         });
 
@@ -117,6 +137,14 @@ describe('addNewMask', () => {
                 body: 'Internal Server Error',
             });
             const { updateMasks, exitHandler } = proxyquire('../lib/addNewMask', {
+                '@codefresh-io/cf-telemetry/init': {
+                    terminate: () => ({
+                        finally: callback => callback(),
+                    })
+                },
+                '@codefresh-io/cf-telemetry/logs': {
+                    Logger: function() { return stubLogger },
+                },
                 './helpers': { getServerAddress: stubGetServerAddress },
             });
             process.listeners('exit').forEach((listener) => {
@@ -125,14 +153,18 @@ describe('addNewMask', () => {
                 }
             });
             await updateMasks(secret);
-            expect(stubConsole.error).to.have.been.calledOnceWith('could not create mask for secret: 123. Server responded with: 500\n\nInternal Server Error');
+            expect(stubLogger.error).to.have.been.calledOnceWith('could not create mask for secret: 123. Server responded with: 500\n\nInternal Server Error');
             expect(stubProcessExit).to.have.been.calledOnceWith(1);
         });
     });
 
     describe('exitHandler', () => {
         it('should set exit code to 3 if the original exit code is 0 and variable was not masked', () => {
-            const { exitHandler } = proxyquire('../lib/addNewMask', {});
+            const { exitHandler } = proxyquire('../lib/addNewMask', {
+                '@codefresh-io/cf-telemetry/logs': {
+                    Logger: function() { return stubLogger },
+                },
+            });
             process.listeners('exit').forEach((listener) => {
                 if (listener === exitHandler) {
                     process.removeListener('exit', listener);
@@ -140,12 +172,16 @@ describe('addNewMask', () => {
             });
             exitHandler(0);
             expect(process.exitCode).to.be.equal(3);
-            expect(stubConsole.warn).to.have.been.calledOnceWith('Unexpected exit with code 0. Exiting with 3 instead');
+            expect(stubLogger.warn).to.have.been.calledOnceWith('Unexpected exit with code 0. Exiting with 3 instead');
             process.exitCode = undefined;
         });
 
         it('should set exit code to 3 if the original exit code is 0 and variable was not masked', () => {
-            const { exitHandler } = proxyquire('../lib/addNewMask', {});
+            const { exitHandler } = proxyquire('../lib/addNewMask', {
+                '@codefresh-io/cf-telemetry/logs': {
+                    Logger: function() { return stubLogger },
+                },
+            });
             process.listeners('exit').forEach((listener) => {
                 if (listener === exitHandler) {
                     process.removeListener('exit', listener);
@@ -157,7 +193,7 @@ describe('addNewMask', () => {
             process.exitCode = 0;
             exitHandler();
             expect(process.exitCode).to.be.equal(3);
-            expect(stubConsole.warn).to.have.been.calledOnceWith('Unexpected exit with code 0. Exiting with 3 instead');
+            expect(stubLogger.warn).to.have.been.calledOnceWith('Unexpected exit with code 0. Exiting with 3 instead');
             process.exitCode = 0;
         });
 
@@ -175,7 +211,7 @@ describe('addNewMask', () => {
             });
             await updateMasks(secret);
             expect(process.exitCode).not.to.be.equal(3);
-            expect(stubConsole.warn).not.to.have.been.calledOnceWith('Unexpected exit with code 0. Exiting with 3 instead');
+            expect(stubLogger.warn).not.to.have.been.calledOnceWith('Unexpected exit with code 0. Exiting with 3 instead');
         });
     });
 });

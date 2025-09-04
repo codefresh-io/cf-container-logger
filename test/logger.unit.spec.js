@@ -7,7 +7,6 @@ const sinonChai = require('sinon-chai');
 const { EventEmitter } = require('events');
 const { ContainerStatus } = require('../lib/enums');
 const { LoggerStrategy } = require('../lib/enums');
-const { getPromiseWithResolvers } = require('../lib/helpers');
 
 const expect = chai.expect;
 chai.use(sinonChai);
@@ -49,7 +48,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -74,7 +72,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -118,7 +115,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -166,7 +162,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -212,7 +207,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -257,7 +251,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -307,7 +300,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -345,7 +337,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -373,7 +364,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -405,7 +395,6 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -443,7 +432,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -473,7 +461,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -498,7 +485,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -516,7 +502,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -543,7 +528,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -570,7 +554,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -597,7 +580,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -635,20 +617,18 @@ describe('Logger tests', () => {
                             return emitter;
                         });
                         const Logger = proxyquire('../lib/logger', {
-                            'cf-logs': {
-                                Logger: () => {
+                            '@codefresh-io/cf-telemetry/logs': {
+                                Logger: function() {
                                     return {
                                         info: infoSpy,
                                         error: errorSpy
                                     };
-
                                 }
                             },
                             './ContainerLogger': ContainerLoggerSpy,
                             'fastify': stubFastify,
                             './helpers': {
                                 saveServerAddress: stubSaveServerAddress,
-                                getPromiseWithResolvers,
                             },
                         });
 
@@ -688,13 +668,12 @@ describe('Logger tests', () => {
                         const infoSpy = sinon.spy();
                         const errorSpy = sinon.spy();
                         const Logger = proxyquire('../lib/logger', {
-                            'cf-logs': {
-                                Logger: () => {
+                            '@codefresh-io/cf-telemetry/logs': {
+                                Logger: function() {
                                     return {
                                         info: infoSpy,
                                         error: errorSpy
                                     };
-
                                 }
                             },
                             'firebase': function () {
@@ -703,7 +682,6 @@ describe('Logger tests', () => {
                             'fastify': stubFastify,
                             './helpers': {
                                 saveServerAddress: stubSaveServerAddress,
-                                getPromiseWithResolvers,
                             },
                         });
 
@@ -740,19 +718,17 @@ describe('Logger tests', () => {
                         const infoSpy = sinon.spy();
                         const errorSpy = sinon.spy();
                         const Logger = proxyquire('../lib/logger', {
-                            'cf-logs': {
-                                Logger: () => {
+                            '@codefresh-io/cf-telemetry/logs': {
+                                Logger: function() {
                                     return {
                                         info: infoSpy,
                                         error: errorSpy
                                     };
-
                                 }
                             },
                             'fastify': stubFastify,
                             './helpers': {
                                 saveServerAddress: stubSaveServerAddress,
-                                getPromiseWithResolvers,
                             },
                         });
 
@@ -788,13 +764,12 @@ describe('Logger tests', () => {
                         const infoSpy = sinon.spy();
                         const errorSpy = sinon.spy();
                         const Logger = proxyquire('../lib/logger', {
-                            'cf-logs': {
-                                Logger: () => {
+                            '@codefresh-io/cf-telemetry/logs': {
+                                Logger: function() {
                                     return {
                                         info: infoSpy,
                                         error: errorSpy
                                     };
-
                                 }
                             },
                             'firebase': function () {
@@ -803,7 +778,6 @@ describe('Logger tests', () => {
                             'fastify': stubFastify,
                             './helpers': {
                                 saveServerAddress: stubSaveServerAddress,
-                                getPromiseWithResolvers,
                             },
                         });
 
@@ -852,13 +826,12 @@ describe('Logger tests', () => {
                         const infoSpy = sinon.spy();
                         const errorSpy = sinon.spy();
                         const Logger = proxyquire('../lib/logger', {
-                            'cf-logs': {
-                                Logger: () => {
+                            '@codefresh-io/cf-telemetry/logs': {
+                                Logger: function() {
                                     return {
                                         info: infoSpy,
                                         error: errorSpy
                                     };
-
                                 }
                             },
                             'firebase': function () {
@@ -872,7 +845,6 @@ describe('Logger tests', () => {
                             'fastify': stubFastify,
                             './helpers': {
                                 saveServerAddress: stubSaveServerAddress,
-                                getPromiseWithResolvers,
                             },
                         });
 
@@ -926,19 +898,17 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -976,19 +946,17 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -1021,19 +989,17 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -1059,19 +1025,17 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -1097,19 +1061,17 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -1135,19 +1097,17 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -1174,19 +1134,17 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -1214,19 +1172,17 @@ describe('Logger tests', () => {
                 const infoSpy = sinon.spy();
                 const errorSpy = sinon.spy();
                 const Logger = proxyquire('../lib/logger', {
-                    'cf-logs': {
-                        Logger: () => {
+                    '@codefresh-io/cf-telemetry/logs': {
+                        Logger: function() {
                             return {
                                 info: infoSpy,
                                 error: errorSpy
                             };
-
                         }
                     },
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
-                        getPromiseWithResolvers,
                     },
                 });
 
@@ -1265,19 +1221,17 @@ describe('Logger tests', () => {
             const infoSpy = sinon.spy();
             const errorSpy = sinon.spy();
             const Logger = proxyquire('../lib/logger', {
-                'cf-logs': {
-                    Logger: () => {
+                '@codefresh-io/cf-telemetry/logs': {
+                    Logger: function() {
                         return {
                             info: infoSpy,
                             error: errorSpy
                         };
-
                     }
                 },
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1318,19 +1272,17 @@ describe('Logger tests', () => {
             const infoSpy = sinon.spy();
             const errorSpy = sinon.spy();
             const Logger = proxyquire('../lib/logger', {
-                'cf-logs': {
-                    Logger: () => {
+                '@codefresh-io/cf-telemetry/logs': {
+                    Logger: function() {
                         return {
                             info: infoSpy,
                             error: errorSpy
                         };
-
                     }
                 },
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1379,19 +1331,17 @@ describe('Logger tests', () => {
             const infoSpy = sinon.spy();
             const errorSpy = sinon.spy();
             const Logger = proxyquire('../lib/logger', {
-                'cf-logs': {
-                    Logger: () => {
+                '@codefresh-io/cf-telemetry/logs': {
+                    Logger: function() {
                         return {
                             info: infoSpy,
                             error: errorSpy
                         };
-
                     }
                 },
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1435,19 +1385,17 @@ describe('Logger tests', () => {
             const infoSpy = sinon.spy();
             const errorSpy = sinon.spy();
             const Logger = proxyquire('../lib/logger', {
-                'cf-logs': {
-                    Logger: () => {
+                '@codefresh-io/cf-telemetry/logs': {
+                    Logger: function() {
                         return {
                             info: infoSpy,
                             error: errorSpy
                         };
-
                     }
                 },
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1491,20 +1439,18 @@ describe('Logger tests', () => {
                 return emitter;
             });
             const Logger = proxyquire('../lib/logger', {
-                'cf-logs': {
-                    Logger: () => {
+                '@codefresh-io/cf-telemetry/logs': {
+                    Logger: function() {
                         return {
                             info: infoSpy,
                             error: errorSpy
                         };
-
                     }
                 },
                 './ContainerLogger': ContainerLoggerSpy,
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1569,7 +1515,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1663,7 +1608,6 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1709,7 +1653,6 @@ describe('Logger tests', () => {
                 '@codefresh-io/task-logger': { TaskLogger: TaskLoggerFactory },
                 './http-server': HttpServer,
                 './helpers': {
-                    getPromiseWithResolvers,
                 },
             });
 
@@ -1756,7 +1699,6 @@ describe('Logger tests', () => {
                 './http-server': HttpServer,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
-                    getPromiseWithResolvers,
                 },
             });
 

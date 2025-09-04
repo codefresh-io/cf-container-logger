@@ -22,6 +22,11 @@ describe('isReady script', () => {
             const state = JSON.stringify({ status: 'ready', containers: {} })
             process.argv = [];
             proxyquire('../lib/isReady.js', {
+                '@codefresh-io/cf-telemetry/init': {
+                    terminate: () => ({
+                        finally: callback => callback(),
+                    })
+                },
                 'fs': {
                     readFileSync: () => Buffer.from(state),
                 },
@@ -32,6 +37,11 @@ describe('isReady script', () => {
             const state = JSON.stringify({ status: 'notReady', containers: {} })
             process.argv = [];
             proxyquire('../lib/isReady.js', {
+                '@codefresh-io/cf-telemetry/init': {
+                    terminate: () => ({
+                        finally: callback => callback(),
+                    })
+                },
                 'fs': {
                     readFileSync: () => Buffer.from(state),
                 },
@@ -44,6 +54,11 @@ describe('isReady script', () => {
             const state = JSON.stringify({ status: 'ready', containers: { 'container-id': { status: ContainerHandlingStatus.LISTENING } } })
             process.argv = ['foo', 'bar', 'container-id'];
             proxyquire('../lib/isReady.js', {
+                '@codefresh-io/cf-telemetry/init': {
+                    terminate: () => ({
+                        finally: callback => callback(),
+                    })
+                },
                 'fs': {
                     readFileSync: () => Buffer.from(state),
                 },
@@ -54,6 +69,11 @@ describe('isReady script', () => {
             const state = JSON.stringify({ status: 'ready', containers: { 'container-id': { status: ContainerHandlingStatus.WAITING_FOR_START } } })
             process.argv = ['foo', 'bar', 'container-id'];
             proxyquire('../lib/isReady.js', {
+                '@codefresh-io/cf-telemetry/init': {
+                    terminate: () => ({
+                        finally: callback => callback(),
+                    })
+                },
                 'fs': {
                     readFileSync: () => Buffer.from(state),
                 },
@@ -64,6 +84,11 @@ describe('isReady script', () => {
             const state = JSON.stringify({ status: 'ready', containers: { 'container-id': { status: ContainerHandlingStatus.FINISHED } } })
             process.argv = ['foo', 'bar', 'container-id'];
             proxyquire('../lib/isReady.js', {
+                '@codefresh-io/cf-telemetry/init': {
+                    terminate: () => ({
+                        finally: callback => callback(),
+                    })
+                },
                 'fs': {
                     readFileSync: () => Buffer.from(state),
                 },
@@ -74,6 +99,11 @@ describe('isReady script', () => {
             const state = JSON.stringify({ status: 'ready', containers: { 'container-id': { status: ContainerHandlingStatus.INITIALIZING } } })
             process.argv = ['foo', 'bar', 'container-id'];
             proxyquire('../lib/isReady.js', {
+                '@codefresh-io/cf-telemetry/init': {
+                    terminate: () => ({
+                        finally: callback => callback(),
+                    })
+                },
                 'fs': {
                     readFileSync: () => Buffer.from(state),
                 },

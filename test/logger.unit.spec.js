@@ -7,6 +7,7 @@ const sinonChai = require('sinon-chai');
 const { EventEmitter } = require('events');
 const { ContainerStatus } = require('../lib/enums');
 const { LoggerStrategy } = require('../lib/enums');
+const {shutdownGracefully} = require("../lib/helpers");
 
 const expect = chai.expect;
 chai.use(sinonChai);
@@ -277,7 +278,6 @@ describe('Logger tests', () => {
         });
 
         describe('negative', () => {
-
             it('should call process exit in case creation of task logger failed', (done) => {
                 let exited = false;
                 const processExitSpy = sinon.spy((exitCode) => {
@@ -300,6 +300,7 @@ describe('Logger tests', () => {
                     'fastify': stubFastify,
                     './helpers': {
                         saveServerAddress: stubSaveServerAddress,
+                        shutdownGracefully,
                     },
                 });
 
@@ -502,6 +503,7 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
+                    shutdownGracefully,
                 },
             });
 
@@ -528,6 +530,7 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
+                    shutdownGracefully,
                 },
             });
 
@@ -554,6 +557,7 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
+                    shutdownGracefully,
                 },
             });
 
@@ -580,6 +584,7 @@ describe('Logger tests', () => {
                 'fastify': stubFastify,
                 './helpers': {
                     saveServerAddress: stubSaveServerAddress,
+                    shutdownGracefully,
                 },
             });
 

@@ -58,11 +58,6 @@ describe('addNewMask', () => {
             stubGot.post.resolves({ statusCode: 201 });
 
             const { updateMasks, exitHandler } = proxyquire('../lib/addNewMask', {
-                '@codefresh-io/cf-telemetry/init': {
-                    terminate: () => ({
-                        finally: callback => callback(),
-                    })
-                },
                 './helpers': {
                     getServerAddress: stubGetServerAddress,
                     shutdownGracefully,
@@ -133,11 +128,6 @@ describe('addNewMask', () => {
                 body: 'Internal Server Error',
             });
             const { updateMasks, exitHandler } = proxyquire('../lib/addNewMask', {
-                '@codefresh-io/cf-telemetry/init': {
-                    terminate: () => ({
-                        finally: callback => callback(),
-                    })
-                },
                 '@codefresh-io/cf-telemetry/logs': {
                     Logger: function() { return stubLogger },
                 },

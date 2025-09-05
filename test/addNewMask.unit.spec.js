@@ -1,6 +1,7 @@
 const chai = require('chai');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
+const {shutdownGracefully} = require("../lib/helpers");
 const proxyquire = require('proxyquire').noCallThru();
 
 const expect = chai.expect;
@@ -57,12 +58,10 @@ describe('addNewMask', () => {
             stubGot.post.resolves({ statusCode: 201 });
 
             const { updateMasks, exitHandler } = proxyquire('../lib/addNewMask', {
-                '@codefresh-io/cf-telemetry/init': {
-                    terminate: () => ({
-                        finally: callback => callback(),
-                    })
+                './helpers': {
+                    getServerAddress: stubGetServerAddress,
+                    shutdownGracefully,
                 },
-                './helpers': { getServerAddress: stubGetServerAddress },
             });
             process.listeners('exit').forEach((listener) => {
                 if (listener === exitHandler) {
@@ -82,16 +81,12 @@ describe('addNewMask', () => {
         it('should fail if the server address is not available', async () => {
             stubGetServerAddress.rejects('could not get server address');
             const { updateMasks, exitHandler } = proxyquire('../lib/addNewMask', {
-                '@codefresh-io/cf-telemetry/init': {
-                    terminate: () => ({
-                        finally: callback => callback(),
-                    })
-                },
                 '@codefresh-io/cf-telemetry/logs': {
                     Logger: function() { return stubLogger },
                 },
                 './helpers': {
                     getServerAddress: stubGetServerAddress,
+                    shutdownGracefully,
                 },
             });
             process.listeners('exit').forEach((listener) => {
@@ -107,16 +102,12 @@ describe('addNewMask', () => {
         it('should fail if the server address is not valid URL', async () => {
             stubGetServerAddress.resolves('foo');
             const { updateMasks, exitHandler } = proxyquire('../lib/addNewMask', {
-                '@codefresh-io/cf-telemetry/init': {
-                    terminate: () => ({
-                        finally: callback => callback(),
-                    })
-                },
                 '@codefresh-io/cf-telemetry/logs': {
                     Logger: function() { return stubLogger },
                 },
                 './helpers': {
                     getServerAddress: stubGetServerAddress,
+                    shutdownGracefully,
                 },
             });
             process.listeners('exit').forEach((listener) => {
@@ -137,15 +128,13 @@ describe('addNewMask', () => {
                 body: 'Internal Server Error',
             });
             const { updateMasks, exitHandler } = proxyquire('../lib/addNewMask', {
-                '@codefresh-io/cf-telemetry/init': {
-                    terminate: () => ({
-                        finally: callback => callback(),
-                    })
-                },
                 '@codefresh-io/cf-telemetry/logs': {
                     Logger: function() { return stubLogger },
                 },
-                './helpers': { getServerAddress: stubGetServerAddress },
+                './helpers': {
+                    getServerAddress: stubGetServerAddress,
+                    shutdownGracefully,
+                },
             });
             process.listeners('exit').forEach((listener) => {
                 if (listener === exitHandler) {
@@ -202,7 +191,10 @@ describe('addNewMask', () => {
             stubGetServerAddress.resolves(serverAddress);
             stubGot.post.resolves({ statusCode: 201 });
             const { updateMasks, exitHandler } = proxyquire('../lib/addNewMask', {
-                './helpers': { getServerAddress: stubGetServerAddress },
+                './helpers': {
+                    getServerAddress: stubGetServerAddress,
+                    shutdownGracefully,
+                },
             });
             process.listeners('exit').forEach((listener) => {
                 if (listener === exitHandler) {

@@ -15,7 +15,7 @@
     "cf-errors": "^0.1.17",
     "docker-events": "0.0.2",
     "dockerode": "^4.0.2",
-    "fastify": "^4.28.1",
+    "fastify": "^4.29.1",
     "got": "^14.4.1",
     "lodash": "^4.17.21",
     "promise-retry": "^2.0.1",
